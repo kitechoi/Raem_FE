@@ -1,0 +1,538 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3B4459D32BF0EBF200AFA631 /* HeartRateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4459D22BF0EBF200AFA631 /* HeartRateApp.swift */; };
+		3B4459D52BF0EBF200AFA631 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4459D42BF0EBF200AFA631 /* ContentView.swift */; };
+		3B4459D72BF0EBF300AFA631 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B4459D62BF0EBF300AFA631 /* Assets.xcassets */; };
+		3B4459DA2BF0EBF300AFA631 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B4459D92BF0EBF300AFA631 /* Preview Assets.xcassets */; };
+		3B4459E02BF0EBF300AFA631 /* HeartRate Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 3B4459DF2BF0EBF300AFA631 /* HeartRate Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3B4459E52BF0EBF300AFA631 /* HeartRateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4459E42BF0EBF300AFA631 /* HeartRateApp.swift */; };
+		3B4459E72BF0EBF300AFA631 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4459E62BF0EBF300AFA631 /* ContentView.swift */; };
+		3B4459E92BF0EBF400AFA631 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B4459E82BF0EBF400AFA631 /* Assets.xcassets */; };
+		3B4459EC2BF0EBF400AFA631 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B4459EB2BF0EBF400AFA631 /* Preview Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3B4459E12BF0EBF300AFA631 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3B4459C72BF0EBF200AFA631 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3B4459DE2BF0EBF300AFA631;
+			remoteInfo = "HeartRate Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3B4459F22BF0EBF400AFA631 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				3B4459E02BF0EBF300AFA631 /* HeartRate Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		3B4459CF2BF0EBF200AFA631 /* HeartRate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeartRate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B4459D22BF0EBF200AFA631 /* HeartRateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateApp.swift; sourceTree = "<group>"; };
+		3B4459D42BF0EBF200AFA631 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3B4459D62BF0EBF300AFA631 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3B4459D92BF0EBF300AFA631 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		3B4459DF2BF0EBF300AFA631 /* HeartRate Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HeartRate Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B4459E42BF0EBF300AFA631 /* HeartRateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateApp.swift; sourceTree = "<group>"; };
+		3B4459E62BF0EBF300AFA631 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3B4459E82BF0EBF400AFA631 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3B4459EB2BF0EBF400AFA631 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		3B4459F62BF0EBFF00AFA631 /* HeartRate.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HeartRate.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3B4459CC2BF0EBF200AFA631 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3B4459DC2BF0EBF300AFA631 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3B4459C62BF0EBF200AFA631 = {
+			isa = PBXGroup;
+			children = (
+				3B4459D12BF0EBF200AFA631 /* HeartRate */,
+				3B4459E32BF0EBF300AFA631 /* HeartRate Watch App */,
+				3B4459D02BF0EBF200AFA631 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3B4459D02BF0EBF200AFA631 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3B4459CF2BF0EBF200AFA631 /* HeartRate.app */,
+				3B4459DF2BF0EBF300AFA631 /* HeartRate Watch App.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3B4459D12BF0EBF200AFA631 /* HeartRate */ = {
+			isa = PBXGroup;
+			children = (
+				3B4459F62BF0EBFF00AFA631 /* HeartRate.entitlements */,
+				3B4459D22BF0EBF200AFA631 /* HeartRateApp.swift */,
+				3B4459D42BF0EBF200AFA631 /* ContentView.swift */,
+				3B4459D62BF0EBF300AFA631 /* Assets.xcassets */,
+				3B4459D82BF0EBF300AFA631 /* Preview Content */,
+			);
+			path = HeartRate;
+			sourceTree = "<group>";
+		};
+		3B4459D82BF0EBF300AFA631 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				3B4459D92BF0EBF300AFA631 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		3B4459E32BF0EBF300AFA631 /* HeartRate Watch App */ = {
+			isa = PBXGroup;
+			children = (
+				3B4459E42BF0EBF300AFA631 /* HeartRateApp.swift */,
+				3B4459E62BF0EBF300AFA631 /* ContentView.swift */,
+				3B4459E82BF0EBF400AFA631 /* Assets.xcassets */,
+				3B4459EA2BF0EBF400AFA631 /* Preview Content */,
+			);
+			path = "HeartRate Watch App";
+			sourceTree = "<group>";
+		};
+		3B4459EA2BF0EBF400AFA631 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				3B4459EB2BF0EBF400AFA631 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3B4459CE2BF0EBF200AFA631 /* HeartRate */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3B4459F32BF0EBF400AFA631 /* Build configuration list for PBXNativeTarget "HeartRate" */;
+			buildPhases = (
+				3B4459CB2BF0EBF200AFA631 /* Sources */,
+				3B4459CC2BF0EBF200AFA631 /* Frameworks */,
+				3B4459CD2BF0EBF200AFA631 /* Resources */,
+				3B4459F22BF0EBF400AFA631 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3B4459E22BF0EBF300AFA631 /* PBXTargetDependency */,
+			);
+			name = HeartRate;
+			productName = HeartRate;
+			productReference = 3B4459CF2BF0EBF200AFA631 /* HeartRate.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3B4459DE2BF0EBF300AFA631 /* HeartRate Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3B4459EF2BF0EBF400AFA631 /* Build configuration list for PBXNativeTarget "HeartRate Watch App" */;
+			buildPhases = (
+				3B4459DB2BF0EBF300AFA631 /* Sources */,
+				3B4459DC2BF0EBF300AFA631 /* Frameworks */,
+				3B4459DD2BF0EBF300AFA631 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "HeartRate Watch App";
+			productName = "HeartRate Watch App";
+			productReference = 3B4459DF2BF0EBF300AFA631 /* HeartRate Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3B4459C72BF0EBF200AFA631 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1530;
+				LastUpgradeCheck = 1530;
+				TargetAttributes = {
+					3B4459CE2BF0EBF200AFA631 = {
+						CreatedOnToolsVersion = 15.3;
+					};
+					3B4459DE2BF0EBF300AFA631 = {
+						CreatedOnToolsVersion = 15.3;
+					};
+				};
+			};
+			buildConfigurationList = 3B4459CA2BF0EBF200AFA631 /* Build configuration list for PBXProject "HeartRate" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3B4459C62BF0EBF200AFA631;
+			productRefGroup = 3B4459D02BF0EBF200AFA631 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3B4459CE2BF0EBF200AFA631 /* HeartRate */,
+				3B4459DE2BF0EBF300AFA631 /* HeartRate Watch App */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3B4459CD2BF0EBF200AFA631 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B4459DA2BF0EBF300AFA631 /* Preview Assets.xcassets in Resources */,
+				3B4459D72BF0EBF300AFA631 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3B4459DD2BF0EBF300AFA631 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B4459EC2BF0EBF400AFA631 /* Preview Assets.xcassets in Resources */,
+				3B4459E92BF0EBF400AFA631 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3B4459CB2BF0EBF200AFA631 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B4459D52BF0EBF200AFA631 /* ContentView.swift in Sources */,
+				3B4459D32BF0EBF200AFA631 /* HeartRateApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3B4459DB2BF0EBF300AFA631 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B4459E72BF0EBF300AFA631 /* ContentView.swift in Sources */,
+				3B4459E52BF0EBF300AFA631 /* HeartRateApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3B4459E22BF0EBF300AFA631 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3B4459DE2BF0EBF300AFA631 /* HeartRate Watch App */;
+			targetProxy = 3B4459E12BF0EBF300AFA631 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3B4459ED2BF0EBF400AFA631 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		3B4459EE2BF0EBF400AFA631 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		3B4459F02BF0EBF400AFA631 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"HeartRate Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = D2559AT45B;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = HeartRate;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = raem.HeartRate;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = raem.HeartRate.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.4;
+			};
+			name = Debug;
+		};
+		3B4459F12BF0EBF400AFA631 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"HeartRate Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = D2559AT45B;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = HeartRate;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = raem.HeartRate;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = raem.HeartRate.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.4;
+			};
+			name = Release;
+		};
+		3B4459F42BF0EBF400AFA631 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HeartRate/HeartRate.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"HeartRate/Preview Content\"";
+				DEVELOPMENT_TEAM = D2559AT45B;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = HeartRate;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = raem.HeartRate;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3B4459F52BF0EBF400AFA631 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HeartRate/HeartRate.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"HeartRate/Preview Content\"";
+				DEVELOPMENT_TEAM = D2559AT45B;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = HeartRate;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = raem.HeartRate;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3B4459CA2BF0EBF200AFA631 /* Build configuration list for PBXProject "HeartRate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B4459ED2BF0EBF400AFA631 /* Debug */,
+				3B4459EE2BF0EBF400AFA631 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3B4459EF2BF0EBF400AFA631 /* Build configuration list for PBXNativeTarget "HeartRate Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B4459F02BF0EBF400AFA631 /* Debug */,
+				3B4459F12BF0EBF400AFA631 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3B4459F32BF0EBF400AFA631 /* Build configuration list for PBXNativeTarget "HeartRate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B4459F42BF0EBF400AFA631 /* Debug */,
+				3B4459F52BF0EBF400AFA631 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3B4459C72BF0EBF200AFA631 /* Project object */;
+}
