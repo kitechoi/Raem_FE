@@ -8,8 +8,14 @@ class HealthKitService {
     let healthStore = HKHealthStore()
     
     // 읽기 및 쓰기 권한 설정
-    let read = Set([HKCategoryType.categoryType(forIdentifier: .sleepAnalysis)!])
-    let share = Set([HKCategoryType.categoryType(forIdentifier: .sleepAnalysis)!])
+    let read: Set<HKSampleType> = [
+        HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!,
+        HKObjectType.quantityType(forIdentifier: .heartRate)!
+    ]
+    let share: Set<HKSampleType> = [
+        HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!,
+        HKObjectType.quantityType(forIdentifier: .heartRate)!
+    ]
     
     func configure() {
          // 해당 장치가 healthkit을 지원하는지 여부
@@ -17,7 +23,6 @@ class HealthKitService {
              requestAuthorization()
          }
      }
-    
     
     // 권한 요청 메소드
     private func requestAuthorization() {
