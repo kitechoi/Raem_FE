@@ -16,48 +16,41 @@ struct GetDatasApp: App {
         }
     }()
 
+    
     // Healthkit 인증 코드가 있는 객체를 선언해줍니다.
     let service = HealthKitService()
-
+ 
     // 수면 데이터에 대한 권한이 허용되어 있는지 확인
     let sleepAnalysisType = HKCategoryType.categoryType(forIdentifier: .sleepAnalysis)!
     var authorizationStatus: HKAuthorizationStatus = .notDetermined // 초기화 필요
-
+     
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
         .modelContainer(sharedModelContainer)
     }
-
-    init() {
-        setup()
-    }
-
-    // 첫 실행 시 Healthkit 권한 설정이 되도록 호출합니다.
+    
+     init() {
+         setup()
+         switch authorizationStatus {
+             case .notDetermined:
+                 // 권한이 아직 요청되지 않음
+                 print("권한이 아직 요청되지 않음")
+             case .sharingDenied:
+                 // 권한 거부됨
+                 print("권한 거부됨")
+             case .sharingAuthorized:
+                 // 권한 부여됨
+                 print("권한 부여됨")
+             default:
+                 break // 기본적으로 아무 것도 하지 않음
+         }
+     }
+     
+     // 첫 실행 시 Healthkit 권한 설정이 되도록 호출합니다.
     mutating func setup() {
         service.configure()
-        authorizationStatus = service.healthStore.authorizationStatus(for: sleepAnalysisType)
-
-        // 권한이 아직 요청되지 않은 경우 권한을 요청합니다.
-        if authorizationStatus == .notDetermined {
-            requestAuthorization()
-        }
-    }
-
-    // 권한 요청 메소드
-    mutating func requestAuthorization() {
-        service.healthStore.requestAuthorization(toShare: service.share, read: service.read) { success, error in
-            if let error = error {
-                print("Error requesting authorization: \(error.localizedDescription)")
-                return
-            }
-
-            if success {
-                print("권한이 허락되었습니다")
-            } else {
-                print("권한이 없습니다")
-            }
-        }
+        authorizationStatus = service.healthStore.authorizationStatus(for: sleepAnalysisType) // 여기서 healthStore에 접근하여 authorizationStatus를 확인합니다.
     }
 }
