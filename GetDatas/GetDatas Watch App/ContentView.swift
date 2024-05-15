@@ -1,18 +1,27 @@
 import SwiftUI
 
 struct ContentView: View {
-    let workoutSessionManager = WorkoutSessionManager()
-
+    let health = HealthKitService()
+    
     var body: some View {
         VStack {
-            Button("수면 데이터 불러오기") {
-                workoutSessionManager.startWorkout()
+            Button("수면 데이터 출력") {
+                health.fetchSleepData()
             }
+            Button("심박수 측정 시작") {
+                health.startMeasuringHeartRate()
+            }
+            Button("심박수 측정 정지") {
+                health.stopMeasuringHeartRate()
+            }
+            
         }
         .padding()
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }
