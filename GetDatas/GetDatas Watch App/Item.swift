@@ -64,7 +64,7 @@ class HealthKitService {
                 print("End Date: \(dateFormatter.string(from: sample.endDate))")
                 
                 if let stringValue = sleepCategoryStrings[sample.value] {
-                    print("Sleep level: \(stringValue) (\(sample.value)")
+                    print("Sleep level: \(stringValue) (\(sample.value))")
                 } else {
                     print("Sleep value: Unknown")
                 }
@@ -86,8 +86,19 @@ class HealthKitService {
                 return
             }
             
-            // Heart rate observation logic
-            print("Observed heart rate changes.")
+            // Fetch recent heart rate samples
+            let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
+            let query = HKSampleQuery(sampleType: heartRateType, predicate: nil, limit: 1, sortDescriptors: [sortDescriptor]) { (query, samples, error) in
+                guard let samples = samples as? [HKQuantitySample], let heartRateSample = samples.first else {
+                    print("No heart rate samples available.")
+                    return
+                }
+                let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
+                let heartRate = Int(heartRateSample.quantity.doubleValue(for: heartRateUnit))
+                print("Observed heart rate changes: \(heartRate) bpm")
+            }
+            
+            self?.healthStore.execute(query)
         }
         
         healthStore.execute(query)
@@ -101,7 +112,8 @@ class HealthKitService {
             }
         }
     }
-    
+
+
     // 심박수 측정 정지
     func stopMeasuringHeartRate() {
         if let query = heartRateObserverQuery {
