@@ -10,19 +10,6 @@ struct ContentView: View {
                 Button("수면 데이터 불러오기") {
                     health.getSleepData()
                 }
-                if isMeasuringHeartRate {
-                      Button("정지", action: {
-                          health.stopMeasuringHeartRate()
-                          isMeasuringHeartRate = false
-                      })
-                      .padding()
-                  } else {
-                      Button("심박수 측정 시작", action: {
-                          health.startMeasuringHeartRate()
-                          isMeasuringHeartRate = true
-                      })
-                      .padding()
-                  }
             }
         }
     }

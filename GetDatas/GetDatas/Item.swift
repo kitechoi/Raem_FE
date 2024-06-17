@@ -9,12 +9,10 @@ class HealthKitService {
     
     // 읽기 및 쓰기 권한 설정
     let read: Set<HKSampleType> = [
-        HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!,
-        HKObjectType.quantityType(forIdentifier: .heartRate)!
+        HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
     ]
     let share: Set<HKSampleType> = [
-        HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!,
-        HKObjectType.quantityType(forIdentifier: .heartRate)!
+        HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
     ]
     
     func configure() {
@@ -38,24 +36,6 @@ class HealthKitService {
                 print("권한이 없습니다")
             }
         }
-    }
-
-    func fetchLatestHeartRateSample(completion: @escaping (Double) -> Void) {
-        let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
-        let query = HKSampleQuery(sampleType: heartRateType,
-                                  predicate: nil,
-                                  limit: 1,
-                                  sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]) { query, samples, error in
-            guard let sample = samples?.first as? HKQuantitySample else {
-                print("Failed to fetch heart rate sample: \(error?.localizedDescription ?? "Unknown error")")
-                completion(0.0)
-                return
-            }
-            let heartRate = sample.quantity.doubleValue(for: HKUnit.count().unitDivided(by: .minute()))
-            print("Heart Rate: \(heartRate) bpm")
-            completion(heartRate)
-        }
-        healthStore.execute(query)
     }
     
     func getSleepData(){
@@ -127,34 +107,6 @@ class HealthKitService {
             healthStore.execute(query)
         }
     }
-    
-    var heartRate: Double = 0.0
-    var timer: Timer?
-
-    
-    func startMeasuringHeartRate() {
-        timer?.invalidate() // 이전 타이머 중지
-
-        timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
-            self.fetchLatestHeartRateSample { heartRate in
-                  DispatchQueue.main.async {
-                      self.heartRate = heartRate
-                  }
-              }
-        }
-        timer?.fire() // 즉시 실행
-    }
-
-
-    func stopMeasuringHeartRate() {
-        timer?.invalidate()
-    }
-
-
-    
-    
-    
-    
 
 }
 
