@@ -37,13 +37,20 @@ class HealthKitService {
             5: "REM"
         ]
         
-        
         // 한국 시간대로 설정
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
-
-        let query = HKSampleQuery(sampleType: sleepType, predicate: nil, limit: 100, sortDescriptors: nil) { (query, samples, error) in
+        
+        // 오늘로부터 7일 전의 날짜를 계산
+        guard let sevenDaysAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else {
+            print("Failed to calculate 7 days ago date.")
+            return
+        }
+        
+        let predicate = HKQuery.predicateForSamples(withStart: sevenDaysAgo, end: Date(), options: .strictStartDate)
+        
+        let query = HKSampleQuery(sampleType: sleepType, predicate: predicate, limit: 100, sortDescriptors: nil) { (query, samples, error) in
             guard let samples = samples as? [HKCategorySample], error == nil else {
                 print("Failed to fetch sleep data: \(error?.localizedDescription ?? "Unknown error")")
                 return
@@ -51,16 +58,13 @@ class HealthKitService {
             
             // 수면 데이터 처리
             for sample in samples {
-//                print("Sleep data: \(sample)")
-                // 수면 데이터를 활용한 로직을 추가하세요.
-                
                 // 수면 상태가 "inbed"인 경우에는 출력을 건너뜁니다.
                 guard sample.value != 0 else {
                     continue
                 }
                 
                 // 가져온 데이터 출력
-                print("Start Date: \(dateFormatter.string(from : sample.startDate))")
+                print("Start Date: \(dateFormatter.string(from: sample.startDate))")
                 print("End Date: \(dateFormatter.string(from: sample.endDate))")
                 
                 if let stringValue = sleepCategoryStrings[sample.value] {
@@ -70,12 +74,12 @@ class HealthKitService {
                 }
                 
                 print("\n------------------------------\n")
-                
             }
         }
         
         healthStore.execute(query)
     }
+
     
     // 심박수 측정 시작
     func startMeasuringHeartRate() {
@@ -96,6 +100,7 @@ class HealthKitService {
                 let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
                 let heartRate = Int(heartRateSample.quantity.doubleValue(for: heartRateUnit))
                 print("Observed heart rate changes: \(heartRate) bpm")
+
             }
             
             self?.healthStore.execute(query)
@@ -121,4 +126,5 @@ class HealthKitService {
             print("Heart rate observation stopped.")
         }
     }
+    
 }
