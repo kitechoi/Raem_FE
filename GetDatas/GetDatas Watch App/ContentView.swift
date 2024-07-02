@@ -1,27 +1,31 @@
 import SwiftUI
 
 struct ContentView: View {
-    let health = HealthKitService()
-    
+    @StateObject private var viewModel = HealthDataViewModel()
+
     var body: some View {
-        VStack {
-            Button("수면 데이터 출력") {
-                health.fetchSleepData()
-            }
-            Button("심박수 측정 시작") {
-                health.startMeasuringHeartRate()
-            }
-            Button("심박수 측정 정지") {
-                health.stopMeasuringHeartRate()
+        VStack(spacing: 20) {
+            Button(action: {
+                viewModel.startMonitoring()
+            }) {
+                Text("측정 시작")
+                    .padding()
+                    .cornerRadius(10)
             }
             
+            Button(action: {
+                viewModel.stopMonitoring()
+            }) {
+                Text("측정 중지")
+                    .padding()
+                    .cornerRadius(10)
+            }
         }
-        .padding()
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
+    static var previews: ContentView {
         ContentView()
     }
 }
