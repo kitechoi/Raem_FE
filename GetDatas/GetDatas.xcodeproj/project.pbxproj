@@ -403,8 +403,9 @@
 				INFOPLIST_FILE = "GetDatas-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = GetDatas;
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "데이터 접근을 위해 권한이 필요합니다.";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "데이터 접근을 위해 권한이 필요합니다.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "데이터 접근을 위해 권한이 필요합니다.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "건강 정보에 대한 접근 권한이 필요합니다";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "건강 정보 업데이트에 대한 권한이 필요합니다";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "소음 측정을 위한 마이크 접근 권한이 필요합니다";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = raem.GetDatas;
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
@@ -439,8 +440,9 @@
 				INFOPLIST_FILE = "GetDatas-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = GetDatas;
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "데이터 접근을 위해 권한이 필요합니다.";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "데이터 접근을 위해 권한이 필요합니다.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "데이터 접근을 위해 권한이 필요합니다.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "건강 정보에 대한 접근 권한이 필요합니다";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "건강 정보 업데이트에 대한 권한이 필요합니다";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "소음 측정을 위한 마이크 접근 권한이 필요합니다";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = raem.GetDatas;
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
