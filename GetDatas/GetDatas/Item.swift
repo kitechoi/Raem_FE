@@ -70,7 +70,7 @@ class HealthKitService {
             let query = HKSampleQuery(sampleType: sleepType, predicate: predicate, limit: 500, sortDescriptors: [sortDescriptor]) { (query, tmpResult, error) -> Void in
                 if error != nil {
                     // 에러 처리를 수행합니다.
-                    print(error)
+                    print(error as Any)
                     return
                 }
                 if let result = tmpResult {
