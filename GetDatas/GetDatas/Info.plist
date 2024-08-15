@@ -2,21 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
 	</array>
-	<key>com.apple.developer.icloud-container-environment</key>
-	<string>Production</string>
-	<key>CFBundleIconName</key>
-	<string>AppIcon</string>
-	<!-- <key>CFBundleIconFiles</key>
-	<array>
-		<string>Icon-29</string>
-		<string>Icon-40</string>
-		<string>Icon-44</string>
-		<string>Icon-86</string>
-		<string>Icon-98</string>
-	</array> -->
 </dict>
 </plist>
