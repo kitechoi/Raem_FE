@@ -26,7 +26,7 @@ struct GetDatasApp: App {
      
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LoadingView()
         }
         .modelContainer(sharedModelContainer)
     }
@@ -54,3 +54,4 @@ struct GetDatasApp: App {
         authorizationStatus = service.healthStore.authorizationStatus(for: sleepAnalysisType) // 여기서 healthStore에 접근하여 authorizationStatus를 확인합니다.
     }
 }
+
