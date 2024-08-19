@@ -4,7 +4,8 @@ import SwiftUI
 struct GetDatasApp: App {
     var body: some Scene {
         WindowGroup {
-            RecordsView()
+            LoadingView()
         }
     }
 }
+
