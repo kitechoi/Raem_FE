@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct RecordsView: View {
+struct RecordView: View {
     @ObservedObject var items = Items()
     @State private var selectedDate = Date() // Date 타입으로 시간을 관리
     
@@ -80,6 +80,6 @@ struct RecordsView: View {
 
 struct RecordsView_Previews: PreviewProvider {
     static var previews: some View {
-        RecordsView()
+        RecordView()
     }
 }

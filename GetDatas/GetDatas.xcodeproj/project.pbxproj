@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3B445A042BF0F0E900AFA631 /* GetDatasApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B445A032BF0F0E900AFA631 /* GetDatasApp.swift */; };
-		3B445A062BF0F0E900AFA631 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B445A052BF0F0E900AFA631 /* ContentView.swift */; };
 		3B445A082BF0F0EA00AFA631 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B445A072BF0F0EA00AFA631 /* Assets.xcassets */; };
 		3B445A0B2BF0F0EA00AFA631 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B445A0A2BF0F0EA00AFA631 /* Preview Assets.xcassets */; };
 		3B445A112BF0F0EA00AFA631 /* GetDatas Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 3B445A102BF0F0EA00AFA631 /* GetDatas Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -18,6 +17,26 @@
 		3B445A1D2BF0F0EB00AFA631 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B445A1C2BF0F0EB00AFA631 /* Preview Assets.xcassets */; };
 		3B445A292BF0F1C500AFA631 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B445A282BF0F1C500AFA631 /* Item.swift */; };
 		3B9C515D2BF1BFA2009BC8DF /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9C515C2BF1BFA2009BC8DF /* Item.swift */; };
+		3BF207EB2C735CA4000DEDA9 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF207EA2C735CA4000DEDA9 /* RecordView.swift */; };
+		736119482C68948100F3FF11 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736119472C68948100F3FF11 /* LoadingView.swift */; };
+		736119522C68A23300F3FF11 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736119512C68A23300F3FF11 /* Colors.swift */; };
+		736119542C68A30100F3FF11 /* CarouselView.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 736119532C68A30100F3FF11 /* CarouselView.swift .swift */; };
+		736119592C68A59300F3FF11 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736119582C68A59300F3FF11 /* LoginView.swift */; };
+		7361195D2C68A6D100F3FF11 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361195C2C68A6D100F3FF11 /* RegisterView.swift */; };
+		7361195F2C68A99000F3FF11 /* RegisterCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361195E2C68A99000F3FF11 /* RegisterCompleteView.swift */; };
+		736119612C68AA8800F3FF11 /* DeviceRegistrationView.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 736119602C68AA8800F3FF11 /* DeviceRegistrationView.swift .swift */; };
+		736119662C68AE5800F3FF11 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736119652C68AE5800F3FF11 /* HomeView.swift */; };
+		736119682C68B02D00F3FF11 /* CustomTabBar.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 736119672C68B02D00F3FF11 /* CustomTabBar.swift .swift */; };
+		7361196C2C68B6C400F3FF11 /* SleepTrackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361196B2C68B6C400F3FF11 /* SleepTrackingView.swift */; };
+		739AE9642C6DB1ED006BAF47 /* AccountManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9632C6DB1ED006BAF47 /* AccountManagementView.swift */; };
+		739AE9662C6DB91F006BAF47 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9652C6DB91F006BAF47 /* ImagePicker.swift */; };
+		739AE9682C6DD742006BAF47 /* NameChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9672C6DD742006BAF47 /* NameChangeView.swift */; };
+		739AE96A2C6DE037006BAF47 /* EmailChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9692C6DE037006BAF47 /* EmailChangeView.swift */; };
+		739AE96C2C6DE368006BAF47 /* PasswordChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE96B2C6DE368006BAF47 /* PasswordChangeView.swift */; };
+		739AE96E2C70077B006BAF47 /* AccountDeletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE96D2C70077B006BAF47 /* AccountDeletionView.swift */; };
+		739AE9702C700950006BAF47 /* SleepDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE96F2C700950006BAF47 /* SleepDetailView.swift */; };
+		739AE9722C700ADE006BAF47 /* SleepRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9712C700ADE006BAF47 /* SleepRatingView.swift */; };
+		739AE9742C700C31006BAF47 /* BedTimeAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +66,6 @@
 /* Begin PBXFileReference section */
 		3B445A002BF0F0E900AFA631 /* GetDatas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GetDatas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B445A032BF0F0E900AFA631 /* GetDatasApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDatasApp.swift; sourceTree = "<group>"; };
-		3B445A052BF0F0E900AFA631 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3B445A072BF0F0EA00AFA631 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B445A0A2BF0F0EA00AFA631 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3B445A102BF0F0EA00AFA631 /* GetDatas Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GetDatas Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +79,26 @@
 		3B869B752BF4730B00890FB8 /* GetDatas-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GetDatas-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 		3B90127B2BF439E3001253B5 /* GetDatas Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "GetDatas Watch App.entitlements"; sourceTree = "<group>"; };
 		3B9C515C2BF1BFA2009BC8DF /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		3BF207EA2C735CA4000DEDA9 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
+		736119472C68948100F3FF11 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		736119512C68A23300F3FF11 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		736119532C68A30100F3FF11 /* CarouselView.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CarouselView.swift .swift"; sourceTree = "<group>"; };
+		736119582C68A59300F3FF11 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		7361195C2C68A6D100F3FF11 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		7361195E2C68A99000F3FF11 /* RegisterCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCompleteView.swift; sourceTree = "<group>"; };
+		736119602C68AA8800F3FF11 /* DeviceRegistrationView.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeviceRegistrationView.swift .swift"; sourceTree = "<group>"; };
+		736119652C68AE5800F3FF11 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		736119672C68B02D00F3FF11 /* CustomTabBar.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomTabBar.swift .swift"; sourceTree = "<group>"; };
+		7361196B2C68B6C400F3FF11 /* SleepTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepTrackingView.swift; sourceTree = "<group>"; };
+		739AE9632C6DB1ED006BAF47 /* AccountManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManagementView.swift; sourceTree = "<group>"; };
+		739AE9652C6DB91F006BAF47 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		739AE9672C6DD742006BAF47 /* NameChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameChangeView.swift; sourceTree = "<group>"; };
+		739AE9692C6DE037006BAF47 /* EmailChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailChangeView.swift; sourceTree = "<group>"; };
+		739AE96B2C6DE368006BAF47 /* PasswordChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeView.swift; sourceTree = "<group>"; };
+		739AE96D2C70077B006BAF47 /* AccountDeletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionView.swift; sourceTree = "<group>"; };
+		739AE96F2C700950006BAF47 /* SleepDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepDetailView.swift; sourceTree = "<group>"; };
+		739AE9712C700ADE006BAF47 /* SleepRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepRatingView.swift; sourceTree = "<group>"; };
+		739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedTimeAlarmView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,11 +140,20 @@
 		3B445A022BF0F0E900AFA631 /* GetDatas */ = {
 			isa = PBXGroup;
 			children = (
-				3B869B742BF472C800890FB8 /* Info.plist */,
-				3B445A272BF0F10F00AFA631 /* GetDatas.entitlements */,
+				3BF207E92C735C79000DEDA9 /* Record */,
+				739AE9752C701195006BAF47 /* CustomTabBar */,
+				739AE9622C6DB1D6006BAF47 /* AccountManagement */,
+				7361196A2C68B6A800F3FF11 /* Home */,
+				736119642C68AAB700F3FF11 /* DeviceRegistration */,
+				7361195B2C68A6AE00F3FF11 /* Register */,
+				7361195A2C68A59A00F3FF11 /* Login */,
+				736119572C68A4E600F3FF11 /* Colors */,
+				736119562C68A4D400F3FF11 /* Carousel */,
+				736119552C68A48A00F3FF11 /* Loading */,
 				3B445A032BF0F0E900AFA631 /* GetDatasApp.swift */,
 				3B445A282BF0F1C500AFA631 /* Item.swift */,
-				3B445A052BF0F0E900AFA631 /* ContentView.swift */,
+				3B869B742BF472C800890FB8 /* Info.plist */,
+				3B445A272BF0F10F00AFA631 /* GetDatas.entitlements */,
 				3B445A072BF0F0EA00AFA631 /* Assets.xcassets */,
 				3B445A092BF0F0EA00AFA631 /* Preview Content */,
 			);
@@ -141,6 +188,96 @@
 				3B445A1C2BF0F0EB00AFA631 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		3BF207E92C735C79000DEDA9 /* Record */ = {
+			isa = PBXGroup;
+			children = (
+				3BF207EA2C735CA4000DEDA9 /* RecordView.swift */,
+			);
+			path = Record;
+			sourceTree = "<group>";
+		};
+		736119552C68A48A00F3FF11 /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				736119472C68948100F3FF11 /* LoadingView.swift */,
+			);
+			path = Loading;
+			sourceTree = "<group>";
+		};
+		736119562C68A4D400F3FF11 /* Carousel */ = {
+			isa = PBXGroup;
+			children = (
+				736119532C68A30100F3FF11 /* CarouselView.swift .swift */,
+			);
+			path = Carousel;
+			sourceTree = "<group>";
+		};
+		736119572C68A4E600F3FF11 /* Colors */ = {
+			isa = PBXGroup;
+			children = (
+				736119512C68A23300F3FF11 /* Colors.swift */,
+			);
+			path = Colors;
+			sourceTree = "<group>";
+		};
+		7361195A2C68A59A00F3FF11 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				736119582C68A59300F3FF11 /* LoginView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		7361195B2C68A6AE00F3FF11 /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				7361195C2C68A6D100F3FF11 /* RegisterView.swift */,
+				7361195E2C68A99000F3FF11 /* RegisterCompleteView.swift */,
+			);
+			path = Register;
+			sourceTree = "<group>";
+		};
+		736119642C68AAB700F3FF11 /* DeviceRegistration */ = {
+			isa = PBXGroup;
+			children = (
+				736119602C68AA8800F3FF11 /* DeviceRegistrationView.swift .swift */,
+			);
+			path = DeviceRegistration;
+			sourceTree = "<group>";
+		};
+		7361196A2C68B6A800F3FF11 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				736119652C68AE5800F3FF11 /* HomeView.swift */,
+				7361196B2C68B6C400F3FF11 /* SleepTrackingView.swift */,
+				739AE96F2C700950006BAF47 /* SleepDetailView.swift */,
+				739AE9712C700ADE006BAF47 /* SleepRatingView.swift */,
+				739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		739AE9622C6DB1D6006BAF47 /* AccountManagement */ = {
+			isa = PBXGroup;
+			children = (
+				739AE9632C6DB1ED006BAF47 /* AccountManagementView.swift */,
+				739AE9652C6DB91F006BAF47 /* ImagePicker.swift */,
+				739AE9672C6DD742006BAF47 /* NameChangeView.swift */,
+				739AE9692C6DE037006BAF47 /* EmailChangeView.swift */,
+				739AE96B2C6DE368006BAF47 /* PasswordChangeView.swift */,
+				739AE96D2C70077B006BAF47 /* AccountDeletionView.swift */,
+			);
+			path = AccountManagement;
+			sourceTree = "<group>";
+		};
+		739AE9752C701195006BAF47 /* CustomTabBar */ = {
+			isa = PBXGroup;
+			children = (
+				736119672C68B02D00F3FF11 /* CustomTabBar.swift .swift */,
+			);
+			path = CustomTabBar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,9 +384,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B445A062BF0F0E900AFA631 /* ContentView.swift in Sources */,
+				736119542C68A30100F3FF11 /* CarouselView.swift .swift in Sources */,
+				739AE9682C6DD742006BAF47 /* NameChangeView.swift in Sources */,
+				736119612C68AA8800F3FF11 /* DeviceRegistrationView.swift .swift in Sources */,
+				739AE9702C700950006BAF47 /* SleepDetailView.swift in Sources */,
+				739AE9722C700ADE006BAF47 /* SleepRatingView.swift in Sources */,
+				736119682C68B02D00F3FF11 /* CustomTabBar.swift .swift in Sources */,
+				739AE96E2C70077B006BAF47 /* AccountDeletionView.swift in Sources */,
+				3BF207EB2C735CA4000DEDA9 /* RecordView.swift in Sources */,
+				736119592C68A59300F3FF11 /* LoginView.swift in Sources */,
+				736119522C68A23300F3FF11 /* Colors.swift in Sources */,
+				736119662C68AE5800F3FF11 /* HomeView.swift in Sources */,
+				736119482C68948100F3FF11 /* LoadingView.swift in Sources */,
+				7361196C2C68B6C400F3FF11 /* SleepTrackingView.swift in Sources */,
+				7361195D2C68A6D100F3FF11 /* RegisterView.swift in Sources */,
+				7361195F2C68A99000F3FF11 /* RegisterCompleteView.swift in Sources */,
+				739AE96A2C6DE037006BAF47 /* EmailChangeView.swift in Sources */,
+				739AE9642C6DB1ED006BAF47 /* AccountManagementView.swift in Sources */,
+				739AE9662C6DB91F006BAF47 /* ImagePicker.swift in Sources */,
 				3B445A292BF0F1C500AFA631 /* Item.swift in Sources */,
 				3B445A042BF0F0E900AFA631 /* GetDatasApp.swift in Sources */,
+				739AE96C2C6DE368006BAF47 /* PasswordChangeView.swift in Sources */,
+				739AE9742C700C31006BAF47 /* BedTimeAlarmView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,10 +550,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "GetDatas Watch App/GetDatas Watch App.entitlements";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GetDatas Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = D2559AT45B;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=watchos*]" = D2559AT45B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "GetDatas-Watch-App-Info.plist";
@@ -416,6 +574,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = raem.GetDatas.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = RAEM_FE_WATCH;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -431,10 +591,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "GetDatas Watch App/GetDatas Watch App.entitlements";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GetDatas Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = D2559AT45B;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=watchos*]" = D2559AT45B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "GetDatas-Watch-App-Info.plist";
@@ -453,6 +615,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = raem.GetDatas.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = RAEM_FE_WATCH;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -470,10 +634,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GetDatas/GetDatas.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GetDatas/Preview Content\"";
-				DEVELOPMENT_TEAM = D2559AT45B;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = D2559AT45B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GetDatas/Info.plist;
@@ -495,6 +661,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = raem.GetDatas;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Raem_FE;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -509,10 +677,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GetDatas/GetDatas.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GetDatas/Preview Content\"";
-				DEVELOPMENT_TEAM = D2559AT45B;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = D2559AT45B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GetDatas/Info.plist;
@@ -534,6 +704,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = raem.GetDatas;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Raem_FE;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
