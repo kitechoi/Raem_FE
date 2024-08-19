@@ -9,7 +9,7 @@ class Items: NSObject, ObservableObject, WCSessionDelegate, MFMailComposeViewCon
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: (any Error)?) {}
     
     @Published var records: [String] = []
-    @Published var endTime: String = "09:50" // 기본 종료 시간 설정
+    @Published var endTime: String = "09:00" // 기본 종료 시간 설정
     
     private var session: WCSession?
 
