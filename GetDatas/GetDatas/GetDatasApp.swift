@@ -9,3 +9,11 @@ struct GetDatasApp: App {
     }
 }
 
+// 공통 스타일
+
+extension View {
+    func globalPadding() -> some View {
+        self
+            .padding(24)
+    }
+}
