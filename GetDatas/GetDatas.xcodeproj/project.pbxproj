@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B05422A2C75CB3700A4CB0D /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0542292C75CB3700A4CB0D /* BackButton.swift */; };
+		3B05422C2C75CB9200A4CB0D /* TopNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B05422B2C75CB9200A4CB0D /* TopNav.swift */; };
 		3B445A042BF0F0E900AFA631 /* GetDatasApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B445A032BF0F0E900AFA631 /* GetDatasApp.swift */; };
 		3B445A082BF0F0EA00AFA631 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B445A072BF0F0EA00AFA631 /* Assets.xcassets */; };
 		3B445A0B2BF0F0EA00AFA631 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B445A0A2BF0F0EA00AFA631 /* Preview Assets.xcassets */; };
@@ -61,6 +63,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3B0542292C75CB3700A4CB0D /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		3B05422B2C75CB9200A4CB0D /* TopNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNav.swift; sourceTree = "<group>"; };
 		3B445A002BF0F0E900AFA631 /* GetDatas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GetDatas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B445A032BF0F0E900AFA631 /* GetDatasApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDatasApp.swift; sourceTree = "<group>"; };
 		3B445A072BF0F0EA00AFA631 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -113,6 +117,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B0542222C75CAD100A4CB0D /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				3B0542292C75CB3700A4CB0D /* BackButton.swift */,
+				3B05422B2C75CB9200A4CB0D /* TopNav.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
 		3B4459F72BF0F0E900AFA631 = {
 			isa = PBXGroup;
 			children = (
@@ -134,6 +147,7 @@
 		3B445A022BF0F0E900AFA631 /* GetDatas */ = {
 			isa = PBXGroup;
 			children = (
+				3B0542222C75CAD100A4CB0D /* Component */,
 				3BF207E92C735C79000DEDA9 /* Record */,
 				739AE9752C701195006BAF47 /* CustomTabBar */,
 				739AE9622C6DB1D6006BAF47 /* AccountManagement */,
@@ -322,6 +336,7 @@
 				TargetAttributes = {
 					3B4459FF2BF0F0E900AFA631 = {
 						CreatedOnToolsVersion = 15.3;
+						LastSwiftMigration = 1540;
 					};
 					3B445A0F2BF0F0EA00AFA631 = {
 						CreatedOnToolsVersion = 15.3;
@@ -376,7 +391,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				736119542C68A30100F3FF11 /* CarouselView.swift .swift in Sources */,
+				3B05422C2C75CB9200A4CB0D /* TopNav.swift in Sources */,
 				739AE9682C6DD742006BAF47 /* NameChangeView.swift in Sources */,
+				3B05422A2C75CB3700A4CB0D /* BackButton.swift in Sources */,
 				736119612C68AA8800F3FF11 /* DeviceRegistrationView.swift .swift in Sources */,
 				739AE9702C700950006BAF47 /* SleepDetailView.swift in Sources */,
 				739AE9722C700ADE006BAF47 /* SleepRatingView.swift in Sources */,
@@ -619,6 +636,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = GetDatas/GetDatas.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -649,6 +667,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -660,6 +679,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = GetDatas/GetDatas.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;

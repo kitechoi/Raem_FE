@@ -77,6 +77,9 @@ struct RecordView: View {
                 }
             }
             .padding()
+            .background(Color.green)
+            .foregroundColor(.white)
+            .cornerRadius(10)
             
             List(connectivityManager.receivedData) { entry in
                 VStack(alignment: .leading) {
@@ -90,6 +93,9 @@ struct RecordView: View {
                 .padding(.vertical, 5)
             }
         }
-        .navigationTitle("워치에서 넘어온 데이터")
+        .navigationTitle("실시간 데이터")
+        .navigationBarItems(leading: BackButton()) // 커스텀 백 버튼 추가
+        .navigationBarBackButtonHidden(true)
+        .globalPadding()
     }
 }

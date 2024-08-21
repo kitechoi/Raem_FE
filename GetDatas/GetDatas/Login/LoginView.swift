@@ -25,7 +25,8 @@ struct LoginView: View {
                 
                 TextField("이메일 입력", text: $email)
                     .foregroundColor(.black) // 텍스트 색상 변경
-                    .padding()
+                    .frame(height: 50)
+                    .padding(.horizontal, 15)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.gray.opacity(0.5), lineWidth: 1)
@@ -33,7 +34,6 @@ struct LoginView: View {
                     .keyboardType(.emailAddress)
                     .autocapitalization(.none)
             }
-            .padding(.horizontal, 24)
 
             // 비밀번호 입력 필드
             VStack(alignment: .leading, spacing: 8) {
@@ -45,9 +45,13 @@ struct LoginView: View {
                     if isPasswordVisible {
                         TextField("비밀번호 입력", text: $password)
                             .foregroundColor(.black) // 텍스트 색상 변경
+                            .frame(height: 50)
+                            .padding(.horizontal, 15)
                     } else {
                         SecureField("비밀번호 입력", text: $password)
                             .foregroundColor(.black) // 텍스트 색상 변경
+                            .frame(height: 50)
+                            .padding(.horizontal, 15)
                     }
 
                     Button(action: {
@@ -56,8 +60,8 @@ struct LoginView: View {
                         Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
                             .foregroundColor(.gray)
                     }
+                    .padding(.horizontal, 15)
                 }
-                .padding()
                 .background(
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.gray.opacity(0.5), lineWidth: 1)
@@ -71,7 +75,6 @@ struct LoginView: View {
                         .padding(.top, 4)
                 }
             }
-            .padding(.horizontal, 24)
 
             // 비밀번호 찾기 버튼
             HStack {
@@ -84,7 +87,6 @@ struct LoginView: View {
                         .foregroundColor(.gray)
                 }
             }
-            .padding(.horizontal, 24)
 
             // 로그인 버튼
             Button(action: {
@@ -103,7 +105,6 @@ struct LoginView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
-            .padding(.horizontal, 24)
             .padding(.top, 20)
             .background(
                 NavigationLink(destination: HomeView(), isActive: $showHomeView) {
@@ -134,8 +135,11 @@ struct LoginView: View {
 
             Spacer()
         }
+        .globalPadding()
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
+        .navigationBarItems(leading: BackButton()) // 커스텀 백 버튼 추가
+        .navigationBarBackButtonHidden(true)
     }
 }
 
