@@ -24,6 +24,7 @@ struct LoginView: View {
                     .foregroundColor(.gray)
                 
                 TextField("이메일 입력", text: $email)
+                    .foregroundColor(.black) // 텍스트 색상 변경
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 10)
@@ -43,8 +44,10 @@ struct LoginView: View {
                 HStack {
                     if isPasswordVisible {
                         TextField("비밀번호 입력", text: $password)
+                            .foregroundColor(.black) // 텍스트 색상 변경
                     } else {
                         SecureField("비밀번호 입력", text: $password)
+                            .foregroundColor(.black) // 텍스트 색상 변경
                     }
 
                     Button(action: {
@@ -141,4 +144,3 @@ struct LoginView_Previews: PreviewProvider {
         LoginView()
     }
 }
-
