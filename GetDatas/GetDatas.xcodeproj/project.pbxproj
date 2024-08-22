@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		0CD786AB2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */; };
 		0CD786AD2C772246004677B7 /* MlTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD786AC2C772246004677B7 /* MlTestView.swift */; };
-		0CD786BC2C7722E8004677B7 /* S020_test.csv in Resources */ = {isa = PBXBuildFile; fileRef = 0CD786B32C7722E8004677B7 /* S020_test.csv */; };
-		0CD786BD2C7722E8004677B7 /* SleepStagePredictor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0CD786B42C7722E8004677B7 /* SleepStagePredictor.xcdatamodeld */; };
 		3B05422A2C75CB3700A4CB0D /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0542292C75CB3700A4CB0D /* BackButton.swift */; };
 		3B05422C2C75CB9200A4CB0D /* TopNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B05422B2C75CB9200A4CB0D /* TopNav.swift */; };
 		3B2555DD2C7727B400F298BF /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2555DC2C7727B400F298BF /* DataManager.swift */; };
@@ -71,8 +69,6 @@
 /* Begin PBXFileReference section */
 		0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MyTabularClassifier0814_2.mlmodel; sourceTree = "<group>"; };
 		0CD786AC2C772246004677B7 /* MlTestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MlTestView.swift; sourceTree = "<group>"; };
-		0CD786B32C7722E8004677B7 /* S020_test.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = S020_test.csv; sourceTree = "<group>"; };
-		0CD786B72C7722E8004677B7 /* SleepStagePredictor.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SleepStagePredictor.xcdatamodel; sourceTree = "<group>"; };
 		3B0542292C75CB3700A4CB0D /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		3B05422B2C75CB9200A4CB0D /* TopNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNav.swift; sourceTree = "<group>"; };
 		3B2555DC2C7727B400F298BF /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
@@ -168,7 +164,6 @@
 		3B445A022BF0F0E900AFA631 /* GetDatas */ = {
 			isa = PBXGroup;
 			children = (
-				0CD786B62C7722E8004677B7 /* SleepStagePredictor */,
 				0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */,
 				0CD786AC2C772246004677B7 /* MlTestView.swift */,
 				3B0542222C75CAD100A4CB0D /* Component */,
