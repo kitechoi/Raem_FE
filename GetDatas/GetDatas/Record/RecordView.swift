@@ -90,22 +90,29 @@ struct RecordView: View {
     var body: some View {
         VStack {
             if !connectivityManager.receivedData.isEmpty {
-                Button("CSV로 내보내기") {
-                    if let csvURL = connectivityManager.exportDataToCSV() {
-                        let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
-                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                           let rootVC = windowScene.windows.first?.rootViewController {
-                            rootVC.present(activityVC, animated: true) {
-                                // CSV 내보내기 완료 후 데이터 삭제
-                                self.connectivityManager.clearReceivedData()
+                HStack {
+                    Button("CSV로 내보내기") {
+                        if let csvURL = connectivityManager.exportDataToCSV() {
+                            let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
+                            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                               let rootVC = windowScene.windows.first?.rootViewController {
+                                rootVC.present(activityVC, animated: true)
                             }
                         }
                     }
+                    .padding()
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    
+                    Button("데이터 삭제하기") {
+                        connectivityManager.clearReceivedData()
+                    }
+                    .padding()
+                    .background(Color.red)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
                 }
-                .padding()
-                .background(Color.green)
-                .foregroundColor(.white)
-                .cornerRadius(10)
             }
             
             List(connectivityManager.receivedData) { entry in
