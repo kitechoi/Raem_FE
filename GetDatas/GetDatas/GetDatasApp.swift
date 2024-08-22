@@ -5,6 +5,7 @@ struct GetDatasApp: App {
     var body: some Scene {
         WindowGroup {
             LoadingView()
+//            MlTestView() // 연_test예측화면
         }
     }
 }
