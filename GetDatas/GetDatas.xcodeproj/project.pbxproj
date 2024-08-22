@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3B05422A2C75CB3700A4CB0D /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0542292C75CB3700A4CB0D /* BackButton.swift */; };
 		3B05422C2C75CB9200A4CB0D /* TopNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B05422B2C75CB9200A4CB0D /* TopNav.swift */; };
+		3B2555DD2C7727B400F298BF /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2555DC2C7727B400F298BF /* DataManager.swift */; };
+		3B3554042C776E8D005FA172 /* SleepDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3554032C776E8D005FA172 /* SleepDataView.swift */; };
 		3B445A042BF0F0E900AFA631 /* GetDatasApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B445A032BF0F0E900AFA631 /* GetDatasApp.swift */; };
 		3B445A082BF0F0EA00AFA631 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B445A072BF0F0EA00AFA631 /* Assets.xcassets */; };
 		3B445A0B2BF0F0EA00AFA631 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B445A0A2BF0F0EA00AFA631 /* Preview Assets.xcassets */; };
@@ -65,6 +67,8 @@
 /* Begin PBXFileReference section */
 		3B0542292C75CB3700A4CB0D /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		3B05422B2C75CB9200A4CB0D /* TopNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNav.swift; sourceTree = "<group>"; };
+		3B2555DC2C7727B400F298BF /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		3B3554032C776E8D005FA172 /* SleepDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepDataView.swift; sourceTree = "<group>"; };
 		3B445A002BF0F0E900AFA631 /* GetDatas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GetDatas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B445A032BF0F0E900AFA631 /* GetDatasApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDatasApp.swift; sourceTree = "<group>"; };
 		3B445A072BF0F0EA00AFA631 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -180,6 +184,7 @@
 			children = (
 				3B869B752BF4730B00890FB8 /* GetDatas-Watch-App-Info.plist */,
 				3B90127B2BF439E3001253B5 /* GetDatas Watch App.entitlements */,
+				3B2555DC2C7727B400F298BF /* DataManager.swift */,
 				3B445A152BF0F0EA00AFA631 /* GetDatasApp.swift */,
 				3B445A192BF0F0EB00AFA631 /* Assets.xcassets */,
 				3B445A1B2BF0F0EB00AFA631 /* Preview Content */,
@@ -199,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				3BF207EA2C735CA4000DEDA9 /* RecordView.swift */,
+				3B3554032C776E8D005FA172 /* SleepDataView.swift */,
 			);
 			path = Record;
 			sourceTree = "<group>";
@@ -402,6 +408,7 @@
 				3BF207EB2C735CA4000DEDA9 /* RecordView.swift in Sources */,
 				736119592C68A59300F3FF11 /* LoginView.swift in Sources */,
 				736119522C68A23300F3FF11 /* Colors.swift in Sources */,
+				3B3554042C776E8D005FA172 /* SleepDataView.swift in Sources */,
 				736119662C68AE5800F3FF11 /* HomeView.swift in Sources */,
 				736119482C68948100F3FF11 /* LoadingView.swift in Sources */,
 				7361196C2C68B6C400F3FF11 /* SleepTrackingView.swift in Sources */,
@@ -420,6 +427,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B2555DD2C7727B400F298BF /* DataManager.swift in Sources */,
 				3B445A162BF0F0EA00AFA631 /* GetDatasApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
