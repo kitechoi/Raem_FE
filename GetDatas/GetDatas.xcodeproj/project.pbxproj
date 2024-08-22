@@ -125,6 +125,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0CD786B62C7722E8004677B7 /* SleepStagePredictor */ = {
+			isa = PBXGroup;
+			children = (
+				0CD786B32C7722E8004677B7 /* S020_test.csv */,
+				0CD786B42C7722E8004677B7 /* SleepStagePredictor.xcdatamodeld */,
+			);
+			path = SleepStagePredictor;
+			sourceTree = "<group>";
+		};
 		3B0542222C75CAD100A4CB0D /* Component */ = {
 			isa = PBXGroup;
 			children = (
@@ -383,6 +392,7 @@
 			files = (
 				3B445A0B2BF0F0EA00AFA631 /* Preview Assets.xcassets in Resources */,
 				3B445A082BF0F0EA00AFA631 /* Assets.xcassets in Resources */,
+				0CD786BC2C7722E8004677B7 /* S020_test.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +421,7 @@
 				739AE9722C700ADE006BAF47 /* SleepRatingView.swift in Sources */,
 				736119682C68B02D00F3FF11 /* CustomTabBar.swift .swift in Sources */,
 				739AE96E2C70077B006BAF47 /* AccountDeletionView.swift in Sources */,
+				0CD786BD2C7722E8004677B7 /* SleepStagePredictor.xcdatamodeld in Sources */,
 				3BF207EB2C735CA4000DEDA9 /* RecordView.swift in Sources */,
 				736119592C68A59300F3FF11 /* LoginView.swift in Sources */,
 				736119522C68A23300F3FF11 /* Colors.swift in Sources */,
@@ -763,6 +774,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		0CD786B42C7722E8004677B7 /* SleepStagePredictor.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0CD786B72C7722E8004677B7 /* SleepStagePredictor.xcdatamodel */,
+			);
+			currentVersion = 0CD786B72C7722E8004677B7 /* SleepStagePredictor.xcdatamodel */;
+			name = SleepStagePredictor.xcdatamodeld;
+			path = "/Users/m/IT/2024-컴공졸프2/Raem_FE/GetDatas/GetDatas/SleepStagePredictor/SleepStagePredictor.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3B4459F82BF0F0E900AFA631 /* Project object */;
 }
