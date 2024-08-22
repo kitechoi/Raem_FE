@@ -1,9 +1,14 @@
 import SwiftUI
 import HealthKit
 
+struct SleepStage: Hashable {
+    let name: String
+    let value: Int
+}
+
 struct SleepDataView: View {
     @State private var sleepData: [HKCategorySample] = []
-    @State private var displayData: [(level: String, count: Int, duration: TimeInterval)] = []
+    @State private var displayData: [(level: SleepStage, count: Int, duration: TimeInterval)] = []
     @State private var startDate = Date()
     @State private var endDate = Date()
     
@@ -28,7 +33,7 @@ struct SleepDataView: View {
 
                 HStack {
                     Button("시간순 정렬") {
-                        displayData = aggregateData(sleepData).sorted(by: { $0.level < $1.level })
+                        displayData = aggregateData(sleepData).sorted(by: { $0.level.name < $1.level.name })
                     }
                     .padding()
                     .background(Color.orange)
@@ -36,7 +41,7 @@ struct SleepDataView: View {
                     .cornerRadius(10)
                     
                     Button("수면 단계 정렬") {
-                        displayData = aggregateData(sleepData).sorted(by: { $0.level < $1.level })
+                        displayData = aggregateData(sleepData).sorted(by: { $0.level.name < $1.level.name })
                     }
                     .padding()
                     .background(Color.green)
@@ -134,7 +139,7 @@ struct SleepDataView: View {
 
             List(displayData, id: \.level) { data in
                 VStack(alignment: .leading) {
-                    Text("sleep level: \(data.level)")
+                    Text("sleep level: \(data.level.name)(\(data.level.value))")
                     Text("인터벌 횟수 : \(data.count)")
                     Text("총 시간 : \(formatTimeInterval(data.duration))")
                 }
@@ -174,35 +179,35 @@ struct SleepDataView: View {
         healthStore.execute(query)
     }
 
-    private func sleepStage(from sample: HKCategorySample) -> String {
+    private func sleepStage(from sample: HKCategorySample) -> SleepStage {
         if #available(iOS 16.0, *) {
             switch sample.value {
             case HKCategoryValueSleepAnalysis.inBed.rawValue:
-                return "In Bed"
+                return SleepStage(name: "In Bed", value: HKCategoryValueSleepAnalysis.inBed.rawValue)
             case HKCategoryValueSleepAnalysis.asleepREM.rawValue:
-                return "REM"
+                return SleepStage(name: "REM", value: HKCategoryValueSleepAnalysis.asleepREM.rawValue)
             case HKCategoryValueSleepAnalysis.asleepDeep.rawValue:
-                return "Deep"
+                return SleepStage(name: "Deep", value: HKCategoryValueSleepAnalysis.asleepDeep.rawValue)
             case HKCategoryValueSleepAnalysis.asleepCore.rawValue:
-                return "Core"
+                return SleepStage(name: "Core", value: HKCategoryValueSleepAnalysis.asleepCore.rawValue)
             case HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue:
-                return "Asleep (Unspecified)"
+                return SleepStage(name: "Asleep (Unspecified)", value: HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue)
             default:
-                return "Unknown"
+                return SleepStage(name: "Unknown", value: sample.value)
             }
         } else {
             switch sample.value {
             case HKCategoryValueSleepAnalysis.inBed.rawValue:
-                return "In Bed"
+                return SleepStage(name: "In Bed", value: HKCategoryValueSleepAnalysis.inBed.rawValue)
             case HKCategoryValueSleepAnalysis.asleep.rawValue:
-                return "Asleep"
+                return SleepStage(name: "Asleep", value: HKCategoryValueSleepAnalysis.asleep.rawValue)
             default:
-                return "Unknown"
+                return SleepStage(name: "Unknown", value: sample.value)
             }
         }
     }
 
-    private func aggregateData(_ samples: [HKCategorySample]) -> [(level: String, count: Int, duration: TimeInterval)] {
+    private func aggregateData(_ samples: [HKCategorySample]) -> [(level: SleepStage, count: Int, duration: TimeInterval)] {
         let groupedData = Dictionary(grouping: samples) { sample in
             sleepStage(from: sample)
         }
