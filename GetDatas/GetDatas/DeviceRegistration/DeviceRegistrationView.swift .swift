@@ -42,7 +42,7 @@ struct DeviceRegistrationView: View {
                         .cornerRadius(10)
                 }
                 .padding(.bottom, geometry.size.height * 0.05)  // 하단에 간격 추가
-                .globalPadding()
+                .padding(24)
                 
                 Spacer() // 하단 여백 확보
             }

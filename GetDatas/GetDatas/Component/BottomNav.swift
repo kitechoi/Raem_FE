@@ -3,53 +3,66 @@ import SwiftUI
 struct BottomNav: View {
     @Binding var selectedTab: Tab
 
+    enum Tab: String {
+        case home
+        case sleep
+        case sounds
+        case settings
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
-            Spacer()
-
-            HStack(spacing: 50) {  // 각 버튼 사이 간격 조정
-                TabBarButton(imageName: selectedTab == .home ? "home_mint" : "home_gray", tab: .home, selectedTab: $selectedTab)
-
-                TabBarButton(imageName: selectedTab == .sleep ? "sleep_mint" : "sleep_gray", tab: .sleep, selectedTab: $selectedTab)
-
-                TabBarButton(imageName: selectedTab == .sounds ? "sounds_mint" : "sounds_gray", tab: .sounds, selectedTab: $selectedTab)
-
-                TabBarButton(imageName: selectedTab == .settings ? "settings_mint" : "settings_gray", tab: .settings, selectedTab: $selectedTab)
+            Divider()
+                .background(Color.gray.opacity(0.5))
+            HStack(spacing: 0) {
+                tabButton(for: .home, label: "Home", systemIconName: "house")
+                tabButton(for: .sleep, label: "Sleep", systemIconName: "bed.double")
+                tabButton(for: .sounds, label: "Sounds", systemIconName: "speaker.3")
+                tabButton(for: .settings, label: "Settings", systemIconName: "gear")
             }
-            .padding(.vertical, 10)  // 위아래 간격 조정
-            .background(
-                LinearGradient(gradient: Gradient(colors: [Color.white.opacity(0.9), Color.white.opacity(0.95)]), startPoint: .top, endPoint: .bottom)  // 매우 약한 그라데이션 효과
-            )
+            .frame(maxWidth: .infinity) // 가로로 꽉 차도록 설정
+            .padding()
+            .background(Color.white)
+            .cornerRadius(10)
+            .padding(.bottom, 10)
+        }
+    }
+    
+    private func tabButton(for tab: Tab, label: String, systemIconName: String) -> some View {
+        Button(action: {
+            selectedTab = tab
+        }) {
+            VStack {
+                Image(systemName: systemIconName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
+                    .foregroundColor(selectedTab == tab ? Color.mint : Color.gray)
+                Text(label)
+                    .font(.caption)
+                    .foregroundColor(selectedTab == tab ? Color.mint : Color.gray)
+            }
+            .frame(maxWidth: .infinity) // 각 버튼이 동일한 너비를 가집니다.
+        }
+    }
+}
+
+struct ContentView: View {
+    @State private var selectedTab: BottomNav.Tab = .home
+
+    var body: some View {
+        VStack {
+            Spacer()
+            // Your content view goes here
+            BottomNav(selectedTab: $selectedTab)
+                .frame(maxWidth: .infinity) // BottomNav 전체가 가로로 꽉 차도록 설정
         }
         .edgesIgnoringSafeArea(.bottom)
     }
 }
 
-enum Tab: String {
-    case home = "Home"
-    case sleep = "Sleep"
-    case sounds = "Sounds"
-    case settings = "Settings"
-}
-
-struct TabBarButton: View {
-    let imageName: String
-    let tab: Tab
-    @Binding var selectedTab: Tab
-
-    var body: some View {
-        Button(action: {
-            selectedTab = tab
-        }) {
-            VStack(spacing: 2) {  // 이미지와 텍스트 사이 간격 조정
-                Image(imageName)
-                    .resizable()
-                    .frame(width: 24, height: 24)  // 이미지 크기 조정
-                Text(tab.rawValue)
-                    .font(.system(size: 12))  // 텍스트 크기 조정
-                    .foregroundColor(selectedTab == tab ? Color.mint : Color.gray)
-            }
-        }
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
     }
 }
-
