@@ -93,7 +93,7 @@ struct SleepRatingView: View {
             Spacer(minLength: 40)
 
             // 하단 탭 바
-            CustomTabBar(selectedTab: .constant(.home))
+            BottomNav(selectedTab: .constant(.home))
         }
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)

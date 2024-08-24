@@ -53,7 +53,7 @@ struct BedTimeAlarmView: View {
             Spacer(minLength: 20) // 아래쪽 여백 조정
 
             // 하단 탭 바
-            CustomTabBar(selectedTab: .constant(.home))
+            BottomNav(selectedTab: .constant(.home))
                 .padding(.bottom, 10) // 탭 바가 하단에 붙지 않도록 여백 추가
         }
         .background(Color.white)

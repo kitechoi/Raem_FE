@@ -5,9 +5,9 @@ struct HomeView: View {
     @State private var showSleepTrackingView = false  // SleepTrackingView로 이동하기 위한 상태
     @State private var showAccountManagementView = false  // AccountManagementView로 이동하기 위한 상태
 
+
     var body: some View {
         VStack(spacing: 20) {
-            Spacer(minLength: 50)
             TopNav()
             
             // 환영 메시지
@@ -200,8 +200,8 @@ struct HomeView: View {
                 }
             )
             
-            // Custom TabBar
-            CustomTabBar(selectedTab: $selectedTab)
+            // BottomNav
+            BottomNav(selectedTab: $selectedTab)
         }
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
@@ -211,6 +211,8 @@ struct HomeView: View {
                 EmptyView()
             }
         )
+        
+        WatchButton()
     }
 }
 

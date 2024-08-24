@@ -1,13 +1,13 @@
 import SwiftUI
 
-struct CustomTabBar: View {
+struct BottomNav: View {
     @Binding var selectedTab: Tab
 
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
 
-            HStack(spacing: 60) {  // 각 버튼 사이 간격 조정
+            HStack(spacing: 50) {  // 각 버튼 사이 간격 조정
                 TabBarButton(imageName: selectedTab == .home ? "home_mint" : "home_gray", tab: .home, selectedTab: $selectedTab)
 
                 TabBarButton(imageName: selectedTab == .sleep ? "sleep_mint" : "sleep_gray", tab: .sleep, selectedTab: $selectedTab)
