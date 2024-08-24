@@ -73,7 +73,7 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     }
 }
 
-struct SettingsView: View {
+struct SettingsRecordsView: View {
     @AppStorage("userName") var userName: String = ""
     
     var body: some View {
@@ -129,7 +129,7 @@ struct RecordView: View {
         }
         .navigationTitle("실시간 데이터")
         .toolbar {
-            NavigationLink(destination: SettingsView()) {
+            NavigationLink(destination: SettingsRecordsView()) {
                 Text("설정")
             }
         }

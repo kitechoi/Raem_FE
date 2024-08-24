@@ -7,7 +7,6 @@ struct CarouselView: View {
     @Binding var isLoggedIn: Bool // LoadingView에서 전달받는 바인딩 상태
 
     // 우측 하단 버튼에 필요
-    @State private var showRecordView = false
     @State private var showFloatingButtons = false
     
     
