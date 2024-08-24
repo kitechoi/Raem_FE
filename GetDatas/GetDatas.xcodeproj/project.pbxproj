@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0CA107622C778AC40080FC9A /* S020_test.csv in Resources */ = {isa = PBXBuildFile; fileRef = 0CA107592C778AC40080FC9A /* S020_test.csv */; };
 		0CD786AB2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */; };
 		0CD786AD2C772246004677B7 /* MlTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD786AC2C772246004677B7 /* MlTestView.swift */; };
 		3B05422A2C75CB3700A4CB0D /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0542292C75CB3700A4CB0D /* BackButton.swift */; };
@@ -68,7 +67,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0CA107592C778AC40080FC9A /* S020_test.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = S020_test.csv; sourceTree = "<group>"; };
 		0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MyTabularClassifier0814_2.mlmodel; sourceTree = "<group>"; };
 		0CD786AC2C772246004677B7 /* MlTestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MlTestView.swift; sourceTree = "<group>"; };
 		3B0542292C75CB3700A4CB0D /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
@@ -127,15 +125,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0CA1075C2C778AC40080FC9A /* SleepStagePredictor */ = {
-			isa = PBXGroup;
-			children = (
-				0CA107592C778AC40080FC9A /* S020_test.csv */,
-			);
-			name = SleepStagePredictor;
-			path = "../../../Raem_FE 2/GetDatas/GetDatas/SleepStagePredictor";
-			sourceTree = "<group>";
-		};
 		3B0542222C75CAD100A4CB0D /* Component */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,7 +155,6 @@
 		3B445A022BF0F0E900AFA631 /* GetDatas */ = {
 			isa = PBXGroup;
 			children = (
-				0CA1075C2C778AC40080FC9A /* SleepStagePredictor */,
 				0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */,
 				0CD786AC2C772246004677B7 /* MlTestView.swift */,
 				3B0542222C75CAD100A4CB0D /* Component */,
@@ -395,7 +383,6 @@
 			files = (
 				3B445A0B2BF0F0EA00AFA631 /* Preview Assets.xcassets in Resources */,
 				3B445A082BF0F0EA00AFA631 /* Assets.xcassets in Resources */,
-				0CA107622C778AC40080FC9A /* S020_test.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
