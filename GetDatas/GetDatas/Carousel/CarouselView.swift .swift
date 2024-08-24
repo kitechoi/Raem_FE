@@ -4,7 +4,8 @@ struct CarouselView: View {
     @State private var currentIndex = 0
     @State private var showLoginView = false
     @State private var showRegisterView = false
-    
+    @Binding var isLoggedIn: Bool // LoadingView에서 전달받는 바인딩 상태
+
     // 우측 하단 버튼에 필요
     @State private var showRecordView = false
     @State private var showFloatingButtons = false
@@ -35,11 +36,13 @@ struct CarouselView: View {
                                         .resizable()
                                         .scaledToFit()
                                         .frame(height: 200)
-                                    
                                     Text(pages[index].description)
                                         .font(.system(size: 14))
                                         .foregroundColor(.gray)
                                         .multilineTextAlignment(.center)
+                                        .padding(.bottom, 50)
+                                
+                               
                     
                                     
                                     // 마지막 슬라이드에 로그인과 회원가입 버튼 추가
@@ -72,7 +75,7 @@ struct CarouselView: View {
                                             }
                                         }
                                         .padding(.horizontal)
-                                        .padding(.top, 30)
+                                        .padding(.bottom, 80)
                                     }else{
                                         Spacer()
                                     }
@@ -80,8 +83,7 @@ struct CarouselView: View {
                                 .tag(index)
                             }
                         }
-                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-                        .frame(height: geometry.size.height * 0.8)
+                        .tabViewStyle(PageTabViewStyle())
                     }
                 }
                 
@@ -163,8 +165,8 @@ struct CarouselView: View {
             .navigationBarHidden(true)
             .navigationBarBackButtonHidden(true)
             .background(
-                NavigationLink(destination: LoginView(), isActive: $showLoginView) {
-                    EmptyView()
+                NavigationLink(destination: LoginView(isLoggedIn: $isLoggedIn), isActive: $showLoginView) {
+                        EmptyView()
                 }
             )
             .background(
@@ -184,6 +186,6 @@ struct CarouselPage {
 
 struct CarouselView_Previews: PreviewProvider {
     static var previews: some View {
-        CarouselView()
+        CarouselView(isLoggedIn: .constant(false))
     }
 }
