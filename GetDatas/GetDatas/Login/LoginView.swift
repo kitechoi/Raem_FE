@@ -4,30 +4,30 @@ struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isPasswordVisible: Bool = false
-    @State private var showErrorMessage = false // 에러 메시지 표시 상태
-    @State private var errorMessage = "" // 에러 메시지 내용
-    @State private var showRegisterView = false // RegisterView를 표시하기 위한 상태
-    @State private var showAlert = false // Alert 표시 상태
-    @State private var showHomeView = false // HomeView로 이동하기 위한 상태
-    @Binding var isLoggedIn: Bool
+    @State private var showErrorMessage = false
+    @State private var errorMessage = ""
+    @State private var showRegisterView = false
+    @State private var showAlert = false
+    @State private var showHomeView = false
+
+    // SessionManager를 EnvironmentObject로 사용
+    @EnvironmentObject var sessionManager: SessionManager
 
     var body: some View {
         VStack(spacing: 16) {
             Spacer()
 
-            // 제목 텍스트
             Text("raem")
                 .font(.system(size: 40, weight: .bold))
                 .foregroundColor(Color.deepNavy)
             
-            // 이메일 입력 필드
             VStack(alignment: .leading, spacing: 8) {
                 Text("이메일 입력")
                     .font(.system(size: 14))
                     .foregroundColor(.gray)
                 
                 TextField("이메일 입력", text: $email)
-                    .foregroundColor(.black) // 텍스트 색상 변경
+                    .foregroundColor(.black)
                     .frame(height: 50)
                     .padding(.horizontal, 15)
                     .background(
@@ -38,7 +38,6 @@ struct LoginView: View {
                     .autocapitalization(.none)
             }
 
-            // 비밀번호 입력 필드
             VStack(alignment: .leading, spacing: 8) {
                 Text("비밀번호 입력")
                     .font(.system(size: 14))
@@ -47,12 +46,12 @@ struct LoginView: View {
                 HStack {
                     if isPasswordVisible {
                         TextField("비밀번호 입력", text: $password)
-                            .foregroundColor(.black) // 텍스트 색상 변경
+                            .foregroundColor(.black)
                             .frame(height: 50)
                             .padding(.horizontal, 15)
                     } else {
                         SecureField("비밀번호 입력", text: $password)
-                            .foregroundColor(.black) // 텍스트 색상 변경
+                            .foregroundColor(.black)
                             .frame(height: 50)
                             .padding(.horizontal, 15)
                     }
@@ -70,7 +69,6 @@ struct LoginView: View {
                         .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                 )
                 
-                // 에러 메시지
                 if showErrorMessage {
                     Text(errorMessage)
                         .font(.system(size: 12))
@@ -79,7 +77,6 @@ struct LoginView: View {
                 }
             }
 
-            // 비밀번호 찾기 버튼
             HStack {
                 Spacer()
                 Button(action: {
@@ -91,7 +88,6 @@ struct LoginView: View {
                 }
             }
 
-            // 로그인 버튼
             Button(action: {
                 loginUser()
             }) {
@@ -99,11 +95,12 @@ struct LoginView: View {
                     .font(.system(size: 18, weight: .bold))
                     .frame(maxWidth: .infinity)
                     .frame(height: 50)
-                    .background(Color.deepNavy)
+                    .background(email.isEmpty || password.isEmpty ? Color.gray : Color.deepNavy)
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
             .padding(.top, 20)
+            .disabled(email.isEmpty || password.isEmpty)
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("로그인 실패"), message: Text(errorMessage), dismissButton: .default(Text("확인")))
             }
@@ -113,7 +110,6 @@ struct LoginView: View {
                 }
             )
 
-            // 회원가입 링크
             HStack {
                 Text("회원이 아니신가요?")
                     .font(.system(size: 14))
@@ -136,10 +132,10 @@ struct LoginView: View {
 
             Spacer()
         }
-        .globalPadding()
+        .padding(24)
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
-        .navigationBarItems(leading: BackButton()) // 커스텀 백 버튼 추가
+        .navigationBarItems(leading: BackButton())
         .navigationBarBackButtonHidden(true)
     }
     
@@ -182,19 +178,16 @@ struct LoginView: View {
             }
             
             if httpResponse.statusCode == 200 {
-                // 로그인 성공
                 if let responseData = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let dataDict = responseData["data"] as? [String: Any],
                    let accessToken = dataDict["accessToken"] as? String {
                     DispatchQueue.main.async {
-                        // 토큰을 UserDefaults에 저장
-                        UserDefaults.standard.set(accessToken, forKey: "accessToken")
-                        isLoggedIn = true // 로그인 상태로 전환
+                        // SessionManager를 사용하여 accessToken 저장
+                        sessionManager.saveAccessToken(token: accessToken)
                         showHomeView = true // HomeView로 이동
                     }
                 }
             } else {
-                // 로그인 실패
                 if let responseData = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let message = responseData["message"] as? String {
                     DispatchQueue.main.async {
@@ -216,6 +209,7 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView(isLoggedIn: .constant(false))
+        LoginView()
+            .environmentObject(SessionManager())
     }
 }

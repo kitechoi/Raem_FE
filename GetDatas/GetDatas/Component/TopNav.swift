@@ -27,7 +27,7 @@ struct TopNav: View {
                         .frame(width: 35, height: 35)
                 }
             }
-            .globalPadding()
+            .padding(24)
             .padding(.top, 40)  // 화면 높이에 비례하여 상단 패딩 조정
         }
         .alert(isPresented: $showLogoutAlert) {

@@ -6,9 +6,6 @@ struct CarouselView: View {
     @State private var showRegisterView = false
     @Binding var isLoggedIn: Bool // LoadingView에서 전달받는 바인딩 상태
 
-    // 우측 하단 버튼에 필요
-    @State private var showFloatingButtons = false
-    
     
     let pages: [CarouselPage] = [
         CarouselPage(imageName: "page1", title: "편안한 수면", description: "숙면을 위한 완벽한 환경을 제공합니다."),
@@ -99,72 +96,14 @@ struct CarouselView: View {
                     }
                     .padding(.bottom, 80)
                 }
-                
-                // 오른쪽 아래의 원형 버튼 추가
-                ZStack {
-                    VStack {
-                        Spacer()
-                        HStack {
-                            Spacer()
-                            Button(action: {
-                                withAnimation {
-                                    showFloatingButtons.toggle()
-                                }
-                            }) {
-                                Image(systemName: "plus")
-                                    .font(.system(size: 24))
-                                    .frame(width: 60, height: 60)
-                                    .foregroundColor(.white)
-                                    .background(Color.deepNavy)
-                                    .cornerRadius(30)
-                                    .shadow(radius: 10)
-                            }
-                            .padding()
-                        }
-                    }
-                    
-                    // 플로팅 버튼들
-                    if showFloatingButtons {
-                        VStack {
-                           Spacer()
-                           HStack {
-                               Spacer()
-                               VStack(alignment: .trailing) {
-                                   NavigationLink(destination: RecordView()) {
-                                       Text("실시간 데이터")
-                                           .font(.system(size: 18))
-                                           .foregroundColor(.white)
-                                           .padding()
-                                           .background(Color.gray)
-                                           .cornerRadius(10)
-                                           .shadow(radius: 5)
-                                   }
-                                   .padding(.bottom, 0)
-                                   
-                                   NavigationLink(destination: SleepDataView()) {
-                                       Text("수면 데이터")
-                                           .font(.system(size: 18))
-                                           .foregroundColor(.white)
-                                           .padding()
-                                           .background(Color.gray)
-                                           .cornerRadius(10)
-                                           .shadow(radius: 5)
-                                   }
-                               }
-                               .padding(.trailing, 20)
-                           }
-                           .padding(.bottom, 100)
-                       }
-                       .transition(.opacity)
-                    }
-                }
+                WatchButton()
             }
             .background(Color.white)
             .edgesIgnoringSafeArea(.all)
             .navigationBarHidden(true)
             .navigationBarBackButtonHidden(true)
             .background(
-                NavigationLink(destination: LoginView(isLoggedIn: $isLoggedIn), isActive: $showLoginView) {
+                NavigationLink(destination: LoginView(), isActive: $showLoginView) {
                         EmptyView()
                 }
             )

@@ -57,8 +57,8 @@ struct WatchButton: View {
                             }
                         }
                         .padding(.trailing, 20)
+                        .padding(.bottom, 160)
                     }
-                    .padding(.bottom, 170)
                 }
                 .transition(.opacity)
             }

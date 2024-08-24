@@ -10,8 +10,7 @@ struct LoadingView: View {
             if isActive {
                 if isLoggedIn {
                     // 로그인 상태라면 HomeView로 이동
-//                    HomeView()
-                    CarouselView(isLoggedIn: .constant(false))
+                    HomeView()
                 } else {
                     // 로그인 상태가 아니라면 CarouselView로 이동
                     CarouselView(isLoggedIn: .constant(false))

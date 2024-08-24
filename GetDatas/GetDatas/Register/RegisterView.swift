@@ -138,7 +138,7 @@ struct RegisterView: View {
         .edgesIgnoringSafeArea(.all)
         .navigationBarItems(leading: BackButton()) // 커스텀 백 버튼 추가
         .navigationBarBackButtonHidden(true)
-        .globalPadding()
+        .padding(24)
     }
 
     private var attributedTitle: AttributedString {

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SleepView: View {
-    @State private var selectedTab: Tab = .sleep
+    @State private var selectedTab: BottomNav.Tab = .sleep
     
     var body: some View {
         Text("Sleep View")

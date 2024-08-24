@@ -1,11 +1,11 @@
 import SwiftUI
 
-struct SettingsView: View {
+struct SettingView: View {
     @State private var brightness: Double = 0.5
     @State private var colorTemperature: Double = 0.5
     @State private var gradualTime: Int? = nil
     @State private var offTimer: Int? = nil
-    @State private var selectedTab: Tab = .settings
+    @State private var selectedTab: BottomNav.Tab = .settings
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -96,8 +96,8 @@ struct TimeOptionButton: View {
     }
 }
 
-struct SettingsView_Previews: PreviewProvider {
+struct SettingView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
+        SettingView()
     }
 }
