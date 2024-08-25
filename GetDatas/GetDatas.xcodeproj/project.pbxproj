@@ -44,6 +44,7 @@
 		739AE9702C700950006BAF47 /* SleepDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE96F2C700950006BAF47 /* SleepDetailView.swift */; };
 		739AE9722C700ADE006BAF47 /* SleepRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9712C700ADE006BAF47 /* SleepRatingView.swift */; };
 		739AE9742C700C31006BAF47 /* BedTimeAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */; };
+		A82DF18F2C7B331A00EF097E /* MainContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82DF18E2C7B331A00EF097E /* MainContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +114,7 @@
 		739AE96F2C700950006BAF47 /* SleepDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepDetailView.swift; sourceTree = "<group>"; };
 		739AE9712C700ADE006BAF47 /* SleepRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepRatingView.swift; sourceTree = "<group>"; };
 		739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedTimeAlarmView.swift; sourceTree = "<group>"; };
+		A82DF18E2C7B331A00EF097E /* MainContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +185,7 @@
 				3B445A272BF0F10F00AFA631 /* GetDatas.entitlements */,
 				3B445A072BF0F0EA00AFA631 /* Assets.xcassets */,
 				3B445A092BF0F0EA00AFA631 /* Preview Content */,
+				A82DF18E2C7B331A00EF097E /* MainContentView.swift */,
 			);
 			path = GetDatas;
 			sourceTree = "<group>";
@@ -348,7 +351,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					3B4459FF2BF0F0E900AFA631 = {
 						CreatedOnToolsVersion = 15.3;
@@ -415,6 +418,7 @@
 				739AE9702C700950006BAF47 /* SleepDetailView.swift in Sources */,
 				739AE9722C700ADE006BAF47 /* SleepRatingView.swift in Sources */,
 				739AE96E2C70077B006BAF47 /* AccountDeletionView.swift in Sources */,
+				A82DF18F2C7B331A00EF097E /* MainContentView.swift in Sources */,
 				3BF207EB2C735CA4000DEDA9 /* RecordView.swift in Sources */,
 				3BA82A422C79E82600CE24F2 /* SoundsView.swift in Sources */,
 				736119592C68A59300F3FF11 /* LoginView.swift in Sources */,
@@ -493,6 +497,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -554,6 +559,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -581,14 +587,18 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = "GetDatas Watch App/GetDatas Watch App.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GetDatas Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = D2559AT45B;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=watchos*]" = D2559AT45B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "GetDatas-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Raem;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "블루투스 권한 필요";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "블루투스 주변기기 사용 권한 필요";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "데이터 접근을 위해 권한이 필요합니다.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "건강 정보에 대한 접근 권한이 필요합니다";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "건강 정보 업데이트에 대한 권한이 필요합니다";
@@ -604,6 +614,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = raem.GetDatas.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = RAEM_FE_WATCH;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -621,14 +632,18 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = "GetDatas Watch App/GetDatas Watch App.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GetDatas Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = D2559AT45B;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=watchos*]" = D2559AT45B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "GetDatas-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Raem;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "블루투스 권한 필요";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "블루투스 주변기기 사용 권한 필요";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "데이터 접근을 위해 권한이 필요합니다.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "건강 정보에 대한 접근 권한이 필요합니다";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "건강 정보 업데이트에 대한 권한이 필요합니다";
@@ -644,6 +659,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = raem.GetDatas.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = RAEM_FE_WATCH;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -663,10 +679,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = GetDatas/GetDatas.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GetDatas/Preview Content\"";
-				DEVELOPMENT_TEAM = D2559AT45B;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = D2559AT45B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GetDatas/Info.plist;
@@ -689,6 +707,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = raem.GetDatas;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Raem_FE;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -706,10 +725,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = GetDatas/GetDatas.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GetDatas/Preview Content\"";
-				DEVELOPMENT_TEAM = D2559AT45B;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = D2559AT45B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GetDatas/Info.plist;
@@ -732,6 +753,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = raem.GetDatas;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Raem_FE;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

@@ -8,7 +8,7 @@ struct LoginView: View {
     @State private var errorMessage = ""
     @State private var showRegisterView = false
     @State private var showAlert = false
-    @State private var showHomeView = false
+    @State private var showMainView = false
 
     // SessionManager를 EnvironmentObject로 사용
     @EnvironmentObject var sessionManager: SessionManager
@@ -105,7 +105,7 @@ struct LoginView: View {
                 Alert(title: Text("로그인 실패"), message: Text(errorMessage), dismissButton: .default(Text("확인")))
             }
             .background(
-                NavigationLink(destination: HomeView(), isActive: $showHomeView) {
+                NavigationLink(destination: MainContentView(), isActive: $showMainView) {
                     EmptyView()
                 }
             )
@@ -184,7 +184,7 @@ struct LoginView: View {
                     DispatchQueue.main.async {
                         // SessionManager를 사용하여 accessToken 저장
                         sessionManager.saveAccessToken(token: accessToken)
-                        showHomeView = true // HomeView로 이동
+                        showMainView = true // MainView로 이동
                     }
                 }
             } else {

@@ -9,8 +9,8 @@ struct LoadingView: View {
         VStack {
             if isActive {
                 if isLoggedIn {
-                    // 로그인 상태라면 HomeView로 이동
-                    HomeView()
+                    // 로그인 상태라면 MainView로 이동
+                    MainContentView()
                 } else {
                     // 로그인 상태가 아니라면 CarouselView로 이동
                     CarouselView(isLoggedIn: .constant(false))

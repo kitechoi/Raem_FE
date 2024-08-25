@@ -7,7 +7,6 @@ struct TopNav: View {
     @State private var navigateToLoadingView = false  // LoadingView로 이동하기 위한 상태
 
     var body: some View {
-        GeometryReader { geometry in
             HStack {
                 Button(action: {
                     navigateToLoadingView = true
@@ -27,35 +26,34 @@ struct TopNav: View {
                         .frame(width: 35, height: 35)
                 }
             }
-            .padding(24)
-            .padding(.top, 40)  // 화면 높이에 비례하여 상단 패딩 조정
-        }
-        .alert(isPresented: $showLogoutAlert) {
-            if logoutSuccess {
-                return Alert(
-                    title: Text("로그아웃 성공"),
-                    message: Text("성공적으로 로그아웃되었습니다."),
-                    dismissButton: .default(Text("확인")) {
-                        isLoggedOut = true
-                    }
-                )
-            } else {
-                return Alert(
-                    title: Text("로그아웃 실패"),
-                    message: Text("로그아웃에 실패했습니다. 다시 시도해주세요."),
-                    dismissButton: .default(Text("확인"))
-                )
+            .padding(.horizontal, 23)
+            .padding(.top, 60)  // 화면 높이에 비례하여 상단 패딩 조정
+            .alert(isPresented: $showLogoutAlert) {
+                if logoutSuccess {
+                    return Alert(
+                        title: Text("로그아웃 성공"),
+                        message: Text("성공적으로 로그아웃되었습니다."),
+                        dismissButton: .default(Text("확인")) {
+                            isLoggedOut = true
+                        }
+                    )
+                } else {
+                    return Alert(
+                        title: Text("로그아웃 실패"),
+                        message: Text("로그아웃에 실패했습니다. 다시 시도해주세요."),
+                        dismissButton: .default(Text("확인"))
+                    )
+                }
             }
-        }
-        .fullScreenCover(isPresented: $isLoggedOut) {
-            LoadingView()
-        }
-        .background(
-            NavigationLink(destination: LoadingView(), isActive: $navigateToLoadingView) {
-                EmptyView()
+            .fullScreenCover(isPresented: $isLoggedOut) {
+                LoadingView()
             }
-        )
-    }
+            .background(
+                NavigationLink(destination: LoadingView(), isActive: $navigateToLoadingView) {
+                    EmptyView()
+                }
+            )
+        }
     
     func logout() {
         guard let url = URL(string: "https://www.raem.shop/api/user/logout") else {
@@ -107,7 +105,7 @@ struct TopNav: View {
 struct TopBarView_Previews: PreviewProvider {
     static var previews: some View {
         TopNav()
-            .previewLayout(.sizeThatFits)
+            .edgesIgnoringSafeArea(.top)
     }
 }
 
