@@ -45,6 +45,7 @@
 		739AE9722C700ADE006BAF47 /* SleepRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9712C700ADE006BAF47 /* SleepRatingView.swift */; };
 		739AE9742C700C31006BAF47 /* BedTimeAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */; };
 		A82DF18F2C7B331A00EF097E /* MainContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82DF18E2C7B331A00EF097E /* MainContentView.swift */; };
+		A82DF1922C7B5AC100EF097E /* BLEManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82DF1912C7B5AC100EF097E /* BLEManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +116,7 @@
 		739AE9712C700ADE006BAF47 /* SleepRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepRatingView.swift; sourceTree = "<group>"; };
 		739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedTimeAlarmView.swift; sourceTree = "<group>"; };
 		A82DF18E2C7B331A00EF097E /* MainContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentView.swift; sourceTree = "<group>"; };
+		A82DF1912C7B5AC100EF097E /* BLEManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +170,7 @@
 		3B445A022BF0F0E900AFA631 /* GetDatas */ = {
 			isa = PBXGroup;
 			children = (
+				A82DF1902C7B5A8F00EF097E /* BLEManager */,
 				0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */,
 				0CD786AC2C772246004677B7 /* MlTestView.swift */,
 				3BA82A3C2C79E61D00CE24F2 /* Setting */,
@@ -304,6 +307,14 @@
 			path = AccountManagement;
 			sourceTree = "<group>";
 		};
+		A82DF1902C7B5A8F00EF097E /* BLEManager */ = {
+			isa = PBXGroup;
+			children = (
+				A82DF1912C7B5AC100EF097E /* BLEManager.swift */,
+			);
+			path = BLEManager;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -434,6 +445,7 @@
 				7361195F2C68A99000F3FF11 /* RegisterCompleteView.swift in Sources */,
 				739AE96A2C6DE037006BAF47 /* EmailChangeView.swift in Sources */,
 				739AE9642C6DB1ED006BAF47 /* AccountManagementView.swift in Sources */,
+				A82DF1922C7B5AC100EF097E /* BLEManager.swift in Sources */,
 				739AE9662C6DB91F006BAF47 /* ImagePicker.swift in Sources */,
 				0CD786AD2C772246004677B7 /* MlTestView.swift in Sources */,
 				3B445A042BF0F0E900AFA631 /* GetDatasApp.swift in Sources */,
