@@ -5,9 +5,6 @@ struct SoundsView: View {
     
     var body: some View {
         Text("Sounds View")
-        
-        // BottomNav
-        BottomNav(selectedTab: $selectedTab)
     }
 }
 

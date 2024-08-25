@@ -2,7 +2,7 @@ import SwiftUI
 
 extension Color {
     static let deepNavy = Color(hex: "0D648E")
-    static let mint = Color(hex: "35C2C1")
+    static let home_mint = Color(hex: "35C2C1")
     
     init(hex: String) {
         let scanner = Scanner(string: hex)

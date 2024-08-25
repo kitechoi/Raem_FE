@@ -46,23 +46,3 @@ struct BottomNav: View {
         }
     }
 }
-
-struct ContentView: View {
-    @State private var selectedTab: BottomNav.Tab = .home
-
-    var body: some View {
-        VStack {
-            Spacer()
-            // Your content view goes here
-            BottomNav(selectedTab: $selectedTab)
-                .frame(maxWidth: .infinity) // BottomNav 전체가 가로로 꽉 차도록 설정
-        }
-        .edgesIgnoringSafeArea(.bottom)
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
