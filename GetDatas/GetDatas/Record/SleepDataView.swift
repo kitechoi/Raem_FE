@@ -8,6 +8,7 @@ enum DisplayState {
 }
 
 struct SleepDataView: View {
+    @EnvironmentObject var sessionManager: SessionManager // 이메일 사용을 위한 SessionManager
     @State private var startDate = Date()
     @State private var endDate = Date()
     @State private var temporaryStartDate = Date()
@@ -22,6 +23,9 @@ struct SleepDataView: View {
     
     var body: some View {
         VStack {
+            // 상단 타이틀 및 뒤로가기 버튼
+            CustomTopBar(title: "수면 데이터")
+
             HStack {
                 VStack(alignment: .leading) {
                     Text("시작 날짜")
@@ -176,18 +180,20 @@ struct SleepDataView: View {
             }
         }
         .onAppear {
-            requestHealthAuthorization()
-        }
+           requestHealthAuthorization()
+       }
     }
 
     func exportDataToCSV() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let date = dateFormatter.string(from: Date())
+        let formattedEndDate = dateFormatter.string(from: endDate)
         
-        let userName = UIDevice.current.name
+        // 사용자 이메일 가져오기
+        let userEmail = sessionManager.email
         
-        let fileName = "\(userName)(\(date)).csv"
+        // 파일 이름을 "이메일(끝나는날짜).csv"로 설정
+        let fileName = "\(userEmail)(\(formattedEndDate)).csv"
         let path = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
         
         var csvText = "start,end,level,level(Int)\n"
@@ -196,12 +202,12 @@ struct SleepDataView: View {
         let filteredData: [HKSleepAnalysis]
         switch displayState {
         case .allData:
-            filteredData = sleepData // 'In Bed'와 'Awake' 모두 포함
+            filteredData = sleepData
         case .timeSorted:
-            filteredData = sleepData.filter { $0.level != 0 } // 'In Bed' 제외, 'Awake' 포함
+            filteredData = sleepData.filter { $0.level != 0 }
         case .levelSorted:
-            filteredData = sleepData.filter { $0.level != 2 } // 'Awake' 제외, 'In Bed' 포함
-            csvText = "level,interval,total time\n" // 수면 단계별 요약
+            filteredData = sleepData.filter { $0.level != 2 }
+            csvText = "level,interval,total time\n"
         }
         
         if displayState == .levelSorted {
@@ -235,6 +241,7 @@ struct SleepDataView: View {
             rootViewController.present(activityViewController, animated: true, completion: nil)
         }
     }
+
 
     private func formatDateInput(_ date: Date) -> String {
         let formatter = DateFormatter()
@@ -343,8 +350,8 @@ struct HKSleepAnalysis: Identifiable, Hashable {
         case 0: return "In Bed"
         case 1: return "Unspecified"
         case 2: return "Awake"
-        case 3: return "Core"
-        case 4: return "Deep"
+        case 3: return "Deep"
+        case 4: return "Core"
         case 5: return "Rem"
         default: return "Unknown"
         }

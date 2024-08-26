@@ -164,6 +164,7 @@ struct SettingView: View {
         
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
+        .navigationBarBackButtonHidden(true)
     }
     
     func saveColor(color: Color){

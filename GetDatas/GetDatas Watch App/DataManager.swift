@@ -8,7 +8,7 @@ import WatchConnectivity
 struct MeasurementData: Codable, Identifiable {
     var id = UUID()
     var heartRate: Double
-    var decibelLevel: Float
+//    var decibelLevel: Float
     var accelerationX: Double
     var accelerationY: Double
     var accelerationZ: Double
@@ -118,7 +118,7 @@ class DataManager: NSObject, ObservableObject {
     func startMeasuring() {
         isMeasuring = true
         startHeartRateMonitoring()
-        startNoiseMonitoring()
+//        startNoiseMonitoring()
         startAccelerometerUpdates()
         
         measurementTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
@@ -142,13 +142,13 @@ class DataManager: NSObject, ObservableObject {
     
     private func recordMeasurement() {
         audioRecorder?.updateMeters()
-        let decibelLevel = audioRecorder?.averagePower(forChannel: 0) ?? -160.0
+//        let decibelLevel = audioRecorder?.averagePower(forChannel: 0) ?? -160.0
         let acceleration = motionManager.accelerometerData?.acceleration ?? CMAcceleration(x: 0, y: 0, z: 0)
         let timestamp = currentTimestamp()
         
         let newEntry = MeasurementData(
             heartRate: currentHeartRate,
-            decibelLevel: decibelLevel,
+//            decibelLevel: decibelLevel,
             accelerationX: acceleration.x,
             accelerationY: acceleration.y,
             accelerationZ: acceleration.z,
