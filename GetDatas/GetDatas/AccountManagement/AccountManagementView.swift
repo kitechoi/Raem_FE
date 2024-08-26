@@ -8,8 +8,6 @@ struct AccountManagementView: View {
     @State private var showAccountDeletionView = false  // 탈퇴 페이지로 이동하기 위한 상태
     @State private var showEmailChangeView = false // 이메일 변경 뷰로 이동하기 위한 상태
     @State private var showPasswordChangeView = false // 비밀번호 변경 뷰로 이동하기 위한 상태
-    @State private var showRecordView = false // 실시간 데이터 뷰로 이동하기 위한 상태
-    @State private var showSleepDataView = false // 수면 데이터 뷰로 이동하기 위한 상태
 
     
     @State private var savedPassword: String = "********" // 현재 비밀번호 상태 (일반적으로 비밀번호는 서버에서 가져오지 않음)
@@ -122,39 +120,6 @@ struct AccountManagementView: View {
                     }
                 }
                 .padding() // 버튼 주변에 여백을 추가
-                
-                
-                // 실시간 데이터 버튼 추가
-                Button(action: {
-                    showRecordView = true
-                }) {
-                    Text("실시간 데이터")
-                        .font(.system(size: 16))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
-                        .background(Color.blue)
-                        .cornerRadius(10)
-                }
-                .fullScreenCover(isPresented: $showRecordView) {
-                    RecordView(sessionManager: sessionManager) // sessionManager 전달
-                }
-
-                // 수면 데이터 버튼 추가
-                Button(action: {
-                    showSleepDataView = true
-                }) {
-                    Text("수면 데이터")
-                        .font(.system(size: 16))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
-                        .background(Color.green)
-                        .cornerRadius(10)
-                }
-                .fullScreenCover(isPresented: $showSleepDataView) {
-                    SleepDataView()
-                }
                 
             }
             .padding(.horizontal, 16)

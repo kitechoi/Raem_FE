@@ -125,7 +125,7 @@ class DataManager: NSObject, ObservableObject {
             self.recordMeasurement()
         }
         
-        dataTransferTimer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { _ in
+        dataTransferTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { _ in
             self.sendDataToiPhone()
         }
     }

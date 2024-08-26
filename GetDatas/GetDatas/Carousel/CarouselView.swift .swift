@@ -96,7 +96,7 @@ struct CarouselView: View {
                     }
                     .padding(.bottom, 80)
                 }
-//                WatchButton()
+                WatchButton()
             }
             .background(Color.white)
             .edgesIgnoringSafeArea(.all)

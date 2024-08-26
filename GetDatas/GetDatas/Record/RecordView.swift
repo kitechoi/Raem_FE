@@ -4,7 +4,6 @@ import WatchConnectivity
 struct MeasurementData: Codable, Identifiable {
     var id = UUID()
     var heartRate: Double
-//    var decibelLevel: Float
     var accelerationX: Double
     var accelerationY: Double
     var accelerationZ: Double
@@ -12,11 +11,13 @@ struct MeasurementData: Codable, Identifiable {
 }
 
 class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
-    @Published var receivedData: [MeasurementData] = []
-    var sessionManager: SessionManager
+    func sessionDidBecomeInactive(_ session: WCSession) {}
     
-    init(sessionManager: SessionManager) {
-        self.sessionManager = sessionManager
+    func sessionDidDeactivate(_ session: WCSession) {}
+    
+    @Published var receivedData: [MeasurementData] = []
+    
+    override init() {
         super.init()
         if WCSession.isSupported() {
             WCSession.default.delegate = self
@@ -24,8 +25,6 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         }
     }
     
-    func sessionDidBecomeInactive(_ session: WCSession) {}
-    func sessionDidDeactivate(_ session: WCSession) {}
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {}
     
     func session(_ session: WCSession, didReceiveMessageData messageData: Data) {
@@ -39,26 +38,19 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             print("Failed to decode received data: \(error.localizedDescription)")
         }
     }
-    
+
     func exportDataToCSV() -> URL? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let date = dateFormatter.string(from: Date())
         
-        // Retrieve the user's email from SessionManager
-        let userEmail = sessionManager.email
-        
-        // Set the file name as "Email(Date).csv"
-        let fileName = "\(userEmail)(\(date)).csv"
+        // Set the file name as "Name(Date).csv"
+        let fileName = "eeeewwww(\(date)).csv"
         
         let path = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
-//        var csvText = "Timestamp,Heart Rate,Decibel Level,Acceleration X,Acceleration Y,Acceleration Z\n"
         var csvText = "Timestamp,Heart Rate,Acceleration X,Acceleration Y,Acceleration Z\n"
         
         for entry in receivedData {
-//            let newLine = "\(entry.timestamp),\(entry.heartRate),\(entry.decibelLevel),\(entry.accelerationX),\(entry.accelerationY),\(entry.accelerationZ)\n"
-//            csvText.append(contentsOf: newLine)
-            
             let newLine = "\(entry.timestamp),\(entry.heartRate),\(entry.accelerationX),\(entry.accelerationY),\(entry.accelerationZ)\n"
             csvText.append(contentsOf: newLine)
         }
@@ -77,31 +69,14 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     }
 }
 
-struct SettingRecordsView: View {
-    @AppStorage("userName") var userName: String = ""
-    
-    var body: some View {
-        Form {
-            TextField("이름 입력", text: $userName)
-        }
-        .navigationTitle("설정")
-    }
-}
 
 struct RecordView: View {
-    @EnvironmentObject var sessionManager: SessionManager
-    @ObservedObject var connectivityManager: iPhoneConnectivityManager
-
-    // 커스텀 초기화 메서드 추가
-    init(sessionManager: SessionManager) {
-        self.connectivityManager = iPhoneConnectivityManager(sessionManager: sessionManager)
-    }
-
+    @ObservedObject var connectivityManager = iPhoneConnectivityManager()
+    
     var body: some View {
         VStack {
-            // 상단 타이틀 및 뒤로가기 버튼
             CustomTopBar(title: "실시간 데이터")
-
+            
             if !connectivityManager.receivedData.isEmpty {
                 HStack {
                     Button("CSV로 내보내기") {
@@ -132,7 +107,6 @@ struct RecordView: View {
                 VStack(alignment: .leading) {
                     Text("Timestamp: \(entry.timestamp)")
                     Text("Heart Rate: \(entry.heartRate, specifier: "%.0f") BPM")
-//                    Text("Noise Level: \(entry.decibelLevel, specifier: "%.2f") dB")
                     Text("Acceleration: X: \(entry.accelerationX, specifier: "%.2f")")
                     Text("Y: \(entry.accelerationY, specifier: "%.2f")")
                     Text("Z: \(entry.accelerationZ, specifier: "%.2f")")
@@ -140,18 +114,7 @@ struct RecordView: View {
                 .padding(.vertical, 5)
             }
         }
-        .background(Color.white) // 전체 뷰 배경을 흰색으로 설정
-        .toolbar {
-            NavigationLink(destination: SettingRecordsView()) {
-                Text("설정")
-            }
-        }
-    }
-}
-
-struct RecordView_Previews: PreviewProvider {
-    static var previews: some View {
-        RecordView(sessionManager: SessionManager())
-            .environmentObject(SessionManager())
+        .foregroundColor(.white)
+        .navigationBarBackButtonHidden(true)
     }
 }
