@@ -202,7 +202,7 @@ struct HomeView: View {
                             .cornerRadius(10)
                     }
                     .padding(.horizontal, 16)
-                    .padding(.bottom, 20)
+                    .padding(.top, 20)
                     .background(
                         NavigationLink(destination: SleepTrackingView(), isActive: $showSleepTrackingView) {
                             EmptyView()

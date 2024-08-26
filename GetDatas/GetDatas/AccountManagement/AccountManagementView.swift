@@ -4,12 +4,15 @@ struct AccountManagementView: View {
     @State private var selectedImage: UIImage? = UIImage(systemName: "person.crop.circle.fill") // 기본 이미지
     @State private var isImagePickerPresented = false
     @State private var showNameChangeView = false
+    
+    @State private var showAccountDeletionView = false  // 탈퇴 페이지로 이동하기 위한 상태
     @State private var showEmailChangeView = false // 이메일 변경 뷰로 이동하기 위한 상태
     @State private var showPasswordChangeView = false // 비밀번호 변경 뷰로 이동하기 위한 상태
+    
     @State private var currentName: String = ""  // API에서 불러온 이름 상태
     @State private var currentEmail: String = ""  // API에서 불러온 이메일 상태
     @State private var savedPassword: String = "********" // 현재 비밀번호 상태 (일반적으로 비밀번호는 서버에서 가져오지 않음)
-    @State private var showAccountDeletionView = false  // 탈퇴 페이지로 이동하기 위한 상태
+    
     @State private var apiResponse: String = "" // API로부터 받은 전체 응답을 문자열로 저장
     @State private var accessToken: String = "" // accessToken을 저장하기 위한 상태 변수
 
@@ -31,7 +34,7 @@ struct AccountManagementView: View {
                     isImagePickerPresented = true
                 }) {
                     ZStack {
-                        Image(uiImage: selectedImage ?? UIImage(systemName: "person.crop.circle.fill")!)
+                        Image(uiImage: selectedImage!)
                             .resizable()
                             .frame(width: 100, height: 100)
                             .clipShape(Circle())
@@ -181,11 +184,9 @@ struct AccountManagementView: View {
                         .font(.system(size: 16))
                         .foregroundColor(.red)
                 }
-                .background(
-                    NavigationLink(destination: AccountDeletionView(), isActive: $showAccountDeletionView) {
-                        EmptyView()
-                    }
-                )
+                .fullScreenCover(isPresented: $showAccountDeletionView) {
+                    AccountDeletionView()
+                }
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 20)
@@ -195,7 +196,6 @@ struct AccountManagementView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear {
             loadAccessToken()
-            fetchUserData()
         }
     }
     
@@ -203,6 +203,7 @@ struct AccountManagementView: View {
         // UserDefaults에서 accessToken을 불러오고, UI에 표시합니다.
         if let token = UserDefaults.standard.string(forKey: "accessToken") {
             self.accessToken = token
+            fetchUserData()
         } else {
             self.accessToken = "AccessToken not found"
         }
@@ -240,13 +241,6 @@ struct AccountManagementView: View {
                     DispatchQueue.main.async {
                         self.currentName = jsonResponse.data.username
                         self.currentEmail = jsonResponse.data.email
-                        if let urlString = jsonResponse.data.imageUrl,
-                           let url = URL(string: "https://www.raem.shop/images/\(urlString)"),
-                           let imageData = try? Data(contentsOf: url),
-                           let image = UIImage(data: imageData) {
-                            self.selectedImage = image
-                        }
-                        self.apiResponse = String(data: data, encoding: .utf8) ?? "Invalid JSON format"
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -323,7 +317,7 @@ struct UserDataResponse: Codable {
 struct UserData: Codable {
     let username: String
     let email: String
-    let imageUrl: String?
+    let imageUrl: String? // 이 필드는 사용하지 않음
     let created_at: String
 }
 
