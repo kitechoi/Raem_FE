@@ -10,6 +10,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     static let connectSuccessNotification = Notification.Name("connectSuccessNotification")
     private var centralManager: CBCentralManager!
     private var discoveredPeripheral: CBPeripheral?
+    private var connectedPeripheral: CBPeripheral?
     //@Published var hasKnownRaem: Bool = false //원래 아는 기기인지
     @Published var connectSuccess: Bool?
     
@@ -74,6 +75,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
         UserDefaults.standard.set(uuid, forKey: "SavedDeviceUUID")
         
         peripheral.discoverServices(nil)
+        connectedPeripheral = peripheral
         connectSuccess = true
     }
     
@@ -118,6 +120,12 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 //                    }
                 }
             }
+        }
+    }
+    
+    func disconnect(){
+        if let peripheral = connectedPeripheral {
+            centralManager.cancelPeripheralConnection(peripheral)
         }
     }
     
