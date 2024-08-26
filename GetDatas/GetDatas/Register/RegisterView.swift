@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct RegisterView: View {
-    @State private var nickname: String = ""
+    @State private var username: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
@@ -12,7 +12,7 @@ struct RegisterView: View {
     @State private var isPasswordValid = false
 
     var isFormValid: Bool {
-        return !nickname.isEmpty && !email.isEmpty && !password.isEmpty && !confirmPassword.isEmpty
+        return !username.isEmpty && !email.isEmpty && !password.isEmpty && !confirmPassword.isEmpty
     }
 
     var body: some View {
@@ -31,7 +31,7 @@ struct RegisterView: View {
 
                 // 닉네임 입력 필드
                 VStack(alignment: .leading, spacing: 8) {
-                    TextField("사용하실 닉네임 입력", text: $nickname)
+                    TextField("사용하실 닉네임 입력", text: $username)
                         .frame(height: 50)
                         .padding(.horizontal)
                         .foregroundColor(.black) // 입력한 글자 색상
@@ -39,7 +39,7 @@ struct RegisterView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                         )
-                        .placeholder(when: nickname.isEmpty) {
+                        .placeholder(when: username.isEmpty) {
                             Text("사용하실 닉네임 입력").foregroundColor(.gray).padding(.horizontal)
                         }
                 }.padding(.bottom, 20)
@@ -200,7 +200,7 @@ struct RegisterView: View {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let body: [String: Any] = ["nickname": nickname, "email": email, "password": password]
+        let body: [String: Any] = ["username": username, "email": email, "password": password]
         
         request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
 

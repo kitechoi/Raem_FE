@@ -74,11 +74,9 @@ struct AccountManagementView: View {
                             .font(.system(size: 16))
                             .foregroundColor(.mint)
                     }
-                    .background(
-                        NavigationLink(destination: NameChangeView(currentName: $currentName), isActive: $showNameChangeView) {
-                            EmptyView()
-                        }
-                    )
+                    .fullScreenCover(isPresented: $showNameChangeView) {
+                        NameChangeView(currentName: $currentName)
+                    }
                 }
                 .padding()
                 .background(
@@ -101,11 +99,9 @@ struct AccountManagementView: View {
                             .font(.system(size: 16))
                             .foregroundColor(.mint)
                     }
-                    .background(
-                        NavigationLink(destination: EmailChangeView(currentEmail: $currentEmail), isActive: $showEmailChangeView) {
-                            EmptyView()
-                        }
-                    )
+                    .fullScreenCover(isPresented: $showEmailChangeView) {
+                        EmailChangeView(currentEmail: $currentEmail)
+                    }
                 }
                 .padding()
                 .background(
@@ -114,31 +110,21 @@ struct AccountManagementView: View {
                 )
                 
                 HStack {
-                    Text("비밀번호")
-                        .font(.system(size: 16))
-                        .foregroundColor(.gray)
-                    Spacer()
-                    Text(savedPassword) // 현재 저장된 비밀번호 표시
-                        .font(.system(size: 16))
-                        .foregroundColor(.blue)
+                    Spacer()  // 버튼을 우측 정렬하기 위한 Spacer
+
                     Button(action: {
                         showPasswordChangeView = true
                     }) {
-                        Text("변경")
+                        Text("비밀번호 변경")
                             .font(.system(size: 16))
                             .foregroundColor(.mint)
                     }
-                    .background(
-                        NavigationLink(destination: PasswordChangeView(savedPassword: $savedPassword), isActive: $showPasswordChangeView) {
-                            EmptyView()
-                        }
-                    )
+                    .fullScreenCover(isPresented: $showPasswordChangeView) {
+                        PasswordChangeView(savedPassword: $savedPassword)
+                    }
                 }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray.opacity(0.2))
-                )
+                .padding() // 버튼 주변에 여백을 추가
+                
             }
             .padding(.horizontal, 16)
             
@@ -151,7 +137,11 @@ struct AccountManagementView: View {
                 }) {
                     Text("로그아웃")
                         .font(.system(size: 16))
-                        .foregroundColor(.gray)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 50)
+                        .background(.red)
+                        .cornerRadius(10)
                 }
                 .alert(isPresented: $showLogoutAlert) {
                     if logoutSuccess {
@@ -182,14 +172,23 @@ struct AccountManagementView: View {
                 }) {
                     Text("탈퇴하기")
                         .font(.system(size: 16))
-                        .foregroundColor(.red)
+                        .foregroundColor(Color(red: 100/255, green: 110/255, blue: 120/255))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 50)
+                        .background(Color(red: 240/255, green: 240/255, blue: 245/255))
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color(red: 200/255, green: 200/255, blue: 205/255), lineWidth: 1)
+                        )
                 }
                 .fullScreenCover(isPresented: $showAccountDeletionView) {
                     AccountDeletionView()
                 }
             }
             .padding(.horizontal, 16)
-            .padding(.bottom, 20)
+            .padding(.bottom, 40)
+
         }
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
@@ -236,6 +235,9 @@ struct AccountManagementView: View {
             }
 
             do {
+                if let jsonString = String(data: data, encoding: .utf8) {
+                                    print("Received JSON: \(jsonString)")
+                                }
                 let jsonResponse = try JSONDecoder().decode(UserDataResponse.self, from: data)
                 if jsonResponse.isSuccess {
                     DispatchQueue.main.async {

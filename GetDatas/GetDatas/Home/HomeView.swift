@@ -218,11 +218,6 @@ struct HomeView: View {
                     EmptyView()
                 }
             )
-            
-            
-
-            // WatchButton을 최상위 레이어에 추가
-            WatchButton()
         }
     }
 }

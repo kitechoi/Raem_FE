@@ -12,6 +12,7 @@ struct GetDatasApp: App {
                 .environmentObject(bleManager)
 //            MlTestView() // 연_test예측화면
         }
+        
     }
 }
 

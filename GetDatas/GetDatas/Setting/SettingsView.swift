@@ -45,6 +45,7 @@ struct SettingView: View {
                 VStack(alignment: .leading) {
                     Text("조명 밝기 조절")
                         .bold()
+                        .foregroundColor(.black)
                     HStack{
                         Image("darkness")
                             .resizable()
@@ -67,6 +68,7 @@ struct SettingView: View {
                 HStack{
                     Text("조명 밝기 조절")
                         .bold()
+                        .foregroundColor(.black)
                     Spacer()
                     ColorPicker("", selection: $lightColor, supportsOpacity: false)
                         .onChange(of: lightColor) { newColor in
@@ -81,6 +83,7 @@ struct SettingView: View {
                     Text("서서히 밝아지는 시간")
                         .bold()
                         .padding(.bottom, 10)
+                        .foregroundColor(.black)
                     HStack {
                         TimeOptionButton(title: "10분", selectedTime: $gradualTime, timeValue: 10)
                         TimeOptionButton(title: "15분", selectedTime: $gradualTime, timeValue: 15)
@@ -93,6 +96,7 @@ struct SettingView: View {
                     Text("꺼짐 예약")
                         .bold()
                         .padding(.bottom, 0)
+                        .foregroundColor(.black)
                     HStack {
                         TurnOffTimeOptionButton(title: "5분 뒤", selectedTime: $offTimer, timeValue: 5)
                         TurnOffTimeOptionButton(title: "10분 뒤", selectedTime: $offTimer, timeValue: 10)
@@ -104,12 +108,15 @@ struct SettingView: View {
                 VStack(alignment:.leading) {
                     Text("기기 연결 관리")
                         .bold()
+                        .foregroundColor(.black)
                     if isConnected == true {
                         Text("Ræm과 연결되어 있어요.")
                             .padding(.bottom, 10)
+                            .foregroundColor(.black)
                     } else {
                         Text("Ræm과 연결되어 있지 않아요.")
                             .padding(.bottom, 10)
+                            .foregroundColor(.black)
                     }
                     HStack {
                         Button(action: {
@@ -123,6 +130,7 @@ struct SettingView: View {
                                 .background(isConnected == true ? Color.deepNavy : Color.gray)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
+                            
                         }
                         .disabled(!isConnected)
                         
@@ -140,6 +148,9 @@ struct SettingView: View {
                         }
                         .disabled(isConnected) // 비활성화된 버튼
                     }
+                    
+            
+                    
                 }
             }
             
@@ -150,6 +161,9 @@ struct SettingView: View {
 //                isConnected = connectSuccess
 //            }
 //        }
+        
+        .background(Color.white)
+        .edgesIgnoringSafeArea(.all)
     }
     
     func saveColor(color: Color){
