@@ -10,176 +10,233 @@ struct AccountManagementView: View {
     @State private var currentEmail: String = "zammanbo111@duksung.ac.kr" // 현재 이메일 상태
     @State private var savedPassword: String = "********" // 현재 비밀번호 상태
     @State private var showAccountDeletionView = false  // 탈퇴 페이지로 이동하기 위한 상태
+    
+    @State private var isLoggedOut = false  // 로그아웃 상태를 관리하는 변수
+    @State private var showLogoutAlert = false  // 로그아웃 후 알림 표시 여부
+    @State private var logoutSuccess = false  // 로그아웃 성공 여부
 
     var body: some View {
-        VStack {
-            // 상단 타이틀 및 뒤로가기 버튼
-            HStack {
-                Button(action: {
-                    // 뒤로가기 액션
-                }) {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(.black)
-                        .font(.system(size: 20, weight: .bold))
-                }
-                Spacer()
-                Text("계정 관리")
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(.black)
-                Spacer()
-                // 오른쪽 여백 확보를 위한 빈 공간
-                Image(systemName: "chevron.left")
-                    .foregroundColor(.clear)
-                    .font(.system(size: 20, weight: .bold))
-            }
-            .padding(.horizontal, 16)
-            
-            Spacer()
-            
-            // 프로필 이미지 및 변경 버튼
+        NavigationView {
             VStack {
-                Button(action: {
-                    isImagePickerPresented = true
-                }) {
-                    ZStack {
-                        Image(uiImage: selectedImage ?? UIImage(systemName: "person.crop.circle.fill")!)
-                            .resizable()
-                            .frame(width: 100, height: 100)
-                            .clipShape(Circle())
-                        
-                        // 사진 변경 아이콘
-                        Image(systemName: "camera.fill")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .foregroundColor(.mint)
-                            .background(Circle().fill(Color.white))
-                            .offset(x: 35, y: 35)
-                    }
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
-            .sheet(isPresented: $isImagePickerPresented) {
-                ImagePicker(selectedImage: $selectedImage)
-            }
-            
-            Spacer()
-                .frame(height: 20)
-            
-            // 이름, 이메일, 비밀번호 변경 섹션
-            VStack(spacing: 16) {
-                HStack {
-                    Text("이름")
-                        .font(.system(size: 16))
-                        .foregroundColor(.gray)
-                    Spacer()
-                    Text(currentName)
-                        .font(.system(size: 16))
-                        .foregroundColor(.blue)
-                    Button(action: {
-                        showNameChangeView = true
-                    }) {
-                        Text("변경")
-                            .font(.system(size: 16))
-                            .foregroundColor(.mint)
-                    }
-                    .background(
-                        NavigationLink(destination: NameChangeView(currentName: $currentName), isActive: $showNameChangeView) {
-                            EmptyView()
-                        }
-                    )
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray.opacity(0.2))
-                )
-                
-                HStack {
-                    Text("이메일")
-                        .font(.system(size: 16))
-                        .foregroundColor(.gray)
-                    Spacer()
-                    Text(currentEmail) // 변경된 이메일이 반영됨
-                        .font(.system(size: 16))
-                        .foregroundColor(.blue)
-                    Button(action: {
-                        showEmailChangeView = true
-                    }) {
-                        Text("변경")
-                            .font(.system(size: 16))
-                            .foregroundColor(.mint)
-                    }
-                    .background(
-                        NavigationLink(destination: EmailChangeView(currentEmail: $currentEmail), isActive: $showEmailChangeView) {
-                            EmptyView()
-                        }
-                    )
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray.opacity(0.2))
-                )
-                
-                HStack {
-                    Text("비밀번호")
-                        .font(.system(size: 16))
-                        .foregroundColor(.gray)
-                    Spacer()
-                    Text(savedPassword) // 현재 저장된 비밀번호 표시
-                        .font(.system(size: 16))
-                        .foregroundColor(.blue)
-                    Button(action: {
-                        showPasswordChangeView = true
-                    }) {
-                        Text("변경")
-                            .font(.system(size: 16))
-                            .foregroundColor(.mint)
-                    }
-                    .background(
-                        NavigationLink(destination: PasswordChangeView(savedPassword: $savedPassword), isActive: $showPasswordChangeView) {
-                            EmptyView()
-                        }
-                    )
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray.opacity(0.2))
-                )
-            }
-            .padding(.horizontal, 16)
-            
-            Spacer()
-            
-            // 로그아웃 및 탈퇴하기 버튼
-            HStack {
-                Button(action: {
-                    // 로그아웃 액션
-                }) {
-                    Text("로그아웃")
-                        .font(.system(size: 16))
-                        .foregroundColor(.gray)
-                }
+                // 상단 타이틀 및 뒤로가기 버튼
+                CustomTopBar(title: "계정 관리")
                 Spacer()
-                Button(action: {
-                    showAccountDeletionView = true  // 탈퇴 페이지로 이동
-                }) {
-                    Text("탈퇴하기")
-                        .font(.system(size: 16))
-                        .foregroundColor(.red)
-                }
-                .background(
-                    NavigationLink(destination: AccountDeletionView(), isActive: $showAccountDeletionView) {
-                        EmptyView()
+                
+                // 프로필 이미지 및 변경 버튼
+                VStack {
+                    Button(action: {
+                        isImagePickerPresented = true
+                    }) {
+                        ZStack {
+                            Image(uiImage: selectedImage ?? UIImage(systemName: "person.crop.circle.fill")!)
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .clipShape(Circle())
+                            
+                            // 사진 변경 아이콘
+                            Image(systemName: "camera.fill")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(.mint)
+                                .background(Circle().fill(Color.white))
+                                .offset(x: 35, y: 35)
+                        }
                     }
-                )
+                    .buttonStyle(PlainButtonStyle())
+                }
+                .sheet(isPresented: $isImagePickerPresented) {
+                    ImagePicker(selectedImage: $selectedImage)
+                }
+                
+                Spacer()
+                    .frame(height: 20)
+                
+                // 이름, 이메일, 비밀번호 변경 섹션
+                VStack(spacing: 16) {
+                    HStack {
+                        Text("이름")
+                            .font(.system(size: 16))
+                            .foregroundColor(.gray)
+                        Spacer()
+                        Text(currentName)
+                            .font(.system(size: 16))
+                            .foregroundColor(.blue)
+                        Button(action: {
+                            showNameChangeView = true
+                        }) {
+                            Text("변경")
+                                .font(.system(size: 16))
+                                .foregroundColor(.mint)
+                        }
+                        .background(
+                            NavigationLink(destination: NameChangeView(currentName: $currentName), isActive: $showNameChangeView) {
+                                EmptyView()
+                            }
+                        )
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray.opacity(0.2))
+                    )
+                    
+                    HStack {
+                        Text("이메일")
+                            .font(.system(size: 16))
+                            .foregroundColor(.gray)
+                        Spacer()
+                        Text(currentEmail) // 변경된 이메일이 반영됨
+                            .font(.system(size: 16))
+                            .foregroundColor(.blue)
+                        Button(action: {
+                            showEmailChangeView = true
+                        }) {
+                            Text("변경")
+                                .font(.system(size: 16))
+                                .foregroundColor(.mint)
+                        }
+                        .background(
+                            NavigationLink(destination: EmailChangeView(currentEmail: $currentEmail), isActive: $showEmailChangeView) {
+                                EmptyView()
+                            }
+                        )
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray.opacity(0.2))
+                    )
+                    
+                    HStack {
+                        Text("비밀번호")
+                            .font(.system(size: 16))
+                            .foregroundColor(.gray)
+                        Spacer()
+                        Text(savedPassword) // 현재 저장된 비밀번호 표시
+                            .font(.system(size: 16))
+                            .foregroundColor(.blue)
+                        Button(action: {
+                            showPasswordChangeView = true
+                        }) {
+                            Text("변경")
+                                .font(.system(size: 16))
+                                .foregroundColor(.mint)
+                        }
+                        .background(
+                            NavigationLink(destination: PasswordChangeView(savedPassword: $savedPassword), isActive: $showPasswordChangeView) {
+                                EmptyView()
+                            }
+                        )
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray.opacity(0.2))
+                    )
+                }
+                .padding(.horizontal, 16)
+                
+                Spacer()
+                
+                // 로그아웃 및 탈퇴하기 버튼
+                HStack {
+                    Button(action: {
+                        logout()
+                    }) {
+                        Text("로그아웃")
+                            .font(.system(size: 16))
+                            .foregroundColor(.gray)
+                    }
+                    .alert(isPresented: $showLogoutAlert) {
+                        if logoutSuccess {
+                            return Alert(
+                                title: Text("로그아웃 성공"),
+                                message: Text("성공적으로 로그아웃되었습니다."),
+                                dismissButton: .default(Text("확인")) {
+                                    isLoggedOut = true
+                                }
+                            )
+                        } else {
+                            return Alert(
+                                title: Text("로그아웃 실패"),
+                                message: Text("로그아웃에 실패했습니다. 다시 시도해주세요."),
+                                dismissButton: .default(Text("확인"))
+                            )
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        showAccountDeletionView = true  // 탈퇴 페이지로 이동
+                    }) {
+                        Text("탈퇴하기")
+                            .font(.system(size: 16))
+                            .foregroundColor(.red)
+                    }
+                    .background(
+                        NavigationLink(destination: AccountDeletionView(), isActive: $showAccountDeletionView) {
+                            EmptyView()
+                        }
+                    )
+                }
+                .padding(.horizontal, 16)
+                .padding(.bottom, 20)
+
+                // 로그아웃 시 LoadingView로 네비게이션 이동
+                NavigationLink(destination: LoadingView(), isActive: $isLoggedOut) {
+                    EmptyView()
+                }
             }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 20)
+            .background(Color.white)
+            .edgesIgnoringSafeArea(.all)
         }
-        .background(Color.white)
-        .edgesIgnoringSafeArea(.all)
+    }
+    
+    func logout() {
+        guard let url = URL(string: "https://www.raem.shop/api/user/logout") else {
+            print("Invalid URL")
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        // 저장된 accessToken을 헤더에 추가
+        if let accessToken = UserDefaults.standard.string(forKey: "accessToken") {
+            request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        }
+        
+        // 필요 시 추가 헤더 설정
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    print("Logout request failed: \(error.localizedDescription)")
+                    logoutSuccess = false
+                    showLogoutAlert = true
+                }
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                DispatchQueue.main.async {
+                    print("Logout failed with unexpected response")
+                    logoutSuccess = false
+                    showLogoutAlert = true
+                }
+                return
+            }
+
+            DispatchQueue.main.async {
+                // 로그아웃 성공 후 상태 변경 및 accessToken 삭제
+                UserDefaults.standard.removeObject(forKey: "accessToken")
+                logoutSuccess = true
+                showLogoutAlert = true
+            }
+        }
+        task.resume()
     }
 }
 
@@ -188,4 +245,3 @@ struct AccountManagementView_Previews: PreviewProvider {
         AccountManagementView()
     }
 }
-

@@ -16,24 +16,22 @@ struct RegisterView: View {
     }
 
     var body: some View {
-        VStack {
-            Spacer()
+        ZStack {
+            Color.white // 배경 색상을 흰색으로 설정
+                .edgesIgnoringSafeArea(.all) // 모든 안전 영역을 무시하고 배경을 채웁니다.
 
-            // 제목 텍스트
-            Text(attributedTitle)
-                .font(.system(size: 24, weight: .bold))
-                .multilineTextAlignment(.center)
-                .padding(.bottom, 30)
+            VStack {
+                Spacer()
 
-            // 닉네임 입력 필드
-            VStack(alignment: .leading, spacing: 8) {
-                ZStack(alignment: .leading) {
-                    if nickname.isEmpty {
-                        Text("사용하실 닉네임 입력")
-                            .foregroundColor(.gray)
-                            .padding(.horizontal)
-                    }
-                    TextField("", text: $nickname)
+                // 제목 텍스트
+                Text(attributedTitle)
+                    .font(.system(size: 24, weight: .bold))
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 30)
+
+                // 닉네임 입력 필드
+                VStack(alignment: .leading, spacing: 8) {
+                    TextField("사용하실 닉네임 입력", text: $nickname)
                         .frame(height: 50)
                         .padding(.horizontal)
                         .foregroundColor(.black) // 입력한 글자 색상
@@ -41,18 +39,14 @@ struct RegisterView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                         )
-                }
-            }.padding(.bottom, 20)
+                        .placeholder(when: nickname.isEmpty) {
+                            Text("사용하실 닉네임 입력").foregroundColor(.gray).padding(.horizontal) 
+                        }
+                }.padding(.bottom, 20)
 
-            // 이메일 입력 필드
-            VStack(alignment: .leading, spacing: 8) {
-                ZStack(alignment: .leading) {
-                    if email.isEmpty {
-                        Text("이메일 주소 입력")
-                            .foregroundColor(.gray)
-                            .padding(.horizontal)
-                    }
-                    TextField("", text: $email, onEditingChanged: { isEditing in
+                // 이메일 입력 필드
+                VStack(alignment: .leading, spacing: 8) {
+                    TextField("이메일 주소 입력", text: $email, onEditingChanged: { isEditing in
                         if !isEditing {
                             isEmailValid = isValidEmail(email)
                         }
@@ -69,24 +63,20 @@ struct RegisterView: View {
                     )
                     .keyboardType(.emailAddress)
                     .autocapitalization(.none)
-                }
-
-                Text("이메일 형식이 잘못되었습니다.")
-                    .font(.system(size: 12))
-                    .foregroundColor(.red)
-                    .opacity(isEmailValid ? 0 : 1)
-            }
-            .padding(.bottom, 0)
-
-            // 비밀번호 입력 필드
-            VStack(alignment: .leading, spacing: 8) {
-                ZStack(alignment: .leading) {
-                    if password.isEmpty {
-                        Text("비밀번호 입력")
-                            .foregroundColor(.gray)
-                            .padding(.horizontal)
+                    .placeholder(when: email.isEmpty) {
+                        Text("이메일 주소 입력").foregroundColor(.gray).padding(.horizontal)
                     }
-                    SecureField("", text: $password, onCommit: {
+                    
+                    Text("이메일 형식이 잘못되었습니다.")
+                        .font(.system(size: 12))
+                        .foregroundColor(.red)
+                        .opacity(isEmailValid ? 0 : 1)
+                }
+                .padding(.bottom, 0)
+
+                // 비밀번호 입력 필드
+                VStack(alignment: .leading, spacing: 8) {
+                    SecureField("비밀번호 입력", text: $password, onCommit: {
                         isPasswordValid = isValidPassword(password)
                     })
                     .onChange(of: password) { newValue in
@@ -100,24 +90,20 @@ struct RegisterView: View {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                     )
-                }
-
-                Text("영어와 숫자, 특수문자가 모두 포함되어 있어야 합니다.")
-                    .font(.system(size: 12))
-                    .foregroundColor(.red)
-                    .opacity(isPasswordValid ? 0 : 1)
-            }
-            .padding(.bottom, 0)
-            
-            // 비밀번호 확인 입력 필드
-            VStack(alignment: .leading, spacing: 8) {
-                ZStack(alignment: .leading) {
-                    if confirmPassword.isEmpty {
-                        Text("비밀번호 확인")
-                            .foregroundColor(.gray)
-                            .padding(.horizontal)
+                    .placeholder(when: password.isEmpty) {
+                        Text("비밀번호 입력").foregroundColor(.gray).padding(.horizontal)
                     }
-                    SecureField("", text: $confirmPassword)
+                    
+                    Text("영어와 숫자, 특수문자가 모두 포함되어 있어야 합니다.")
+                        .font(.system(size: 12))
+                        .foregroundColor(.red)
+                        .opacity(isPasswordValid ? 0 : 1)
+                }
+                .padding(.bottom, 0)
+                
+                // 비밀번호 확인 입력 필드
+                VStack(alignment: .leading, spacing: 8) {
+                    SecureField("비밀번호 확인", text: $confirmPassword)
                         .onChange(of: confirmPassword) { newValue in
                             confirmPassword = filterInvalidCharacters(from: newValue)
                         }
@@ -128,49 +114,50 @@ struct RegisterView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                         )
+                        .placeholder(when: confirmPassword.isEmpty) {
+                            Text("비밀번호 확인").foregroundColor(.gray).padding(.horizontal)
+                        }
                 }
-            }
-            
+                
 
-            // 회원가입 버튼
-            Button(action: {
-                if !isFormValid {
-                    alertMessage = "정보를 모두 입력해주세요."
-                    showAlert = true
-                } else if password != confirmPassword {
-                    alertMessage = "비밀번호가 일치하지 않습니다. 다시 확인해주세요."
-                    showAlert = true
-                } else {
-                    registerUser()
+                // 회원가입 버튼
+                Button(action: {
+                    if !isFormValid {
+                        alertMessage = "정보를 모두 입력해주세요."
+                        showAlert = true
+                    } else if password != confirmPassword {
+                        alertMessage = "비밀번호가 일치하지 않습니다. 다시 확인해주세요."
+                        showAlert = true
+                    } else {
+                        registerUser()
+                    }
+                }) {
+                    Text("회원가입")
+                        .font(.system(size: 18, weight: .bold))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 50)
+                        .background(isFormValid ? Color.deepNavy : Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
                 }
-            }) {
-                Text("회원가입")
-                    .font(.system(size: 18, weight: .bold))
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-                    .background(isFormValid ? Color.deepNavy : Color.gray)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-            }
-            .padding(.top, 20)
-            .disabled(!isFormValid)
-            .alert(isPresented: $showAlert) {
-                Alert(title: Text("알림"), message: Text(alertMessage), dismissButton: .default(Text("확인")))
-            }
-            .background(
-                NavigationLink(destination: RegisterCompleteView(), isActive: $isRegistered) {
-                    EmptyView()
+                .padding(.top, 20)
+                .disabled(!isFormValid)
+                .alert(isPresented: $showAlert) {
+                    Alert(title: Text("알림"), message: Text(alertMessage), dismissButton: .default(Text("확인")))
                 }
-            )
-            .padding(.top, 20)
+                .background(
+                    NavigationLink(destination: RegisterCompleteView(), isActive: $isRegistered) {
+                        EmptyView()
+                    }
+                )
+                .padding(.top, 20)
 
-            Spacer()
+                Spacer()
+            }
+            .padding(24)
         }
-        .background(Color.white) // 배경색을 흰색으로 설정
-        .edgesIgnoringSafeArea(.all)
         .navigationBarItems(leading: BackButton()) // 커스텀 백 버튼 추가
         .navigationBarBackButtonHidden(true)
-        .padding(24)
     }
 
     private var attributedTitle: AttributedString {
