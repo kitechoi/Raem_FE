@@ -137,7 +137,6 @@ struct AccountManagementView: View {
             Spacer()
             
             // 로그아웃 및 탈퇴하기 버튼
-            // 로그아웃 및 탈퇴하기 버튼
             HStack {
                 Button(action: {
                     logout()
@@ -242,6 +241,9 @@ struct AccountManagementView: View {
             }
 
             do {
+                if let jsonString = String(data: data, encoding: .utf8) {
+                                    print("Received JSON: \(jsonString)")
+                                }
                 let jsonResponse = try JSONDecoder().decode(UserDataResponse.self, from: data)
                 if jsonResponse.isSuccess {
                     DispatchQueue.main.async {
