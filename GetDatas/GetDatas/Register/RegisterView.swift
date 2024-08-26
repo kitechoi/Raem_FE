@@ -40,7 +40,7 @@ struct RegisterView: View {
                                 .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                         )
                         .placeholder(when: nickname.isEmpty) {
-                            Text("사용하실 닉네임 입력").foregroundColor(.gray).padding(.horizontal) 
+                            Text("사용하실 닉네임 입력").foregroundColor(.gray).padding(.horizontal)
                         }
                 }.padding(.bottom, 20)
 
@@ -213,7 +213,7 @@ struct RegisterView: View {
                 return
             }
 
-            guard let data = data else {
+            guard data != nil else {
                 DispatchQueue.main.async {
                     alertMessage = "서버에서 응답이 없습니다."
                     showAlert = true

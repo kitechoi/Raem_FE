@@ -228,9 +228,14 @@ struct SleepDataView: View {
 
     func shareCSV(path: URL) {
         let activityViewController = UIActivityViewController(activityItems: [path], applicationActivities: nil)
-        UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+
+        // 현재 활성화된 윈도우 씬을 가져옵니다.
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootViewController = windowScene.windows.first?.rootViewController {
+            rootViewController.present(activityViewController, animated: true, completion: nil)
+        }
     }
-    
+
     private func formatDateInput(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -294,8 +299,14 @@ struct SleepDataView: View {
     private func showUnsupportedVersionAlert() {
         let alert = UIAlertController(title: "지원하지 않는 버전", message: "이 기능은 iOS 16 이상에서만 사용할 수 있습니다.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default))
-        UIApplication.shared.windows.first?.rootViewController?.present(alert, animated: true)
+        
+        // 현재 활성화된 윈도우 씬을 가져옵니다.
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootViewController = windowScene.windows.first?.rootViewController {
+            rootViewController.present(alert, animated: true, completion: nil)
+        }
     }
+
     
     private func sortByTime() {
         sleepData.sort { $0.startDate < $1.startDate }
