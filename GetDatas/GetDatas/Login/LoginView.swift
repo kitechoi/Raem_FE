@@ -1,5 +1,51 @@
 import SwiftUI
 
+struct CustomTextField: UIViewRepresentable {
+    class Coordinator: NSObject, UITextFieldDelegate {
+        var parent: CustomTextField
+
+        init(parent: CustomTextField) {
+            self.parent = parent
+        }
+
+        @objc func textFieldDidChange(_ textField: UITextField) {
+            parent.text = textField.text ?? ""
+        }
+    }
+
+    @Binding var text: String
+    var placeholder: String
+    var isSecure: Bool
+    @Binding var isPasswordVisible: Bool
+
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(parent: self)
+    }
+
+    func makeUIView(context: Context) -> UITextField {
+        let textField = UITextField()
+        textField.placeholder = placeholder
+        textField.text = text
+        textField.delegate = context.coordinator
+        textField.addTarget(context.coordinator, action: #selector(Coordinator.textFieldDidChange(_:)), for: .editingChanged)
+        textField.borderStyle = .roundedRect
+        textField.textColor = UIColor.black
+        textField.attributedPlaceholder = NSAttributedString(
+            string: placeholder,
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]
+        )
+        textField.backgroundColor = UIColor.white
+        textField.isSecureTextEntry = isSecure && !isPasswordVisible
+
+        return textField
+    }
+
+    func updateUIView(_ uiView: UITextField, context: Context) {
+        uiView.text = text
+        uiView.isSecureTextEntry = isSecure && !isPasswordVisible
+    }
+}
+
 struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
@@ -10,7 +56,6 @@ struct LoginView: View {
     @State private var showAlert = false
     @State private var showMainView = false
 
-    // SessionManager를 EnvironmentObject로 사용
     @EnvironmentObject var sessionManager: SessionManager
 
     var body: some View {
@@ -26,7 +71,7 @@ struct LoginView: View {
                     .font(.system(size: 14))
                     .foregroundColor(.gray)
                 
-                TextField("이메일 입력", text: $email)
+                CustomTextField(text: $email, placeholder: "이메일 입력", isSecure: false, isPasswordVisible: $isPasswordVisible)
                     .foregroundColor(.black)
                     .frame(height: 50)
                     .padding(.horizontal, 15)
@@ -34,8 +79,6 @@ struct LoginView: View {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                     )
-                    .keyboardType(.emailAddress)
-                    .autocapitalization(.none)
             }
 
             VStack(alignment: .leading, spacing: 8) {
@@ -44,17 +87,10 @@ struct LoginView: View {
                     .foregroundColor(.gray)
                 
                 HStack {
-                    if isPasswordVisible {
-                        TextField("비밀번호 입력", text: $password)
-                            .foregroundColor(.black)
-                            .frame(height: 50)
-                            .padding(.horizontal, 15)
-                    } else {
-                        SecureField("비밀번호 입력", text: $password)
-                            .foregroundColor(.black)
-                            .frame(height: 50)
-                            .padding(.horizontal, 15)
-                    }
+                    CustomTextField(text: $password, placeholder: "비밀번호 입력", isSecure: true, isPasswordVisible: $isPasswordVisible)
+                        .foregroundColor(.black)
+                        .frame(height: 50)
+                        .padding(.horizontal, 15)
 
                     Button(action: {
                         isPasswordVisible.toggle()
@@ -95,12 +131,12 @@ struct LoginView: View {
                     .font(.system(size: 18, weight: .bold))
                     .frame(maxWidth: .infinity)
                     .frame(height: 50)
-                    .background(email.isEmpty || password.isEmpty ? Color.gray : Color.deepNavy)
+                    .background(isLoginButtonEnabled() ? Color.deepNavy : Color.gray)
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
             .padding(.top, 20)
-            .disabled(email.isEmpty || password.isEmpty)
+            .disabled(!isLoginButtonEnabled())
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("로그인 실패"), message: Text(errorMessage), dismissButton: .default(Text("확인")))
             }
@@ -139,10 +175,15 @@ struct LoginView: View {
         .navigationBarBackButtonHidden(true)
     }
     
+    private func isLoginButtonEnabled() -> Bool {
+        return !email.isEmpty && !password.isEmpty
+    }
+
     private func loginUser() {
-        guard !email.isEmpty, !password.isEmpty else {
-            errorMessage = "이메일과 비밀번호를 입력해주세요."
+        guard isValidEmail(email) else {
+            errorMessage = "이메일 형식에 맞게 입력해주세요."
             showErrorMessage = true
+            showAlert = true
             return
         }
 
@@ -182,9 +223,8 @@ struct LoginView: View {
                    let dataDict = responseData["data"] as? [String: Any],
                    let accessToken = dataDict["accessToken"] as? String {
                     DispatchQueue.main.async {
-                        // SessionManager를 사용하여 accessToken 저장
                         sessionManager.saveAccessToken(token: accessToken)
-                        showMainView = true // MainView로 이동
+                        showMainView = true
                     }
                 }
             } else {
@@ -204,6 +244,12 @@ struct LoginView: View {
                 }
             }
         }.resume()
+    }
+
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: email)
     }
 }
 

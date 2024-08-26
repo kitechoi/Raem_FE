@@ -3,11 +3,12 @@ import SwiftUI
 struct HomeView: View {
     @State private var showSleepTrackingView = false  // SleepTrackingView로 이동하기 위한 상태
     @State private var showAccountManagementView = false  // AccountManagementView로 이동하기 위한 상태
-
+    
     var body: some View {
         ZStack {
             VStack(spacing: 16) {
                 TopNav()
+
                 // 환영 메시지
                 ScrollView {
                     VStack(alignment: .leading, spacing: 8) {
@@ -217,6 +218,7 @@ struct HomeView: View {
                     EmptyView()
                 }
             )
+            
             
 
             // WatchButton을 최상위 레이어에 추가

@@ -7,8 +7,6 @@ struct DeviceRegistrationView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 8) {
-                TopNav()
-                
                 Spacer()
                 // 환영 메시지
                 VStack(alignment: .center, spacing: 8) {
