@@ -140,42 +140,6 @@ struct AccountManagementView: View {
             .padding(.horizontal, 16)
             
             Spacer()
-
-            // AccessToken 출력
-            Text("AccessToken:")
-                .font(.system(size: 16))
-                .foregroundColor(.gray)
-                .padding(.top, 20)
-            
-            ScrollView {
-                Text(accessToken)
-                    .font(.system(size: 14))
-                    .foregroundColor(.black)
-                    .padding()
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(8)
-                    .padding(.horizontal, 16)
-            }
-            .frame(height: 80)
-
-            // API 응답 전체를 문자열로 표시
-            Text("API Response:")
-                .font(.system(size: 16))
-                .foregroundColor(.gray)
-                .padding(.top, 20)
-            
-            ScrollView {
-                Text(apiResponse)
-                    .font(.system(size: 14))
-                    .foregroundColor(.black)
-                    .padding()
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(8)
-                    .padding(.horizontal, 16)
-            }
-            .frame(height: 150)
-
-            Spacer()
             
             // 로그아웃 및 탈퇴하기 버튼
             HStack {
