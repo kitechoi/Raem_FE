@@ -3,11 +3,13 @@ import SwiftUI
 @main
 struct GetDatasApp: App {
     @StateObject private var sessionManager = SessionManager()
+    @ObservedObject var bleManager = BLEManager()
 
     var body: some Scene {
         WindowGroup {
             LoadingView()
                 .environmentObject(sessionManager)
+                .environmentObject(bleManager)
 //            MlTestView() // 연_test예측화면
         }
     }
