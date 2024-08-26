@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct TopNav: View {
-    @Binding var navigateToLoadingView: Bool  // LoadingView로 이동하기 위한 상태
-    @Binding var navigateToMyPage: Bool  // AccountManagementView로 이동하기 위한 상태
+    @State private var navigateToLoadingView = false  // LoadingView로 이동하기 위한 상태
+    @State private var navigateToMyPage = false  // AccountManagementView로 이동하기 위한 상태
 
     var body: some View {
         HStack {
@@ -26,16 +26,19 @@ struct TopNav: View {
         }
         .padding(.horizontal, 23)
         .padding(.top, 60)
+        .fullScreenCover(isPresented: $navigateToLoadingView) {
+            LoadingView()
+        }
+        .fullScreenCover(isPresented: $navigateToMyPage) {
+            AccountManagementView()
+        }
     }
 }
 
-struct TopNav_Previews: PreviewProvider {
-    @State static var navigateToLoadingView = false
-    @State static var navigateToMyPage = false
-
+struct TopBarView_Previews: PreviewProvider {
     static var previews: some View {
-        TopNav(navigateToLoadingView: $navigateToLoadingView, navigateToMyPage: $navigateToMyPage)
+        TopNav()
             .edgesIgnoringSafeArea(.top)
-            .environmentObject(SessionManager())
+            .environmentObject(SessionManager())  // SessionManager를 미리보기에서 제공
     }
 }

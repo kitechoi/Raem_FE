@@ -31,8 +31,9 @@ struct LoadingView: View {
                 }
             }
         }
-        .background(Color.white) // 배경색을 흰색으로 설정
-        .edgesIgnoringSafeArea(.all) // 전체 화면에 흰색이 적용되도록 설정
+        .background(Color.white)
+        .edgesIgnoringSafeArea(.all)
+        .navigationBarBackButtonHidden(true)
     }
 
     // 데이터 로딩 함수 (비동기 처리)
