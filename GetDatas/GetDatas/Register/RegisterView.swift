@@ -27,34 +27,50 @@ struct RegisterView: View {
 
             // 닉네임 입력 필드
             VStack(alignment: .leading, spacing: 8) {
-                TextField("사용하실 닉네임 입력", text: $nickname)
-                    .frame(height: 50)
-                    .padding(.horizontal)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                    )
+                ZStack(alignment: .leading) {
+                    if nickname.isEmpty {
+                        Text("사용하실 닉네임 입력")
+                            .foregroundColor(.gray)
+                            .padding(.horizontal)
+                    }
+                    TextField("", text: $nickname)
+                        .frame(height: 50)
+                        .padding(.horizontal)
+                        .foregroundColor(.black) // 입력한 글자 색상
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                        )
+                }
             }.padding(.bottom, 20)
 
             // 이메일 입력 필드
             VStack(alignment: .leading, spacing: 8) {
-                TextField("이메일 주소 입력", text: $email, onEditingChanged: { isEditing in
-                    if !isEditing {
-                        isEmailValid = isValidEmail(email)
+                ZStack(alignment: .leading) {
+                    if email.isEmpty {
+                        Text("이메일 주소 입력")
+                            .foregroundColor(.gray)
+                            .padding(.horizontal)
                     }
-                })
-                .onChange(of: email) { newValue in
-                    email = filterInvalidCharacters(from: newValue)
+                    TextField("", text: $email, onEditingChanged: { isEditing in
+                        if !isEditing {
+                            isEmailValid = isValidEmail(email)
+                        }
+                    })
+                    .onChange(of: email) { newValue in
+                        email = filterInvalidCharacters(from: newValue)
+                    }
+                    .frame(height: 50)
+                    .padding(.horizontal)
+                    .foregroundColor(.black) // 입력한 글자 색상
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                    )
+                    .keyboardType(.emailAddress)
+                    .autocapitalization(.none)
                 }
-                .frame(height: 50)
-                .padding(.horizontal)
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                )
-                .keyboardType(.emailAddress)
-                .autocapitalization(.none)
-                
+
                 Text("이메일 형식이 잘못되었습니다.")
                     .font(.system(size: 12))
                     .foregroundColor(.red)
@@ -64,20 +80,28 @@ struct RegisterView: View {
 
             // 비밀번호 입력 필드
             VStack(alignment: .leading, spacing: 8) {
-                SecureField("비밀번호 입력", text: $password, onCommit: {
-                    isPasswordValid = isValidPassword(password)
-                })
-                .onChange(of: password) { newValue in
-                    password = filterInvalidCharacters(from: newValue)
-                    isPasswordValid = isValidPassword(password)
+                ZStack(alignment: .leading) {
+                    if password.isEmpty {
+                        Text("비밀번호 입력")
+                            .foregroundColor(.gray)
+                            .padding(.horizontal)
+                    }
+                    SecureField("", text: $password, onCommit: {
+                        isPasswordValid = isValidPassword(password)
+                    })
+                    .onChange(of: password) { newValue in
+                        password = filterInvalidCharacters(from: newValue)
+                        isPasswordValid = isValidPassword(password)
+                    }
+                    .frame(height: 50)
+                    .padding(.horizontal)
+                    .foregroundColor(.black) // 입력한 글자 색상
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                    )
                 }
-                .frame(height: 50)
-                .padding(.horizontal)
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                )
-                
+
                 Text("영어와 숫자, 특수문자가 모두 포함되어 있어야 합니다.")
                     .font(.system(size: 12))
                     .foregroundColor(.red)
@@ -87,16 +111,24 @@ struct RegisterView: View {
             
             // 비밀번호 확인 입력 필드
             VStack(alignment: .leading, spacing: 8) {
-                SecureField("비밀번호 확인", text: $confirmPassword)
-                    .onChange(of: confirmPassword) { newValue in
-                        confirmPassword = filterInvalidCharacters(from: newValue)
+                ZStack(alignment: .leading) {
+                    if confirmPassword.isEmpty {
+                        Text("비밀번호 확인")
+                            .foregroundColor(.gray)
+                            .padding(.horizontal)
                     }
-                    .frame(height: 50)
-                    .padding(.horizontal)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                    )
+                    SecureField("", text: $confirmPassword)
+                        .onChange(of: confirmPassword) { newValue in
+                            confirmPassword = filterInvalidCharacters(from: newValue)
+                        }
+                        .frame(height: 50)
+                        .padding(.horizontal)
+                        .foregroundColor(.black) // 입력한 글자 색상
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                        )
+                }
             }
             
 
@@ -134,7 +166,7 @@ struct RegisterView: View {
 
             Spacer()
         }
-        .background(Color.white)
+        .background(Color.white) // 배경색을 흰색으로 설정
         .edgesIgnoringSafeArea(.all)
         .navigationBarItems(leading: BackButton()) // 커스텀 백 버튼 추가
         .navigationBarBackButtonHidden(true)
@@ -145,6 +177,9 @@ struct RegisterView: View {
         var attributedString = AttributedString("raem 가입을 환영합니다.")
         if let range = attributedString.range(of: "raem") {
             attributedString[range].foregroundColor = Color.deepNavy
+        }
+        if let range = attributedString.range(of: "가입을 환영합니다.") {
+            attributedString[range].foregroundColor = Color.black
         }
         return attributedString
     }
@@ -211,6 +246,19 @@ struct RegisterView: View {
                 }
             }
         }.resume()
+    }
+}
+
+extension View {
+    func placeholder<Content: View>(
+        when shouldShow: Bool,
+        alignment: Alignment = .leading,
+        @ViewBuilder placeholder: () -> Content) -> some View {
+
+        ZStack(alignment: alignment) {
+            placeholder().opacity(shouldShow ? 1 : 0)
+            self
+        }
     }
 }
 
