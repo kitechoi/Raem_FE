@@ -44,7 +44,7 @@ struct DeviceRegistrationView: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
-                .padding(.bottom, geometry.size.height * 0.05)  // 하단에 간격 추가
+                .padding(.bottom, 80)  // 하단에 간격 추가
                 .padding(24)
 //                .alert(isPresented: Binding<Bool>(
 //                    get: { bleManager.connectSuccess != nil },

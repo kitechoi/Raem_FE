@@ -74,11 +74,9 @@ struct AccountManagementView: View {
                             .font(.system(size: 16))
                             .foregroundColor(.mint)
                     }
-                    .background(
-                        NavigationLink(destination: NameChangeView(currentName: $currentName), isActive: $showNameChangeView) {
-                            EmptyView()
-                        }
-                    )
+                    .fullScreenCover(isPresented: $showNameChangeView) {
+                        NameChangeView(currentName: $currentName)
+                    }
                 }
                 .padding()
                 .background(
@@ -101,11 +99,9 @@ struct AccountManagementView: View {
                             .font(.system(size: 16))
                             .foregroundColor(.mint)
                     }
-                    .background(
-                        NavigationLink(destination: EmailChangeView(currentEmail: $currentEmail), isActive: $showEmailChangeView) {
-                            EmptyView()
-                        }
-                    )
+                    .fullScreenCover(isPresented: $showEmailChangeView) {
+                        EmailChangeView(currentEmail: $currentEmail)
+                    }
                 }
                 .padding()
                 .background(
@@ -123,11 +119,9 @@ struct AccountManagementView: View {
                             .font(.system(size: 16))
                             .foregroundColor(.mint)
                     }
-                    .background(
-                        NavigationLink(destination: PasswordChangeView(savedPassword: $savedPassword), isActive: $showPasswordChangeView) {
-                            EmptyView()
-                        }
-                    )
+                    .fullScreenCover(isPresented: $showPasswordChangeView) {
+                        PasswordChangeView(savedPassword: $savedPassword)
+                    }
                 }
                 .padding() // 버튼 주변에 여백을 추가
                 
