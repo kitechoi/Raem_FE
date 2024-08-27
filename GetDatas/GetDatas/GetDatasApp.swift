@@ -8,8 +8,7 @@ struct GetDatasApp: App {
         WindowGroup {
             LoadingView()
                 .environmentObject(sessionManager)
-//            MlTestView() // 연_test예측화면
-//            SleepStageView()
+
         }
     }
 }

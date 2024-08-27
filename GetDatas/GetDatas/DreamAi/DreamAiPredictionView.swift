@@ -16,7 +16,7 @@ struct DreamAiPredictionView: View {
                     Text("Timestamp: \(result.timestamp)")
                     Text("Is Sleeping: \(result.isSleeping ? "Yes" : "No")")
                     Text("Probability: \(result.probability, specifier: "%.2f")")
-                    Text("현재 시각: \(formattedCurrentTime())") // 예측되는데이터의 시각과 예측수행시각의 차이를 알기 위함
+                    Text("예측 터치 시각: \(formattedCurrentTime())") // 예측되는데이터의 시각과 예측수행시각의 차이를 알기 위함
                 }
                 .padding(.vertical, 5)
             }
