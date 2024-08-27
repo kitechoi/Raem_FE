@@ -4,7 +4,6 @@ import WatchConnectivity
 struct MeasurementData: Codable, Identifiable {
     var id = UUID()
     var heartRate: Double
-    var decibelLevel: Float
     var accelerationX: Double
     var accelerationY: Double
     var accelerationZ: Double
@@ -39,23 +38,20 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             print("Failed to decode received data: \(error.localizedDescription)")
         }
     }
-    
+
     func exportDataToCSV() -> URL? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let date = dateFormatter.string(from: Date())
         
-        // Retrieve the user's name from UserDefaults or use device name as a fallback
-        let userName = UserDefaults.standard.string(forKey: "userName") ?? UIDevice.current.name
-        
         // Set the file name as "Name(Date).csv"
-        let fileName = "\(userName)(\(date)).csv"
+        let fileName = "eeeewwww(\(date)).csv"
         
         let path = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
-        var csvText = "Timestamp,Heart Rate,Decibel Level,Acceleration X,Acceleration Y,Acceleration Z\n"
+        var csvText = "Timestamp,Heart Rate,Acceleration X,Acceleration Y,Acceleration Z\n"
         
         for entry in receivedData {
-            let newLine = "\(entry.timestamp),\(entry.heartRate),\(entry.decibelLevel),\(entry.accelerationX),\(entry.accelerationY),\(entry.accelerationZ)\n"
+            let newLine = "\(entry.timestamp),\(entry.heartRate),\(entry.accelerationX),\(entry.accelerationY),\(entry.accelerationZ)\n"
             csvText.append(contentsOf: newLine)
         }
         
@@ -71,18 +67,56 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     func clearReceivedData() {
         receivedData.removeAll()
     }
+    
+    
+    func printHeartRates() {
+        for entry in receivedData {
+            if(entry.heartRate < 60) {
+                //red
+                //bleManager.controllLED("255,0,0")
+                print("red : 60이하, 현재 심박수: \(entry.heartRate)")
+            } else if (entry.heartRate >= 65 && entry.heartRate < 70) {
+                //orange
+                //bleManager.controllLED("255,128,0")
+                print("orange : 65이상 70미만, 현재 심박수: \(entry.heartRate)")
+            } else if (entry.heartRate >= 70 && entry.heartRate < 75) {
+                //yellow
+                //bleManager.controllLED("255,255,0")
+                print("yellow : 70이상 75미만, 현재 심박수: \(entry.heartRate)")
+            } else if (entry.heartRate >= 75 && entry.heartRate < 80) {
+                //green
+                //bleManager.controllLED("0,255,0")
+                print("green : 75이상 80미만, 현재 심박수: \(entry.heartRate)")
+            } else if (entry.heartRate >= 80 && entry.heartRate < 85) {
+                //blue
+                //bleManager.controllLED("0,128,255")
+                print("blue : 80이상 85미만, 현재 심박수: \(entry.heartRate)")
+            } else if (entry.heartRate >= 85 && entry.heartRate < 90) {
+                //navy
+                //bleManager.controllLED("0,0,255")
+                print("navy : 85이상 90미만, 현재 심박수: \(entry.heartRate)")
+            } else if (entry.heartRate >= 90 && entry.heartRate < 95) {
+                //purple
+                //bleManager.controllLED("128,0,255")
+                
+                print("purple")
+            } else if (entry.heartRate >= 95 && entry.heartRate < 100) {
+                //white
+                //bleManager.controllLED("0,0,0")
+                print("white")
+            } else {
+                //pink
+                //bleManager.controllLED("255,0,255")
+                print("pink")
+            }
+        }
+        //bleManager.controllLED("0,0,0")
+        print("black")
+    }
+    
+    
 }
 
-struct SettingRecordsView: View {
-    @AppStorage("userName") var userName: String = ""
-    
-    var body: some View {
-        Form {
-            TextField("이름 입력", text: $userName)
-        }
-        .navigationTitle("설정")
-    }
-}
 
 struct RecordView: View {
     @ObservedObject var connectivityManager = iPhoneConnectivityManager()
@@ -90,6 +124,8 @@ struct RecordView: View {
     
     var body: some View {
         VStack {
+            CustomTopBar(title: "실시간 데이터")
+            
             if !connectivityManager.receivedData.isEmpty {
                 HStack {
                     Button("CSV로 내보내기") {
@@ -149,7 +185,6 @@ struct RecordView: View {
                 VStack(alignment: .leading) {
                     Text("Timestamp: \(entry.timestamp)")
                     Text("Heart Rate: \(entry.heartRate, specifier: "%.0f") BPM")
-                    Text("Noise Level: \(entry.decibelLevel, specifier: "%.2f") dB")
                     Text("Acceleration: X: \(entry.accelerationX, specifier: "%.2f")")
                     Text("Y: \(entry.accelerationY, specifier: "%.2f")")
                     Text("Z: \(entry.accelerationZ, specifier: "%.2f")")
@@ -157,11 +192,10 @@ struct RecordView: View {
                 .padding(.vertical, 5)
             }
         }
-        .navigationTitle("실시간 데이터")
-        .toolbar {
-            NavigationLink(destination: SettingRecordsView()) {
-                Text("설정")
-            }
+        .foregroundColor(.white)
+        .navigationBarBackButtonHidden(true)
+        .onAppear {
+//            connectivityManager.printHeartRates()
         }
     }
 }

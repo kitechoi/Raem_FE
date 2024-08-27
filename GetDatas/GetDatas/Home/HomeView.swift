@@ -3,20 +3,22 @@ import SwiftUI
 struct HomeView: View {
     @State private var showSleepTrackingView = false  // SleepTrackingView로 이동하기 위한 상태
     @State private var showAccountManagementView = false  // AccountManagementView로 이동하기 위한 상태
+    @EnvironmentObject var sessionManager: SessionManager
 
     var body: some View {
         ZStack {
             VStack(spacing: 16) {
                 TopNav()
+
                 // 환영 메시지
                 ScrollView {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("잠만보님, 안녕하세요!")
+                        Text("\(sessionManager.username)님, 안녕하세요!")  // username을 사용
                             .font(Font.system(size: 20, weight: .bold))
                             .foregroundColor(.black)
 
                         HStack {
-                            Text("잠만보님의 최적 수면 시간은 7시간 입니다.")
+                            Text("\(sessionManager.username)님의 최적 수면 시간은 7시간 입니다.")
                                 .font(Font.system(size: 14))
                                 .foregroundColor(.gray)
                             Spacer()
@@ -201,12 +203,13 @@ struct HomeView: View {
                             .cornerRadius(10)
                     }
                     .padding(.horizontal, 16)
-                    .padding(.bottom, 20)
+                    .padding(.top, 20)
                     .background(
                         NavigationLink(destination: SleepTrackingView(), isActive: $showSleepTrackingView) {
                             EmptyView()
                         }
                     )
+                    
                 }
             }
             .background(Color.white)
@@ -217,16 +220,16 @@ struct HomeView: View {
                     EmptyView()
                 }
             )
-            
-
-            // WatchButton을 최상위 레이어에 추가
-            WatchButton()
         }
     }
+    
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            .environmentObject(SessionManager())  // Preview에서 SessionManager 제공
+            .background(Color.white)
+            .edgesIgnoringSafeArea(.all)
     }
 }

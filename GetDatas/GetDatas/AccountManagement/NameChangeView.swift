@@ -8,27 +8,7 @@ struct NameChangeView: View {
     var body: some View {
         VStack {
             // 상단 타이틀 및 뒤로가기 버튼
-            HStack {
-                Button(action: {
-                    presentationMode.wrappedValue.dismiss() // 이전 화면으로 돌아감
-                }) {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(.black)
-                        .font(.system(size: 20, weight: .bold))
-                }
-                Spacer()
-                Text("이름 변경")
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(.black)
-                Spacer()
-                // 오른쪽 여백 확보를 위한 빈 공간
-                Image(systemName: "chevron.left")
-                    .foregroundColor(.clear)
-                    .font(.system(size: 20, weight: .bold))
-            }
-            .padding(.horizontal, 16)
-            .padding(.top, 80) // 상단 패딩 추가
-            
+            CustomTopBar(title: "닉네임 변경")
             Spacer()
                 .frame(height: 40) // 충분한 여백 추가
             

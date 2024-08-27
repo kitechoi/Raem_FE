@@ -1,11 +1,12 @@
 import SwiftUI
 
 struct DeviceRegistrationView: View {
+    @EnvironmentObject var bleManager: BLEManager
+    @State private var showMainView = false
+    
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 8) {
-                TopNav()
-                
                 Spacer()
                 // 환영 메시지
                 VStack(alignment: .center, spacing: 8) {
@@ -32,6 +33,8 @@ struct DeviceRegistrationView: View {
                 // 등록하기 버튼
                 Button(action: {
                     // 기기 등록하기 버튼 액션 추가
+                    //bleManager.connectDevice()
+                    showMainView = true
                 }) {
                     Text("등록하기")
                         .font(.system(size: 18, weight: .bold))
@@ -41,8 +44,27 @@ struct DeviceRegistrationView: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
-                .padding(.bottom, geometry.size.height * 0.05)  // 하단에 간격 추가
+                .padding(.bottom, 80)  // 하단에 간격 추가
                 .padding(24)
+//                .alert(isPresented: Binding<Bool>(
+//                    get: { bleManager.connectSuccess != nil },
+//                    set: { _ in 
+//                        if bleManager.connectSuccess == true {
+//                            showMainView = true
+//                        }
+//                        bleManager.connectSuccess = nil }
+//                )) {
+//                    Alert(
+//                        title: Text(bleManager.connectSuccess == true ? "연결 성공" : "연결 실패"),
+//                        message: Text(bleManager.connectSuccess == true ? "Raem과의 연결에 성공했습니다." : "Raem과의 연결에 실패했습니다."),
+//                        dismissButton: .default(Text("확인"))
+//                    )
+//                }
+                .background(
+                    NavigationLink(destination: MainContentView(), isActive: $showMainView){
+                        EmptyView()
+                    }
+                )
                 
                 Spacer() // 하단 여백 확보
             }

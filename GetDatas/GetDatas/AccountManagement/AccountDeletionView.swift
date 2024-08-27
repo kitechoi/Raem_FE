@@ -3,26 +3,19 @@ import SwiftUI
 struct AccountDeletionView: View {
     @State private var isAgreed = false
     @State private var showConfirmationAlert = false
+    @State private var showAgreementAlert = false
     @Environment(\.presentationMode) var presentationMode
+    @State private var showDeletionResultAlert = false
+    @State private var deletionSuccess = false
+    @State private var accessToken: String = ""
+    @State private var navigateToLoadingView = false
 
     var body: some View {
         VStack(spacing: 20) {
-            Spacer(minLength: 20)
-
-            // 상단 Back 버튼 및 타이틀
-            HStack {
-                Button(action: {
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    Image("backbutton")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(.black)
-                }
-                Spacer()
-            }
-            .padding(.leading, 16)
-
+            // 상단 타이틀 및 뒤로가기 버튼
+            CustomTopBar(title: "회원 탈퇴")
+            Spacer()
+            
             Text("탈퇴하기")
                 .font(.system(size: 24, weight: .bold))
                 .foregroundColor(.black)
@@ -56,7 +49,7 @@ struct AccountDeletionView: View {
                     isAgreed.toggle()
                 }) {
                     Image(systemName: isAgreed ? "checkmark.circle.fill" : "circle")
-                        .foregroundColor(isAgreed ? .mint : .gray)
+                        .foregroundColor(isAgreed ? .red : .gray)
                 }
                 Text("위 내용을 모두 확인하였으며, 이에 동의합니다.")
                     .font(.system(size: 14))
@@ -75,44 +68,147 @@ struct AccountDeletionView: View {
                         .font(.system(size: 16))
                         .frame(maxWidth: .infinity)
                         .frame(height: 50)
-                        .background(Color.deepNavy)
+                        .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
 
                 Button(action: {
-                    showConfirmationAlert = true
+                    if isAgreed {
+                        showConfirmationAlert = true
+                    } else {
+                        showAgreementAlert = true
+                    }
                 }) {
                     Text("탈퇴하기")
                         .font(.system(size: 16))
                         .frame(maxWidth: .infinity)
                         .frame(height: 50)
-                        .background(isAgreed ? Color.gray : Color.gray.opacity(0.5))
+                        .background(isAgreed ? Color.red : Color.gray.opacity(0.5))
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
-                .disabled(!isAgreed)
                 .alert(isPresented: $showConfirmationAlert) {
                     Alert(title: Text("계정 탈퇴"),
                           message: Text("정말로 계정을 탈퇴하시겠습니까?"),
                           primaryButton: .destructive(Text("탈퇴하기")) {
-                              // 탈퇴 실행 액션
+                              deleteAccount()
                           },
                           secondaryButton: .cancel(Text("취소")))
                 }
+                .alert(isPresented: $showAgreementAlert) {
+                    Alert(title: Text("위 내용에 동의해주세요"), message: Text("탈퇴하기 위해서는 위 내용에 동의해주셔야 합니다."), dismissButton: .default(Text("확인")))
+                }
+                .fullScreenCover(isPresented: $navigateToLoadingView) {
+                    LoadingView()
+                }
+
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 20)
 
             Spacer(minLength: 20)
-
-            // 하단 탭 바
-            BottomNav(selectedTab: .constant(.home))
         }
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
         .navigationBarHidden(true)
+        .onAppear {
+            loadAccessToken()
+        }
     }
+
+    func loadAccessToken() {
+        // UserDefaults에서 accessToken을 불러옴
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            self.accessToken = token
+        } else {
+            self.accessToken = "AccessToken not found"
+        }
+    }
+    func deleteAccount() {
+        guard let url = URL(string: "https://www.raem.shop/api/user/drawout") else {
+            print("Invalid URL")
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+
+        // 저장된 accessToken을 헤더에 추가
+        request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    print("Account deletion request failed: \(error.localizedDescription)")
+                    deletionSuccess = false
+                    showDeletionResultAlert = true
+                }
+                return
+            }
+
+            guard let data = data, let httpResponse = response as? HTTPURLResponse else {
+                DispatchQueue.main.async {
+                    print("No data received or invalid response")
+                    deletionSuccess = false
+                    showDeletionResultAlert = true
+                }
+                return
+            }
+
+            if httpResponse.statusCode == 200 {
+                do {
+                    // 서버 응답 데이터 출력 (디버깅용)
+                    if let jsonString = String(data: data, encoding: .utf8) {
+                        print("Server response: \(jsonString)")
+                    }
+
+                    // JSON 응답을 디코딩
+                    let jsonResponse = try JSONDecoder().decode(AccountDeletionResponse.self, from: data)
+
+                    // isSuccess가 true인 경우 처리
+                    if jsonResponse.isSuccess {
+                        DispatchQueue.main.async {
+                            deletionSuccess = true
+                            UserDefaults.standard.removeObject(forKey: "accessToken") // accessToken 삭제
+                            navigateToLoadingView = true  // LoadingView로 이동
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            deletionSuccess = false
+                            showDeletionResultAlert = true
+                        }
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        print("Failed to parse JSON: \(error.localizedDescription)")
+                        deletionSuccess = false
+                        showDeletionResultAlert = true
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    print("Failed with HTTP status code: \(httpResponse.statusCode)")
+                    deletionSuccess = false
+                    showDeletionResultAlert = true
+                }
+            }
+        }
+        task.resume()
+    }
+}
+
+// AccountDeletionResponse 구조체 정의
+struct AccountDeletionResponse: Codable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let data: AccountDeletionData?
+}
+
+struct AccountDeletionData: Codable {
+    let processedAt: String
 }
 
 struct AccountDeletionView_Previews: PreviewProvider {
@@ -120,4 +216,3 @@ struct AccountDeletionView_Previews: PreviewProvider {
         AccountDeletionView()
     }
 }
-
