@@ -9,9 +9,11 @@ struct GetDatasApp: App {
             LoadingView()
                 .environmentObject(sessionManager)
 //            MlTestView() // 연_test예측화면
+//            SleepStageView()
         }
     }
 }
+
 
 
 // 로그인 세션 관리 클래스

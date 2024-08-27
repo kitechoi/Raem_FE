@@ -206,7 +206,7 @@ class DataManager: NSObject, ObservableObject {
                     DispatchQueue.main.async {
                         self.sentDataCount = totalDataCount
                         self.isSendComplete = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             self.isSendComplete = false
                         }
                         self.clearLocalData()
