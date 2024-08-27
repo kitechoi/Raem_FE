@@ -3,7 +3,7 @@ import SwiftUI
 @main
 struct GetDatasApp: App {
     @StateObject private var sessionManager = SessionManager()
-    @ObservedObject var bleManager = BLEManager()
+    @StateObject private var bleManager = BLEManager()
 
     var body: some Scene {
         WindowGroup {
