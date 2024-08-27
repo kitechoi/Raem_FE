@@ -9,318 +9,224 @@ struct AccountManagementView: View {
     @State private var showEmailChangeView = false // 이메일 변경 뷰로 이동하기 위한 상태
     @State private var showPasswordChangeView = false // 비밀번호 변경 뷰로 이동하기 위한 상태
     
-    @State private var currentName: String = ""  // API에서 불러온 이름 상태
-    @State private var currentEmail: String = ""  // API에서 불러온 이메일 상태
     @State private var savedPassword: String = "********" // 현재 비밀번호 상태 (일반적으로 비밀번호는 서버에서 가져오지 않음)
     
-    @State private var apiResponse: String = "" // API로부터 받은 전체 응답을 문자열로 저장
-    @State private var accessToken: String = "" // accessToken을 저장하기 위한 상태 변수
-
     @State private var isLoggedOut = false  // 로그아웃 상태를 관리하는 변수
     @State private var showLogoutAlert = false  // 로그아웃 후 알림 표시 여부
     @State private var logoutSuccess = false  // 로그아웃 성공 여부
     
     @EnvironmentObject var sessionManager: SessionManager
+    @State private var showRecordView = false
+    @State private var showSleepDataView = false
     
     var body: some View {
-        VStack {
-            // 상단 타이틀 및 뒤로가기 버튼
-            CustomTopBar(title: "계정 관리")
-            Spacer()
-            
-            // 프로필 이미지 및 변경 버튼
+        NavigationView {
             VStack {
-                Button(action: {
-                    isImagePickerPresented = true
-                }) {
-                    ZStack {
-                        Image(uiImage: selectedImage!)
-                            .resizable()
-                            .frame(width: 100, height: 100)
-                            .clipShape(Circle())
-                        
-                        // 사진 변경 아이콘
-                        Image(systemName: "camera.fill")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .foregroundColor(.mint)
-                            .background(Circle().fill(Color.white))
-                            .offset(x: 35, y: 35)
-                    }
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
-            .sheet(isPresented: $isImagePickerPresented) {
-                ImagePicker(selectedImage: $selectedImage)
-            }
-            
-            Spacer()
-                .frame(height: 20)
-            
-            // 이름, 이메일, 비밀번호 변경 섹션
-            VStack(spacing: 16) {
-                HStack {
-                    Text("이름")
-                        .font(.system(size: 16))
-                        .foregroundColor(.gray)
-                    Spacer()
-                    Text(currentName)
-                        .font(.system(size: 16))
-                        .foregroundColor(.blue)
-                    Button(action: {
-                        showNameChangeView = true
-                    }) {
-                        Text("변경")
-                            .font(.system(size: 16))
-                            .foregroundColor(.mint)
-                    }
-                    .fullScreenCover(isPresented: $showNameChangeView) {
-                        NameChangeView(currentName: $currentName)
-                    }
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray.opacity(0.2))
-                )
+                // 상단 타이틀 및 뒤로가기 버튼
+                CustomTopBar(title: "계정 관리")
+                Spacer()
                 
-                HStack {
-                    Text("이메일")
-                        .font(.system(size: 16))
-                        .foregroundColor(.gray)
-                    Spacer()
-                    Text(currentEmail) // 변경된 이메일이 반영됨
-                        .font(.system(size: 16))
-                        .foregroundColor(.blue)
+                // 프로필 이미지 및 변경 버튼
+                VStack {
                     Button(action: {
-                        showEmailChangeView = true
+                        isImagePickerPresented = true
                     }) {
-                        Text("변경")
-                            .font(.system(size: 16))
-                            .foregroundColor(.mint)
+                        ZStack {
+                            Image(uiImage: selectedImage!)
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .clipShape(Circle())
+                            
+                            // 사진 변경 아이콘
+                            Image(systemName: "camera.fill")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(.mint)
+                                .background(Circle().fill(Color.white))
+                                .offset(x: 35, y: 35)
+                        }
                     }
-                    .fullScreenCover(isPresented: $showEmailChangeView) {
-                        EmailChangeView(currentEmail: $currentEmail)
-                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray.opacity(0.2))
-                )
-                
-                HStack {
-                    Spacer()  // 버튼을 우측 정렬하기 위한 Spacer
-
-                    Button(action: {
-                        showPasswordChangeView = true
-                    }) {
-                        Text("비밀번호 변경")
-                            .font(.system(size: 16))
-                            .foregroundColor(.mint)
-                    }
-                    .fullScreenCover(isPresented: $showPasswordChangeView) {
-                        PasswordChangeView(savedPassword: $savedPassword)
-                    }
-                }
-                .padding() // 버튼 주변에 여백을 추가
-                
-            }
-            .padding(.horizontal, 16)
-            
-            Spacer()
-            
-            // 로그아웃 및 탈퇴하기 버튼
-            HStack {
-                Button(action: {
-                    logout()
-                }) {
-                    Text("로그아웃")
-                        .font(.system(size: 16))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
-                        .background(.red)
-                        .cornerRadius(10)
-                }
-                .alert(isPresented: $showLogoutAlert) {
-                    if logoutSuccess {
-                        return Alert(
-                            title: Text("로그아웃 성공"),
-                            message: Text("성공적으로 로그아웃되었습니다."),
-                            dismissButton: .default(Text("확인")) {
-                                isLoggedOut = true
-                            }
-                        )
-                    } else {
-                        return Alert(
-                            title: Text("로그아웃 실패"),
-                            message: Text("로그아웃에 실패했습니다. 다시 시도해주세요."),
-                            dismissButton: .default(Text("확인"))
-                        )
-                    }
-                }
-                .fullScreenCover(isPresented: $isLoggedOut) {
-                    // 로그아웃 후 이동할 뷰 지정
-                    LoadingView()
+                .sheet(isPresented: $isImagePickerPresented) {
+                    ImagePicker(selectedImage: $selectedImage)
                 }
                 
                 Spacer()
+                    .frame(height: 20)
                 
-                Button(action: {
-                    showAccountDeletionView = true  // 탈퇴 페이지로 이동
-                }) {
-                    Text("탈퇴하기")
-                        .font(.system(size: 16))
-                        .foregroundColor(Color(red: 100/255, green: 110/255, blue: 120/255))
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
-                        .background(Color(red: 240/255, green: 240/255, blue: 245/255))
-                        .cornerRadius(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color(red: 200/255, green: 200/255, blue: 205/255), lineWidth: 1)
-                        )
+                // 이름, 이메일, 비밀번호 변경 섹션
+                VStack(spacing: 16) {
+                    HStack {
+                        Text("이름")
+                            .font(.system(size: 16))
+                            .foregroundColor(.gray)
+                        Spacer()
+                        Text(sessionManager.username)
+                            .font(.system(size: 16))
+                            .foregroundColor(.blue)
+                        Button(action: {
+                            showNameChangeView = true
+                        }) {
+                            Text("변경")
+                                .font(.system(size: 16))
+                                .foregroundColor(.mint)
+                        }
+                        .fullScreenCover(isPresented: $showNameChangeView) {
+                            NameChangeView(currentName: $sessionManager.username)
+                        }
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray.opacity(0.2))
+                    )
+                    
+                    HStack {
+                        Text("이메일")
+                            .font(.system(size: 16))
+                            .foregroundColor(.gray)
+                        Spacer()
+                        Text(sessionManager.email)
+                            .font(.system(size: 16))
+                            .foregroundColor(.blue)
+                        Button(action: {
+                            showEmailChangeView = true
+                        }) {
+                            Text("변경")
+                                .font(.system(size: 16))
+                                .foregroundColor(.mint)
+                        }
+                        .fullScreenCover(isPresented: $showEmailChangeView) {
+                            EmailChangeView(currentEmail: $sessionManager.email)
+                        }
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray.opacity(0.2))
+                    )
+                    
+                    HStack {
+                        Spacer()  // 버튼을 우측 정렬하기 위한 Spacer
+
+                        Button(action: {
+                            showPasswordChangeView = true
+                        }) {
+                            Text("비밀번호 변경")
+                                .font(.system(size: 16))
+                                .foregroundColor(.red)
+                        }
+                        .fullScreenCover(isPresented: $showPasswordChangeView) {
+                            PasswordChangeView(savedPassword: $savedPassword)
+                        }
+                    }
+                    .padding() // 버튼 주변에 여백을 추가
                 }
-                .fullScreenCover(isPresented: $showAccountDeletionView) {
-                    AccountDeletionView()
+                .padding(.horizontal, 16)
+                
+                // 실시간 데이터와 수면 데이터 버튼 섹션
+                HStack {
+                    NavigationLink(destination: RecordView(), isActive: $showRecordView) {
+                        Button(action: {
+                            showRecordView = true
+                        }) {
+                            Text("실시간 데이터")
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                                .background(Color.green)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                    }
+                    
+                    NavigationLink(destination: SleepDataView(), isActive: $showSleepDataView) {
+                        Button(action: {
+                            showSleepDataView = true
+                        }) {
+                            Text("수면 데이터")
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                                .background(Color.orange)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                    }
                 }
-            }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 40)
-
-        }
-        .background(Color.white)
-        .edgesIgnoringSafeArea(.all)
-        .navigationBarBackButtonHidden(true)
-        .onAppear {
-            loadAccessToken()
-        }
-    }
-    
-    func loadAccessToken() {
-        // UserDefaults에서 accessToken을 불러오고, UI에 표시합니다.
-        if let token = UserDefaults.standard.string(forKey: "accessToken") {
-            self.accessToken = token
-            fetchUserData()
-        } else {
-            self.accessToken = "AccessToken not found"
-        }
-    }
-
-    func fetchUserData() {
-        guard !accessToken.isEmpty else {
-            print("Access token is missing")
-            return
-        }
-        
-        guard let url = URL(string: "https://www.raem.shop/api/user/data") else {
-            print("Invalid URL")
-            return
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Failed to fetch user data: \(error.localizedDescription)")
-                return
-            }
-
-            guard let data = data else {
-                print("No data received")
-                return
-            }
-
-            do {
-                if let jsonString = String(data: data, encoding: .utf8) {
-                                    print("Received JSON: \(jsonString)")
+                .padding(.horizontal, 16)
+                
+                Spacer()
+               
+                // 로그아웃 및 탈퇴하기 버튼
+                HStack {
+                    Button(action: {
+                        logout()
+                    }) {
+                        Text("로그아웃")
+                            .font(.system(size: 16))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 50)
+                            .background(.red)
+                            .cornerRadius(10)
+                    }
+                    .alert(isPresented: $showLogoutAlert) {
+                        if logoutSuccess {
+                            return Alert(
+                                title: Text("로그아웃 성공"),
+                                message: Text("성공적으로 로그아웃되었습니다."),
+                                dismissButton: .default(Text("확인")) {
+                                    isLoggedOut = true
                                 }
-                let jsonResponse = try JSONDecoder().decode(UserDataResponse.self, from: data)
-                if jsonResponse.isSuccess {
-                    DispatchQueue.main.async {
-                        self.currentName = jsonResponse.data.username
-                        self.currentEmail = jsonResponse.data.email
+                            )
+                        } else {
+                            return Alert(
+                                title: Text("로그아웃 실패"),
+                                message: Text("로그아웃에 실패했습니다. 다시 시도해주세요."),
+                                dismissButton: .default(Text("확인"))
+                            )
+                        }
                     }
-                } else {
-                    DispatchQueue.main.async {
-                        self.apiResponse = String(data: data, encoding: .utf8) ?? "Invalid JSON format"
+                    .fullScreenCover(isPresented: $isLoggedOut) {
+                        // 로그아웃 후 이동할 뷰 지정
+                        LoadingView()
                     }
-                    print("Failed to fetch user data: \(jsonResponse.message)")
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        showAccountDeletionView = true  // 탈퇴 페이지로 이동
+                    }) {
+                        Text("탈퇴하기")
+                            .font(.system(size: 16))
+                            .foregroundColor(Color(red: 100/255, green: 110/255, blue: 120/255))
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 50)
+                            .background(Color(red: 240/255, green: 240/255, blue: 245/255))
+                            .cornerRadius(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color(red: 200/255, green: 200/255, blue: 205/255), lineWidth: 1)
+                            )
+                    }
+                    .fullScreenCover(isPresented: $showAccountDeletionView) {
+                        AccountDeletionView()
+                    }
                 }
-            } catch {
-                DispatchQueue.main.async {
-                    self.apiResponse = "Failed to decode JSON: \(error.localizedDescription)"
-                }
-                print("Failed to decode JSON: \(error.localizedDescription)")
+                .padding(.horizontal, 16)
+                .padding(.bottom, 40)
             }
+            .background(Color.white)
+            .edgesIgnoringSafeArea(.all)
+            .navigationBarBackButtonHidden(true)
         }
-        task.resume()
     }
     
     func logout() {
-        guard let url = URL(string: "https://www.raem.shop/api/user/logout") else {
-            print("Invalid URL")
-            return
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        // 저장된 accessToken을 헤더에 추가
-        guard !accessToken.isEmpty else {
-            print("Access token is missing")
-            return
-        }
-        request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        
-        // 필요 시 추가 헤더 설정
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                DispatchQueue.main.async {
-                    print("Logout request failed: \(error.localizedDescription)")
-                    logoutSuccess = false
-                    showLogoutAlert = true
-                }
-                return
-            }
-
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                DispatchQueue.main.async {
-                    print("Logout failed with unexpected response")
-                    logoutSuccess = false
-                    showLogoutAlert = true
-                }
-                return
-            }
-
-            DispatchQueue.main.async {
-                // 로그아웃 성공 후 상태 변경 및 accessToken 삭제
-                UserDefaults.standard.removeObject(forKey: "accessToken")
-                logoutSuccess = true
-                showLogoutAlert = true
-            }
-        }
-        task.resume()
+        sessionManager.logout()
+        logoutSuccess = true
+        showLogoutAlert = true
     }
-}
-
-struct UserDataResponse: Codable {
-    let isSuccess: Bool
-    let code: String
-    let message: String
-    let data: UserData
-}
-
-struct UserData: Codable {
-    let username: String
-    let email: String
-    let imageUrl: String? // 이 필드는 사용하지 않음
-    let created_at: String
 }
 
 struct AccountManagementView_Previews: PreviewProvider {

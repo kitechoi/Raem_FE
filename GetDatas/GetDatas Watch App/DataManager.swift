@@ -8,7 +8,6 @@ import WatchConnectivity
 struct MeasurementData: Codable, Identifiable {
     var id = UUID()
     var heartRate: Double
-    var decibelLevel: Float
     var accelerationX: Double
     var accelerationY: Double
     var accelerationZ: Double
@@ -25,7 +24,6 @@ class DataManager: NSObject, ObservableObject {
     private let userDefaultsKey = "savedMeasurements"
     private let healthStore = HKHealthStore()
     private let motionManager = CMMotionManager()
-    private var audioRecorder: AVAudioRecorder?
     private var measurementTimer: Timer?
     private var dataTransferTimer: Timer?
     private var workoutSession: HKWorkoutSession?
@@ -87,26 +85,6 @@ class DataManager: NSObject, ObservableObject {
         workoutSession?.end()
     }
     
-    func startNoiseMonitoring() {
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(.playAndRecord, mode: .measurement, options: .duckOthers)
-            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-            
-            let settings: [String: Any] = [
-                AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-                AVSampleRateKey: 44100,
-                AVNumberOfChannelsKey: 1,
-                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-            ]
-            
-            audioRecorder = try AVAudioRecorder(url: URL(fileURLWithPath: "/dev/null"), settings: settings)
-            audioRecorder?.isMeteringEnabled = true
-            audioRecorder?.record()
-        } catch {
-            print("Failed to set up audio session or AVAudioRecorder: \(error.localizedDescription)")
-        }
-    }
     
     func startAccelerometerUpdates() {
         if motionManager.isAccelerometerAvailable {
@@ -118,7 +96,6 @@ class DataManager: NSObject, ObservableObject {
     func startMeasuring() {
         isMeasuring = true
         startHeartRateMonitoring()
-        startNoiseMonitoring()
         startAccelerometerUpdates()
         
         measurementTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
@@ -141,14 +118,11 @@ class DataManager: NSObject, ObservableObject {
     }
     
     private func recordMeasurement() {
-        audioRecorder?.updateMeters()
-        let decibelLevel = audioRecorder?.averagePower(forChannel: 0) ?? -160.0
         let acceleration = motionManager.accelerometerData?.acceleration ?? CMAcceleration(x: 0, y: 0, z: 0)
         let timestamp = currentTimestamp()
         
         let newEntry = MeasurementData(
             heartRate: currentHeartRate,
-            decibelLevel: decibelLevel,
             accelerationX: acceleration.x,
             accelerationY: acceleration.y,
             accelerationZ: acceleration.z,
