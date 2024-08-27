@@ -188,13 +188,11 @@
 		3B445A022BF0F0E900AFA631 /* GetDatas */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
+
 				0C24AD692C7CB725004CF022 /* DreamAi */,
-=======
 				A82DF1902C7B5A8F00EF097E /* BLEManager */,
 				0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */,
 				0CD786AC2C772246004677B7 /* MlTestView.swift */,
->>>>>>> ef159d193ddf57ae9fd2f44caa102ccb9c3a3424
 				3BA82A3C2C79E61D00CE24F2 /* Setting */,
 				3B0542222C75CAD100A4CB0D /* Component */,
 				3BF207E92C735C79000DEDA9 /* Record */,
