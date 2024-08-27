@@ -37,9 +37,9 @@ struct SettingView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("설정")
-                .font(.title)
-                .fontWeight(.bold)
+            // 상단 타이틀 및 뒤로가기 버튼
+            CustomTopBar(title: "설정")
+
             
             ScrollView {
                 VStack(alignment: .leading) {
@@ -149,7 +149,24 @@ struct SettingView: View {
                         .disabled(isConnected) // 비활성화된 버튼
                     }
                     
-            
+                    HStack {
+                        NavigationLink(destination: RecordView()) {
+                            Text("실시간 데이터")
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(Color.green)
+                                .cornerRadius(10)
+                                .frame(maxWidth: .infinity)
+                        }
+                        NavigationLink(destination: SleepDataView()) {
+                            Text("수면 데이터")
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(Color.orange)
+                                .cornerRadius(10)
+                                .frame(maxWidth: .infinity)
+                        }
+                    }
                     
                 }
             }
@@ -232,4 +249,6 @@ struct SettingView_Previews: PreviewProvider {
     static var previews: some View {
         SettingView()
     }
+    
+    
 }

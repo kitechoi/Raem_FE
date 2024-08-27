@@ -165,7 +165,7 @@ struct RecordView: View {
         .foregroundColor(.white)
         .navigationBarBackButtonHidden(true)
         .onAppear {
-            connectivityManager.printHeartRates()
+//            connectivityManager.printHeartRates()
         }
     }
 }
