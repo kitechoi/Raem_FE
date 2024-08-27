@@ -108,9 +108,9 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
 struct RecordView: View {
 
     @EnvironmentObject var bleManager: BLEManager
-    // @ObservedObject var connectivityManager = iPhoneConnectivityManager(bleManager: BLEManager())
+     @ObservedObject var connectivityManager = iPhoneConnectivityManager(bleManager: BLEManager())
 
-    @ObservedObject var connectivityManager = iPhoneConnectivityManager()
+//    @ObservedObject var connectivityManager = iPhoneConnectivityManager()
     @ObservedObject var predictionManager = DreamAiPredictionManager()
 
     
