@@ -3,10 +3,6 @@ import SwiftUI
 struct HomeView: View {
     @State private var showSleepTrackingView = false  // SleepTrackingView로 이동하기 위한 상태
     @State private var showAccountManagementView = false  // AccountManagementView로 이동하기 위한 상태
-    @State private var showRecordView = false  // 실시간 데이터 뷰로 이동하기 위한 상태
-    @State private var showSleepDataView = false  // 수면 데이터 뷰로 이동하기 위한 상태
-
-    
     @EnvironmentObject var sessionManager: SessionManager
 
     var body: some View {
@@ -213,38 +209,6 @@ struct HomeView: View {
                             EmptyView()
                         }
                     )
-                    
-                    HStack {
-                        Button(action: {
-                            showRecordView = true
-                        }) {
-                            Text("실시간 데이터")
-                                .font(.system(size: 18))
-                                .foregroundColor(.white)
-                                .padding()
-                                .background(Color.green)
-                                .cornerRadius(10)
-                        }
-                        .fullScreenCover(isPresented: $showRecordView) {
-                            RecordView()
-                        }
-
-                        Button(action: {
-                            showSleepDataView = true
-                        }) {
-                            Text("수면 데이터")
-                                .font(.system(size: 18))
-                                .foregroundColor(.white)
-                                .padding()
-                                .background(Color.orange)
-                                .cornerRadius(10)
-                        }
-                        .fullScreenCover(isPresented: $showSleepDataView) {
-                            SleepDataView()
-                        }
-
-                    }
-                    
                     
                 }
             }

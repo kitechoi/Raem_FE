@@ -55,7 +55,9 @@ class SessionManager: ObservableObject {
             return
         }
 
-        isLoading = true  // 데이터를 가져오기 전 로딩 상태로 설정
+        DispatchQueue.main.async {
+            self.isLoading = true  // 데이터를 가져오기 전 로딩 상태로 설정
+        }
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -63,34 +65,35 @@ class SessionManager: ObservableObject {
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("Failed to fetch user data: \(error.localizedDescription)")
-                self.isLoading = false  // 실패 시 로딩 상태 해제
+                DispatchQueue.main.async {
+                    print("Failed to fetch user data: \(error.localizedDescription)")
+                    self.isLoading = false  // 실패 시 로딩 상태 해제
+                }
                 return
             }
 
             guard let data = data else {
-                print("No data received")
-                self.isLoading = false  // 실패 시 로딩 상태 해제
+                DispatchQueue.main.async {
+                    print("No data received")
+                    self.isLoading = false  // 실패 시 로딩 상태 해제
+                }
                 return
             }
 
             do {
                 let jsonResponse = try JSONDecoder().decode(UserDataResponse.self, from: data)
-                if jsonResponse.isSuccess {
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    if jsonResponse.isSuccess {
                         self.username = jsonResponse.data.username  // 서버에서 받은 이름으로 업데이트
                         self.email = jsonResponse.data.email
-                        self.isLoading = false  // 데이터 로딩 완료 후 로딩 상태 해제
+                    } else {
+                        print("Failed to fetch user data: \(jsonResponse.message)")
                     }
-                } else {
-                    print("Failed to fetch user data: \(jsonResponse.message)")
-                    DispatchQueue.main.async {
-                        self.isLoading = false  // 실패 시 로딩 상태 해제
-                    }
+                    self.isLoading = false  // 데이터 로딩 완료 후 로딩 상태 해제
                 }
             } catch {
-                print("Failed to decode JSON: \(error.localizedDescription)")
                 DispatchQueue.main.async {
+                    print("Failed to decode JSON: \(error.localizedDescription)")
                     self.isLoading = false  // 실패 시 로딩 상태 해제
                 }
             }
@@ -98,6 +101,7 @@ class SessionManager: ObservableObject {
         task.resume()
     }
 }
+
 
 struct UserDataResponse: Codable {
     let isSuccess: Bool
