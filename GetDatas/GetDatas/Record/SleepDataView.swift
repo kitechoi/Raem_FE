@@ -182,6 +182,8 @@ struct SleepDataView: View {
         .onAppear {
            requestHealthAuthorization()
        }
+        .navigationBarBackButtonHidden(true)
+        
     }
 
     func exportDataToCSV() {
@@ -189,11 +191,11 @@ struct SleepDataView: View {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let formattedEndDate = dateFormatter.string(from: endDate)
         
-        // 사용자 이메일 가져오기
-        let userEmail = sessionManager.email
+        // 사용자 이메일 또는 기본 사용자 이름 결정
+        let userEmailOrDefaultName = sessionManager.isLoggedIn ? sessionManager.email : "사용자"
         
-        // 파일 이름을 "이메일(끝나는날짜).csv"로 설정
-        let fileName = "\(userEmail)(\(formattedEndDate)).csv"
+        // 파일 이름을 "이메일(끝나는날짜).csv" 또는 "사용자(끝나는날짜).csv"로 설정
+        let fileName = "\(userEmailOrDefaultName)(\(formattedEndDate)).csv"
         let path = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
         
         var csvText = "start,end,level,level(Int)\n"
@@ -367,5 +369,6 @@ struct HKSleepAnalysis: Identifiable, Hashable {
 struct SleepDataView_Previews: PreviewProvider {
     static var previews: some View {
         SleepDataView()
+            .environmentObject(SessionManager())
     }
 }
