@@ -10,10 +10,10 @@ struct GetDatasApp: App {
             LoadingView()
                 .environmentObject(sessionManager)
                 .environmentObject(bleManager)
-//            MlTestView() // 연_test예측화면
         }
     }
 }
+
 
 // 로그인 세션 관리 클래스
 class SessionManager: ObservableObject {

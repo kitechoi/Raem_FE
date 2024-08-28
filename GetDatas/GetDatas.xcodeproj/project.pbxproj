@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0CD786AB2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */; };
-		0CD786AD2C772246004677B7 /* MlTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD786AC2C772246004677B7 /* MlTestView.swift */; };
+		0C24AD6B2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD6A2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel */; };
+		0C24AD6D2C7CBE15004CF022 /* DreamAiProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD6C2C7CBE15004CF022 /* DreamAiProcesser.swift */; };
+		0C24AD762C7CC95E004CF022 /* DreamAiPredictionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD752C7CC95E004CF022 /* DreamAiPredictionManager.swift */; };
+		0C24AD782C7CC977004CF022 /* DreamAiPredictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD772C7CC977004CF022 /* DreamAiPredictionView.swift */; };
 		3B05422A2C75CB3700A4CB0D /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0542292C75CB3700A4CB0D /* BackButton.swift */; };
 		3B05422C2C75CB9200A4CB0D /* TopNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B05422B2C75CB9200A4CB0D /* TopNav.swift */; };
 		3B2555DD2C7727B400F298BF /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2555DC2C7727B400F298BF /* DataManager.swift */; };
@@ -74,8 +76,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MyTabularClassifier0814_2.mlmodel; sourceTree = "<group>"; };
-		0CD786AC2C772246004677B7 /* MlTestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MlTestView.swift; sourceTree = "<group>"; };
+		0C24AD6A2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = DreamDetector_TabularClassifier.mlmodel; sourceTree = "<group>"; };
+		0C24AD6C2C7CBE15004CF022 /* DreamAiProcesser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamAiProcesser.swift; sourceTree = "<group>"; };
+		0C24AD752C7CC95E004CF022 /* DreamAiPredictionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamAiPredictionManager.swift; sourceTree = "<group>"; };
+		0C24AD772C7CC977004CF022 /* DreamAiPredictionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamAiPredictionView.swift; sourceTree = "<group>"; };
 		3B0542292C75CB3700A4CB0D /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		3B05422B2C75CB9200A4CB0D /* TopNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNav.swift; sourceTree = "<group>"; };
 		3B2555DC2C7727B400F298BF /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
@@ -139,6 +143,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C24AD692C7CB725004CF022 /* DreamAi */ = {
+			isa = PBXGroup;
+			children = (
+				0C24AD6A2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel */,
+				0C24AD6C2C7CBE15004CF022 /* DreamAiProcesser.swift */,
+				0C24AD752C7CC95E004CF022 /* DreamAiPredictionManager.swift */,
+				0C24AD772C7CC977004CF022 /* DreamAiPredictionView.swift */,
+			);
+			path = DreamAi;
+			sourceTree = "<group>";
+		};
 		3B0542222C75CAD100A4CB0D /* Component */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,6 +188,8 @@
 		3B445A022BF0F0E900AFA631 /* GetDatas */ = {
 			isa = PBXGroup;
 			children = (
+
+				0C24AD692C7CB725004CF022 /* DreamAi */,
 				A82DF1902C7B5A8F00EF097E /* BLEManager */,
 				0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */,
 				0CD786AC2C772246004677B7 /* MlTestView.swift */,
@@ -444,6 +461,7 @@
 				3BA82A3B2C79E49D00CE24F2 /* WatchButton.swift in Sources */,
 				736119482C68948100F3FF11 /* LoadingView.swift in Sources */,
 				7361196C2C68B6C400F3FF11 /* SleepTrackingView.swift in Sources */,
+				0C24AD6D2C7CBE15004CF022 /* DreamAiProcesser.swift in Sources */,
 				3BA82A3E2C79E64A00CE24F2 /* SettingsView.swift in Sources */,
 				7361195D2C68A6D100F3FF11 /* RegisterView.swift in Sources */,
 				7361195F2C68A99000F3FF11 /* RegisterCompleteView.swift in Sources */,
@@ -451,11 +469,12 @@
 				739AE9642C6DB1ED006BAF47 /* AccountManagementView.swift in Sources */,
 				A82DF1922C7B5AC100EF097E /* BLEManager.swift in Sources */,
 				739AE9662C6DB91F006BAF47 /* ImagePicker.swift in Sources */,
-				0CD786AD2C772246004677B7 /* MlTestView.swift in Sources */,
+				0C24AD782C7CC977004CF022 /* DreamAiPredictionView.swift in Sources */,
+				0C24AD762C7CC95E004CF022 /* DreamAiPredictionManager.swift in Sources */,
 				3B445A042BF0F0E900AFA631 /* GetDatasApp.swift in Sources */,
 				739AE96C2C6DE368006BAF47 /* PasswordChangeView.swift in Sources */,
 				739AE9742C700C31006BAF47 /* BedTimeAlarmView.swift in Sources */,
-				0CD786AB2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel in Sources */,
+				0C24AD6B2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

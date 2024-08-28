@@ -11,10 +11,6 @@ struct MeasurementData: Codable, Identifiable {
 }
 
 class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
-    func sessionDidBecomeInactive(_ session: WCSession) {}
-    
-    func sessionDidDeactivate(_ session: WCSession) {}
-    
     @Published var receivedData: [MeasurementData] = []
     var bleManager: BLEManager
     
@@ -27,27 +23,65 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         }
     }
     
+    func sessionDidBecomeInactive(_ session: WCSession) {}
+    
+    func sessionDidDeactivate(_ session: WCSession) {}
+    
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {}
     
     func session(_ session: WCSession, didReceiveMessageData messageData: Data) {
         do {
             let receivedData = try JSONDecoder().decode([MeasurementData].self, from: messageData)
-            
             DispatchQueue.main.async {
                 self.receivedData.append(contentsOf: receivedData)
+                self.printHeartRates() // 데이터가 로드될 때마다 심박수를 평가하고 출력
             }
         } catch {
             print("Failed to decode received data: \(error.localizedDescription)")
         }
     }
 
+    func printHeartRates() {
+        for entry in receivedData {
+            if entry.heartRate < 60 {
+                bleManager.controllLED("255,0,0")
+                print("red : 60이하, 현재 심박수: \(entry.heartRate)")
+            } else if entry.heartRate >= 65 && entry.heartRate < 70 {
+                bleManager.controllLED("255,128,0")
+                print("orange : 65이상 70미만, 현재 심박수: \(entry.heartRate)")
+            } else if entry.heartRate >= 70 && entry.heartRate < 75 {
+                bleManager.controllLED("255,255,0")
+                print("yellow : 70이상 75미만, 현재 심박수: \(entry.heartRate)")
+            } else if entry.heartRate >= 75 && entry.heartRate < 80 {
+                bleManager.controllLED("0,255,0")
+                print("green : 75이상 80미만, 현재 심박수: \(entry.heartRate)")
+            } else if entry.heartRate >= 80 && entry.heartRate < 85 {
+                bleManager.controllLED("0,128,255")
+                print("blue : 80이상 85미만, 현재 심박수: \(entry.heartRate)")
+            } else if entry.heartRate >= 85 && entry.heartRate < 90 {
+                bleManager.controllLED("0,0,255")
+                print("navy : 85이상 90미만, 현재 심박수: \(entry.heartRate)")
+            } else if entry.heartRate >= 90 && entry.heartRate < 95 {
+                bleManager.controllLED("128,0,255")
+                print("purple : 90이상 95미만, 현재 심박수: \(entry.heartRate)")
+            } else if entry.heartRate >= 95 && entry.heartRate < 100 {
+                bleManager.controllLED("255,255,255")
+                print("white : 95이상 100미만, 현재 심박수: \(entry.heartRate)")
+            } else {
+                bleManager.controllLED("255,0,255")
+                print("pink : 100이상, 현재 심박수: \(entry.heartRate)")
+            }
+        }
+        bleManager.controllLED("Done")
+        print("black : 모든 심박수 처리 완료")
+    }
+    
     func exportDataToCSV() -> URL? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let date = dateFormatter.string(from: Date())
         
-        // Set the file name as "Name(Date).csv"
-        let fileName = "eeeewwww(\(date)).csv"
+        let fileName = "record(\(date)).csv"
         
         let path = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
         var csvText = "Timestamp,Heart Rate,Acceleration X,Acceleration Y,Acceleration Z\n"
@@ -69,55 +103,58 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     func clearReceivedData() {
         receivedData.removeAll()
     }
-    
-    func printHeartRates() {
-        for entry in receivedData {
-            if(entry.heartRate < 60) {
-                //red
-                //bleManager.controllLED("255,0,0")
-                print("red : 60이하, 현재 심박수: \(entry.heartRate)")
-            } else if (entry.heartRate >= 65 && entry.heartRate < 70) {
-                //orange
-                //bleManager.controllLED("255,128,0")
-                print("orange : 65이상 70미만, 현재 심박수: \(entry.heartRate)")
-            } else if (entry.heartRate >= 70 && entry.heartRate < 75) {
-                //yellow
-                //bleManager.controllLED("255,255,0")
-                print("yellow : 70이상 75미만, 현재 심박수: \(entry.heartRate)")
-            } else if (entry.heartRate >= 75 && entry.heartRate < 80) {
-                //green
-                //bleManager.controllLED("0,255,0")
-                print("green : 75이상 80미만, 현재 심박수: \(entry.heartRate)")
-            } else if (entry.heartRate >= 80 && entry.heartRate < 85) {
-                //blue
-                //bleManager.controllLED("0,128,255")
-                print("blue : 80이상 85미만, 현재 심박수: \(entry.heartRate)")
-            } else if (entry.heartRate >= 85 && entry.heartRate < 90) {
-                //navy
-                //bleManager.controllLED("0,0,255")
-                print("navy : 85이상 90미만, 현재 심박수: \(entry.heartRate)")
-            } else if (entry.heartRate >= 90 && entry.heartRate < 95) {
-                //purple
-                //bleManager.controllLED("128,0,255")
-                print("purple")
-            } else if (entry.heartRate >= 95 && entry.heartRate < 100) {
-                //white
-                //bleManager.controllLED("0,0,0")
-                print("white")
-            } else {
-                //pink
-                //bleManager.controllLED("255,0,255")
-                print("pink")
-            }
-        }
-        //bleManager.controllLED("0,0,0")
-        print("black")
-    }
+
+//     func printHeartRates() {
+//         for entry in receivedData {
+//             if(entry.heartRate < 60) {
+//                 //red
+//                 //bleManager.controllLED("255,0,0")
+//                 print("red : 60이하, 현재 심박수: \(entry.heartRate)")
+//             } else if (entry.heartRate >= 65 && entry.heartRate < 70) {
+//                 //orange
+//                 //bleManager.controllLED("255,128,0")
+//                 print("orange : 65이상 70미만, 현재 심박수: \(entry.heartRate)")
+//             } else if (entry.heartRate >= 70 && entry.heartRate < 75) {
+//                 //yellow
+//                 //bleManager.controllLED("255,255,0")
+//                 print("yellow : 70이상 75미만, 현재 심박수: \(entry.heartRate)")
+//             } else if (entry.heartRate >= 75 && entry.heartRate < 80) {
+//                 //green
+//                 //bleManager.controllLED("0,255,0")
+//                 print("green : 75이상 80미만, 현재 심박수: \(entry.heartRate)")
+//             } else if (entry.heartRate >= 80 && entry.heartRate < 85) {
+//                 //blue
+//                 //bleManager.controllLED("0,128,255")
+//                 print("blue : 80이상 85미만, 현재 심박수: \(entry.heartRate)")
+//             } else if (entry.heartRate >= 85 && entry.heartRate < 90) {
+//                 //navy
+//                 //bleManager.controllLED("0,0,255")
+//                 print("navy : 85이상 90미만, 현재 심박수: \(entry.heartRate)")
+//             } else if (entry.heartRate >= 90 && entry.heartRate < 95) {
+//                 //purple
+//                 //bleManager.controllLED("128,0,255")
+//                 print("purple")
+//             } else if (entry.heartRate >= 95 && entry.heartRate < 100) {
+//                 //white
+//                 //bleManager.controllLED("0,0,0")
+//                 print("white")
+//             } else {
+//                 //pink
+//                 //bleManager.controllLED("255,0,255")
+//                 print("pink")
+//             }
+//         }
+//         //bleManager.controllLED("0,0,0")
+//         print("black")
+//     }
 }
 
-
 struct RecordView: View {
-    @ObservedObject var connectivityManager = iPhoneConnectivityManager(bleManager: BLEManager())
+//     @EnvironmentObject var bleManager: BLEManager
+//     @ObservedObject var connectivityManager = iPhoneConnectivityManager(bleManager: BLEManager())
+
+    @ObservedObject var connectivityManager = iPhoneConnectivityManager()
+    @ObservedObject var predictionManager = DreamAiPredictionManager()
     
     var body: some View {
         VStack {
@@ -127,10 +164,18 @@ struct RecordView: View {
                 HStack {
                     Button("CSV로 내보내기") {
                         if let csvURL = connectivityManager.exportDataToCSV() {
-                            let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
-                            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                               let rootVC = windowScene.windows.first?.rootViewController {
-                                rootVC.present(activityVC, animated: true)
+                            DispatchQueue.main.async {
+                                let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
+                                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                                   let rootVC = windowScene.windows.first?.rootViewController {
+                                    if rootVC.presentedViewController == nil {
+                                        rootVC.present(activityVC, animated: true)
+                                    } else {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                            rootVC.present(activityVC, animated: true)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -146,6 +191,35 @@ struct RecordView: View {
                     .background(Color.red)
                     .foregroundColor(.white)
                     .cornerRadius(10)
+                }
+                Button("예측 시작") {
+                    predictionManager.processReceivedData(connectivityManager.receivedData)
+                }
+                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                
+                Button("예측 결과 CSV로 내보내기") {
+                    if let csvURL = predictionManager.exportPredictionsToCSV() {
+                        let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
+                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                           let rootVC = windowScene.windows.first?.rootViewController {
+                            rootVC.present(activityVC, animated: true)
+                        }
+                    }
+                }
+                .padding()
+                .background(Color.orange)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                
+                NavigationLink(destination: DreamAiPredictionView(predictionManager: predictionManager)) {
+                    Text("예측 결과 보기")
+                        .padding()
+                        .background(Color.orange)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
                 }
             }
             
@@ -165,8 +239,5 @@ struct RecordView: View {
         }
         .foregroundColor(.white)
         .navigationBarBackButtonHidden(true)
-        .onAppear {
-//            connectivityManager.printHeartRates()
-        }
     }
 }
