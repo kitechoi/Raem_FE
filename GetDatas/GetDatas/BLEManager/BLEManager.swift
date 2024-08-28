@@ -17,8 +17,8 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     //LED 제어
     private var LEDService: CBService?
     private var LEDCharacteristic: CBCharacteristic?
-    private var LEDServiceUUID: CBUUID = CBUUID(string: "12345678-1234-5678-1234-56789abcdef1")
-    private var LEDCharacteristicUUID: CBUUID = CBUUID(string: "12345678-1234-5678-1234-56789abcdef1")
+    private var LEDServiceUUID: CBUUID = CBUUID(string: "123e4567-e89b-12d3-a456-426614174000")
+    private var LEDCharacteristicUUID: CBUUID = CBUUID(string: "123e4567-e89b-12d3-a456-426614174001")
     
     override init() {
         super.init()
@@ -51,15 +51,15 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi RSSI: NSNumber) {
         let deviceName = peripheral.name ?? "Unknown"
         
-        if deviceName.contains("정현조") {
-            discoveredPeripheral = peripheral
-            discoveredPeripheral?.delegate = self
-        }
-        
-//        if deviceName == "Raem" {
+//        if deviceName.contains("정현조") {
 //            discoveredPeripheral = peripheral
 //            discoveredPeripheral?.delegate = self
 //        }
+        
+        if deviceName == "Raem" {
+            discoveredPeripheral = peripheral
+            discoveredPeripheral?.delegate = self
+        }
     }
     
     // 기기와 연결되었을 때 호출됩니다.
@@ -71,8 +71,8 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
         print("Scanning stopped")
         
         // Save UUID for after
-        let uuid = peripheral.identifier.uuidString
-        UserDefaults.standard.set(uuid, forKey: "SavedDeviceUUID")
+//        let uuid = peripheral.identifier.uuidString
+//        UserDefaults.standard.set(uuid, forKey: "SavedDeviceUUID")
         
         peripheral.discoverServices(nil)
         connectedPeripheral = peripheral

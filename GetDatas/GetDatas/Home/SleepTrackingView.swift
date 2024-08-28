@@ -6,27 +6,15 @@ struct SleepTrackingView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Spacer(minLength: 40)
-
-            // 상단 Back 버튼
-            HStack {
-                Button(action: {
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    Image("backbutton")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(.black)
-                }
-                Spacer()
-            }
-            .padding(.leading, 16)
+            
+            Spacer()
 
             // 가운데 이미지
             Image("gooddream")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 200, height: 200) // 적절한 크기로 조정
+                .padding(.top, 70)
 
             // 타이틀 및 설명
             VStack(spacing: 8) {
@@ -40,23 +28,9 @@ struct SleepTrackingView: View {
             }
 
             Spacer()
-
-            // 하단 탭 바
-            BottomNav(selectedTab: .constant(.home))
         }
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
-        .navigationBarHidden(true)
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                isTransitioning = true
-            }
-        }
-        .background(
-            NavigationLink(destination: SleepDetailView(), isActive: $isTransitioning) {
-                EmptyView()
-            }
-        )
     }
 }
 

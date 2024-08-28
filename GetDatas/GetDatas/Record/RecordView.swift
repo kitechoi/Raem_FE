@@ -16,8 +16,10 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     func sessionDidDeactivate(_ session: WCSession) {}
     
     @Published var receivedData: [MeasurementData] = []
+    var bleManager: BLEManager
     
-    override init() {
+    init(bleManager: BLEManager) {
+        self.bleManager = bleManager
         super.init()
         if WCSession.isSupported() {
             WCSession.default.delegate = self
@@ -68,7 +70,6 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         receivedData.removeAll()
     }
     
-    
     func printHeartRates() {
         for entry in receivedData {
             if(entry.heartRate < 60) {
@@ -98,7 +99,6 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             } else if (entry.heartRate >= 90 && entry.heartRate < 95) {
                 //purple
                 //bleManager.controllLED("128,0,255")
-                
                 print("purple")
             } else if (entry.heartRate >= 95 && entry.heartRate < 100) {
                 //white
@@ -113,13 +113,11 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         //bleManager.controllLED("0,0,0")
         print("black")
     }
-    
-    
 }
 
 
 struct RecordView: View {
-    @ObservedObject var connectivityManager = iPhoneConnectivityManager()
+    @ObservedObject var connectivityManager = iPhoneConnectivityManager(bleManager: BLEManager())
     
     var body: some View {
         VStack {
@@ -160,6 +158,9 @@ struct RecordView: View {
                     Text("Z: \(entry.accelerationZ, specifier: "%.2f")")
                 }
                 .padding(.vertical, 5)
+                .onAppear{
+                    connectivityManager.printHeartRates()
+                }
             }
         }
         .foregroundColor(.white)
