@@ -33,7 +33,7 @@ struct DeviceRegistrationView: View {
                 // 등록하기 버튼
                 Button(action: {
                     // 기기 등록하기 버튼 액션 추가
-                    //bleManager.connectDevice()
+                    bleManager.connectDevice()
                     showMainView = true
                 }) {
                     Text("등록하기")
@@ -46,20 +46,20 @@ struct DeviceRegistrationView: View {
                 }
                 .padding(.bottom, 80)  // 하단에 간격 추가
                 .padding(24)
-//                .alert(isPresented: Binding<Bool>(
-//                    get: { bleManager.connectSuccess != nil },
-//                    set: { _ in 
-//                        if bleManager.connectSuccess == true {
-//                            showMainView = true
-//                        }
-//                        bleManager.connectSuccess = nil }
-//                )) {
-//                    Alert(
-//                        title: Text(bleManager.connectSuccess == true ? "연결 성공" : "연결 실패"),
-//                        message: Text(bleManager.connectSuccess == true ? "Raem과의 연결에 성공했습니다." : "Raem과의 연결에 실패했습니다."),
-//                        dismissButton: .default(Text("확인"))
-//                    )
-//                }
+                .alert(isPresented: Binding<Bool>(
+                    get: { bleManager.connectSuccess != nil },
+                    set: { _ in 
+                        if bleManager.connectSuccess == true {
+                            showMainView = true
+                        }
+                        bleManager.connectSuccess = nil }
+                )) {
+                    Alert(
+                        title: Text(bleManager.connectSuccess == true ? "연결 성공" : "연결 실패"),
+                        message: Text(bleManager.connectSuccess == true ? "Raem과의 연결에 성공했습니다." : "Raem과의 연결에 실패했습니다."),
+                        dismissButton: .default(Text("확인"))
+                    )
+                }
                 .background(
                     NavigationLink(destination: MainContentView(), isActive: $showMainView){
                         EmptyView()

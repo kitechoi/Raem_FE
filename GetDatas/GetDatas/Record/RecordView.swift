@@ -103,16 +103,58 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     func clearReceivedData() {
         receivedData.removeAll()
     }
+
+//     func printHeartRates() {
+//         for entry in receivedData {
+//             if(entry.heartRate < 60) {
+//                 //red
+//                 //bleManager.controllLED("255,0,0")
+//                 print("red : 60이하, 현재 심박수: \(entry.heartRate)")
+//             } else if (entry.heartRate >= 65 && entry.heartRate < 70) {
+//                 //orange
+//                 //bleManager.controllLED("255,128,0")
+//                 print("orange : 65이상 70미만, 현재 심박수: \(entry.heartRate)")
+//             } else if (entry.heartRate >= 70 && entry.heartRate < 75) {
+//                 //yellow
+//                 //bleManager.controllLED("255,255,0")
+//                 print("yellow : 70이상 75미만, 현재 심박수: \(entry.heartRate)")
+//             } else if (entry.heartRate >= 75 && entry.heartRate < 80) {
+//                 //green
+//                 //bleManager.controllLED("0,255,0")
+//                 print("green : 75이상 80미만, 현재 심박수: \(entry.heartRate)")
+//             } else if (entry.heartRate >= 80 && entry.heartRate < 85) {
+//                 //blue
+//                 //bleManager.controllLED("0,128,255")
+//                 print("blue : 80이상 85미만, 현재 심박수: \(entry.heartRate)")
+//             } else if (entry.heartRate >= 85 && entry.heartRate < 90) {
+//                 //navy
+//                 //bleManager.controllLED("0,0,255")
+//                 print("navy : 85이상 90미만, 현재 심박수: \(entry.heartRate)")
+//             } else if (entry.heartRate >= 90 && entry.heartRate < 95) {
+//                 //purple
+//                 //bleManager.controllLED("128,0,255")
+//                 print("purple")
+//             } else if (entry.heartRate >= 95 && entry.heartRate < 100) {
+//                 //white
+//                 //bleManager.controllLED("0,0,0")
+//                 print("white")
+//             } else {
+//                 //pink
+//                 //bleManager.controllLED("255,0,255")
+//                 print("pink")
+//             }
+//         }
+//         //bleManager.controllLED("0,0,0")
+//         print("black")
+//     }
 }
 
 struct RecordView: View {
+//     @EnvironmentObject var bleManager: BLEManager
+//     @ObservedObject var connectivityManager = iPhoneConnectivityManager(bleManager: BLEManager())
 
-    @EnvironmentObject var bleManager: BLEManager
-     @ObservedObject var connectivityManager = iPhoneConnectivityManager(bleManager: BLEManager())
-
-//    @ObservedObject var connectivityManager = iPhoneConnectivityManager()
+    @ObservedObject var connectivityManager = iPhoneConnectivityManager()
     @ObservedObject var predictionManager = DreamAiPredictionManager()
-
     
     var body: some View {
         VStack {
@@ -190,6 +232,9 @@ struct RecordView: View {
                     Text("Z: \(entry.accelerationZ, specifier: "%.2f")")
                 }
                 .padding(.vertical, 5)
+                .onAppear{
+                    connectivityManager.printHeartRates()
+                }
             }
         }
         .foregroundColor(.white)

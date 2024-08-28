@@ -4,6 +4,7 @@ extension Color {
     static let deepNavy = Color(hex: "0D648E")
     static let home_mint = Color(hex: "35C2C1")
     static let lightAmber = Color(hex: "FFC87C")
+    static let scoreStar = Color(hex: "FDD836")
     
     init(hex: String) {
         let scanner = Scanner(string: hex)

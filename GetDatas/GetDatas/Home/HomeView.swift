@@ -4,6 +4,40 @@ struct HomeView: View {
     @State private var showSleepTrackingView = false  // SleepTrackingView로 이동하기 위한 상태
     @State private var showAccountManagementView = false  // AccountManagementView로 이동하기 위한 상태
     @EnvironmentObject var sessionManager: SessionManager
+    @State private var startBedtime = true
+    @State private var receiveAlarm = true
+    @State private var selectedBedtime = {
+        if let savedTime = UserDefaults.standard.object(forKey: "selectedBedTime") as? Date {
+            return savedTime
+        } else {
+            return Date()
+        }
+    }()
+    
+    @State private var selectedAlarmTime = {
+        if let savedTime = UserDefaults.standard.object(forKey: "selectedAlarmTime") as? Date {
+            return savedTime
+        } else {
+            return Date()
+        }
+    }()
+    
+    @State private var selectedWakeup = {
+        if let wakeUpTime = UserDefaults.standard.object(forKey: "selectedWakeUp") as? Int {
+            return wakeUpTime
+        } else {
+            return 30
+        }
+    }()
+    
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "hh:mm a"
+        formatter.amSymbol = "AM"
+        formatter.pmSymbol = "PM"
+        return formatter
+    }()
+    
 
     var body: some View {
         ZStack {
@@ -140,16 +174,21 @@ struct HomeView: View {
                                     .resizable()
                                     .frame(width: 24, height: 24)
                                 Spacer()
-                                Image(systemName: "ellipsis")
-                                    .foregroundColor(.gray)
+                                Button(action: {
+                                    NotificationCenter.default.post(name: Notification.Name("changeHomeView"),
+                                                                    object: BedTimeAlarmView.Tab.bedtime)
+                                }) {
+                                    Image(systemName: "ellipsis")
+                                        .foregroundColor(.gray)
+                                }
                             }
                             Text("취침 시간")
                                 .font(Font.system(size: 16, weight: .bold))
                                 .foregroundColor(.black)
-                            Text("12:20 AM")
+                            Text("\(dateFormatter.string(from: selectedBedtime))")
                                 .font(Font.system(size: 12))
                                 .foregroundColor(.gray)
-                            Toggle(isOn: .constant(true)) {
+                            Toggle(isOn: $startBedtime) {
                                 Text("")
                             }
                             .toggleStyle(SwitchToggleStyle(tint: Color.mint))
@@ -166,16 +205,21 @@ struct HomeView: View {
                                     .resizable()
                                     .frame(width: 24, height: 24)
                                 Spacer()
-                                Image(systemName: "ellipsis")
-                                    .foregroundColor(.gray)
+                                Button(action: {
+                                    NotificationCenter.default.post(name: Notification.Name("changeHomeView"),
+                                                                    object: BedTimeAlarmView.Tab.alarm)
+                                }) {
+                                    Image(systemName: "ellipsis")
+                                        .foregroundColor(.gray)
+                                }
                             }
                             Text("알람")
                                 .font(Font.system(size: 16, weight: .bold))
                                 .foregroundColor(.black)
-                            Text("08:30 AM - 09:00 AM")
+                            Text("\(dateFormatter.string(from: selectedAlarmTime.addingTimeInterval(-Double(selectedWakeup * 60)))) ~ \(dateFormatter.string(from: selectedAlarmTime))")
                                 .font(Font.system(size: 12))
                                 .foregroundColor(.gray)
-                            Toggle(isOn: .constant(false)) {
+                            Toggle(isOn: $receiveAlarm) {
                                 Text("")
                             }
                             .toggleStyle(SwitchToggleStyle(tint: Color.mint))
@@ -192,7 +236,8 @@ struct HomeView: View {
 
                     // 지금 취침하기 버튼
                     Button(action: {
-                        showSleepTrackingView = true  // SleepTrackingView로 이동
+                        NotificationCenter.default.post(name: Notification.Name("changeHomeView"),
+                                                        object: BedTimeAlarmView.Tab.sleepTrack)
                     }) {
                         Text("지금 취침하기")
                             .font(Font.system(size: 18, weight: .bold))
@@ -204,22 +249,12 @@ struct HomeView: View {
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, 20)
-                    .background(
-                        NavigationLink(destination: SleepTrackingView(), isActive: $showSleepTrackingView) {
-                            EmptyView()
-                        }
-                    )
                     
                 }
             }
             .background(Color.white)
             .edgesIgnoringSafeArea(.all)
             .navigationBarHidden(true)
-            .background(
-                NavigationLink(destination: AccountManagementView(), isActive: $showAccountManagementView) {
-                    EmptyView()
-                }
-            )
         }
     }
     

@@ -1,8 +1,7 @@
 import SwiftUI
 
 struct BottomNav: View {
-    @Binding var selectedTab: Tab
-
+    @State var selectedTab: Tab = .home
     enum Tab: String {
         case home
         case sleep
@@ -26,11 +25,26 @@ struct BottomNav: View {
             .cornerRadius(10)
             .padding(.bottom, 10)
         }
+        .onAppear{
+            NotificationCenter.default.addObserver(forName: Notification.Name("changeBottomNav"), object: nil, queue: .main) { notification in
+                if let tab = notification.object as? BottomNav.Tab {
+                    self.selectedTab = tab
+                }
+            }
+        }
+        .onDisappear{
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name("changeBottomNav"), object: nil)
+        }
     }
     
     private func tabButton(for tab: Tab, label: String, systemIconName: String) -> some View {
         Button(action: {
-            selectedTab = tab
+            NotificationCenter.default.post(name: Notification.Name("changeBottomNav"),
+                                            object: tab)
+            if tab == .home {
+                NotificationCenter.default.post(name: Notification.Name("changeHomeView"),
+                                                object: BedTimeAlarmView.Tab.none)
+            }
         }) {
             VStack {
                 Image(systemName: systemIconName)
