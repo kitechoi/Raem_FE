@@ -12,10 +12,18 @@ struct MeasurementData: Codable, Identifiable {
 
 class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var receivedData: [MeasurementData] = []
-    var bleManager: BLEManager
+    //var bleManager: BLEManager
     
-    init(bleManager: BLEManager) {
-        self.bleManager = bleManager
+//    init(bleManager: BLEManager) {
+//        self.bleManager = bleManager
+//        super.init()
+//        if WCSession.isSupported() {
+//            WCSession.default.delegate = self
+//            WCSession.default.activate()
+//        }
+//    }
+    
+    override init() {
         super.init()
         if WCSession.isSupported() {
             WCSession.default.delegate = self
@@ -34,47 +42,47 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             let receivedData = try JSONDecoder().decode([MeasurementData].self, from: messageData)
             DispatchQueue.main.async {
                 self.receivedData.append(contentsOf: receivedData)
-                self.printHeartRates() // 데이터가 로드될 때마다 심박수를 평가하고 출력
+                //self.printHeartRates() // 데이터가 로드될 때마다 심박수를 평가하고 출력
             }
         } catch {
             print("Failed to decode received data: \(error.localizedDescription)")
         }
     }
 
-    func printHeartRates() {
-        for entry in receivedData {
-            if entry.heartRate < 60 {
-                bleManager.controllLED("255,0,0")
-                print("red : 60이하, 현재 심박수: \(entry.heartRate)")
-            } else if entry.heartRate >= 65 && entry.heartRate < 70 {
-                bleManager.controllLED("255,128,0")
-                print("orange : 65이상 70미만, 현재 심박수: \(entry.heartRate)")
-            } else if entry.heartRate >= 70 && entry.heartRate < 75 {
-                bleManager.controllLED("255,255,0")
-                print("yellow : 70이상 75미만, 현재 심박수: \(entry.heartRate)")
-            } else if entry.heartRate >= 75 && entry.heartRate < 80 {
-                bleManager.controllLED("0,255,0")
-                print("green : 75이상 80미만, 현재 심박수: \(entry.heartRate)")
-            } else if entry.heartRate >= 80 && entry.heartRate < 85 {
-                bleManager.controllLED("0,128,255")
-                print("blue : 80이상 85미만, 현재 심박수: \(entry.heartRate)")
-            } else if entry.heartRate >= 85 && entry.heartRate < 90 {
-                bleManager.controllLED("0,0,255")
-                print("navy : 85이상 90미만, 현재 심박수: \(entry.heartRate)")
-            } else if entry.heartRate >= 90 && entry.heartRate < 95 {
-                bleManager.controllLED("128,0,255")
-                print("purple : 90이상 95미만, 현재 심박수: \(entry.heartRate)")
-            } else if entry.heartRate >= 95 && entry.heartRate < 100 {
-                bleManager.controllLED("255,255,255")
-                print("white : 95이상 100미만, 현재 심박수: \(entry.heartRate)")
-            } else {
-                bleManager.controllLED("255,0,255")
-                print("pink : 100이상, 현재 심박수: \(entry.heartRate)")
-            }
-        }
-        bleManager.controllLED("Done")
-        print("black : 모든 심박수 처리 완료")
-    }
+//    func printHeartRates() {
+//        for entry in receivedData {
+//            if entry.heartRate < 60 {
+//                bleManager.controllLED("255,0,0")
+//                print("red : 60이하, 현재 심박수: \(entry.heartRate)")
+//            } else if entry.heartRate >= 65 && entry.heartRate < 70 {
+//                bleManager.controllLED("255,128,0")
+//                print("orange : 65이상 70미만, 현재 심박수: \(entry.heartRate)")
+//            } else if entry.heartRate >= 70 && entry.heartRate < 75 {
+//                bleManager.controllLED("255,255,0")
+//                print("yellow : 70이상 75미만, 현재 심박수: \(entry.heartRate)")
+//            } else if entry.heartRate >= 75 && entry.heartRate < 80 {
+//                bleManager.controllLED("0,255,0")
+//                print("green : 75이상 80미만, 현재 심박수: \(entry.heartRate)")
+//            } else if entry.heartRate >= 80 && entry.heartRate < 85 {
+//                bleManager.controllLED("0,128,255")
+//                print("blue : 80이상 85미만, 현재 심박수: \(entry.heartRate)")
+//            } else if entry.heartRate >= 85 && entry.heartRate < 90 {
+//                bleManager.controllLED("0,0,255")
+//                print("navy : 85이상 90미만, 현재 심박수: \(entry.heartRate)")
+//            } else if entry.heartRate >= 90 && entry.heartRate < 95 {
+//                bleManager.controllLED("128,0,255")
+//                print("purple : 90이상 95미만, 현재 심박수: \(entry.heartRate)")
+//            } else if entry.heartRate >= 95 && entry.heartRate < 100 {
+//                bleManager.controllLED("255,255,255")
+//                print("white : 95이상 100미만, 현재 심박수: \(entry.heartRate)")
+//            } else {
+//                bleManager.controllLED("255,0,255")
+//                print("pink : 100이상, 현재 심박수: \(entry.heartRate)")
+//            }
+//        }
+//        bleManager.controllLED("Done")
+//        print("black : 모든 심박수 처리 완료")
+//    }
     
     func exportDataToCSV() -> URL? {
         let dateFormatter = DateFormatter()
@@ -233,7 +241,7 @@ struct RecordView: View {
                 }
                 .padding(.vertical, 5)
                 .onAppear{
-                    connectivityManager.printHeartRates()
+                    //connectivityManager.printHeartRates()
                 }
             }
         }
