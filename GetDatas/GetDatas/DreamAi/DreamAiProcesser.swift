@@ -49,7 +49,7 @@ class DreamAiProcessor {
     // 모델 예측 수행
     func performPrediction(data: [MeasurementData], completion: @escaping (Bool, Double, String) -> Void) {
         let windowSize = 90
-        let stepSize = 30    // 1일 경우 1튜플(0826_2초)마다 예측 수행
+        let stepSize = 15    // stepSize 1일 경우 1튜플(0826기준_2초에 1회)마다 예측 수행
         var index = 0
         while index + windowSize <= data.count {
             let window = Array(data[index..<index + windowSize])
