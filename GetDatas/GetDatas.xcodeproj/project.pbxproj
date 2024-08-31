@@ -45,7 +45,6 @@
 		739AE96C2C6DE368006BAF47 /* PasswordChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE96B2C6DE368006BAF47 /* PasswordChangeView.swift */; };
 		739AE96E2C70077B006BAF47 /* AccountDeletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE96D2C70077B006BAF47 /* AccountDeletionView.swift */; };
 		739AE9702C700950006BAF47 /* SleepDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE96F2C700950006BAF47 /* SleepDetailView.swift */; };
-		739AE9722C700ADE006BAF47 /* SleepRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9712C700ADE006BAF47 /* SleepRatingView.swift */; };
 		739AE9742C700C31006BAF47 /* BedTimeAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */; };
 		73E1F5B02C833DF0000118C7 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E1F5AF2C833DEF000118C7 /* Album.swift */; };
 		73E1F5B22C833E03000118C7 /* AlbumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E1F5B12C833E03000118C7 /* AlbumView.swift */; };
@@ -124,7 +123,6 @@
 		739AE96B2C6DE368006BAF47 /* PasswordChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeView.swift; sourceTree = "<group>"; };
 		739AE96D2C70077B006BAF47 /* AccountDeletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionView.swift; sourceTree = "<group>"; };
 		739AE96F2C700950006BAF47 /* SleepDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepDetailView.swift; sourceTree = "<group>"; };
-		739AE9712C700ADE006BAF47 /* SleepRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepRatingView.swift; sourceTree = "<group>"; };
 		739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedTimeAlarmView.swift; sourceTree = "<group>"; };
 		73E1F5AF2C833DEF000118C7 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		73E1F5B12C833E03000118C7 /* AlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumView.swift; sourceTree = "<group>"; };
@@ -198,8 +196,10 @@
 		3B445A022BF0F0E900AFA631 /* GetDatas */ = {
 			isa = PBXGroup;
 			children = (
+            
 				73E1F5B92C8342DC000118C7 /* 1.mp3 */,
 				73E1F5AE2C83106D000118C7 /* Sounds */,
+                66801424b118cbdfb79a22579be71dca62bf6389
 				0C24AD692C7CB725004CF022 /* DreamAi */,
 				A82DF1902C7B5A8F00EF097E /* BLEManager */,
 				3BA82A3C2C79E61D00CE24F2 /* Setting */,
@@ -316,7 +316,6 @@
 				736119652C68AE5800F3FF11 /* HomeView.swift */,
 				7361196B2C68B6C400F3FF11 /* SleepTrackingView.swift */,
 				739AE96F2C700950006BAF47 /* SleepDetailView.swift */,
-				739AE9712C700ADE006BAF47 /* SleepRatingView.swift */,
 				739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */,
 			);
 			path = Home;
@@ -468,7 +467,6 @@
 				3B05422A2C75CB3700A4CB0D /* BackButton.swift in Sources */,
 				736119612C68AA8800F3FF11 /* DeviceRegistrationView.swift .swift in Sources */,
 				739AE9702C700950006BAF47 /* SleepDetailView.swift in Sources */,
-				739AE9722C700ADE006BAF47 /* SleepRatingView.swift in Sources */,
 				739AE96E2C70077B006BAF47 /* AccountDeletionView.swift in Sources */,
 				A82DF18F2C7B331A00EF097E /* MainContentView.swift in Sources */,
 				3BC998AE2C7C5BE800B9C3E1 /* CustomTopBar.swift in Sources */,
@@ -760,7 +758,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -808,7 +806,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
