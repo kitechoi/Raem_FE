@@ -12,6 +12,9 @@ struct MeasurementData: Codable, Identifiable {
 
 class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var receivedData: [MeasurementData] = []
+    @Published var predictionManager = DreamAiPredictionManager()
+//    @ObservedObject var predictionManager = DreamAiPredictionManager() // 연: 자동 예측 수행을 위해 추가함(0831)
+    
     //var bleManager: BLEManager
     
 //    init(bleManager: BLEManager) {
@@ -43,6 +46,9 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             DispatchQueue.main.async {
                 self.receivedData.append(contentsOf: receivedData)
                 //self.printHeartRates() // 데이터가 로드될 때마다 심박수를 평가하고 출력
+                print("-------------------")
+                print("Received Data Count: \(self.receivedData.count)")  // 데이터 수신 갯수 확인
+                self.predictionManager.processReceivedData(self.receivedData)  // 수신 후 예측 시작
             }
         } catch {
             print("Failed to decode received data: \(error.localizedDescription)")
@@ -162,7 +168,7 @@ struct RecordView: View {
 //     @ObservedObject var connectivityManager = iPhoneConnectivityManager(bleManager: BLEManager())
 
     @ObservedObject var connectivityManager = iPhoneConnectivityManager()
-    @ObservedObject var predictionManager = DreamAiPredictionManager()
+//    @ObservedObject var predictionManager = DreamAiPredictionManager()
     
     var body: some View {
         VStack {
@@ -200,16 +206,17 @@ struct RecordView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
-                Button("예측 시작") {
-                    predictionManager.processReceivedData(connectivityManager.receivedData)
-                }
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(10)
+//                예측 시작 버튼 주석화함. 자동 예측 수행하도록 변경했기 때문임.
+//                Button("예측 시작") {
+//                    predictionManager.processReceivedData(connectivityManager.receivedData)
+//                }
+//                .padding()
+//                .background(Color.blue)
+//                .foregroundColor(.white)
+//                .cornerRadius(10)
                 
                 Button("예측 결과 CSV로 내보내기") {
-                    if let csvURL = predictionManager.exportPredictionsToCSV() {
+                    if let csvURL = connectivityManager.predictionManager.exportPredictionsToCSV() {
                         let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
                         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                            let rootVC = windowScene.windows.first?.rootViewController {
@@ -222,7 +229,7 @@ struct RecordView: View {
                 .foregroundColor(.white)
                 .cornerRadius(10)
                 
-                NavigationLink(destination: DreamAiPredictionView(predictionManager: predictionManager)) {
+                NavigationLink(destination: DreamAiPredictionView(predictionManager: connectivityManager.predictionManager)) {
                     Text("예측 결과 보기")
                         .padding()
                         .background(Color.orange)
@@ -230,6 +237,30 @@ struct RecordView: View {
                         .cornerRadius(10)
                 }
             }
+                
+                
+//                Button("예측 결과 CSV로 내보내기") {
+//                    if let csvURL = predictionManager.exportPredictionsToCSV() {
+//                        let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
+//                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+//                           let rootVC = windowScene.windows.first?.rootViewController {
+//                            rootVC.present(activityVC, animated: true)
+//                        }
+//                    }
+//                }
+//                .padding()
+//                .background(Color.orange)
+//                .foregroundColor(.white)
+//                .cornerRadius(10)
+//                
+//                NavigationLink(destination: DreamAiPredictionView(predictionManager: predictionManager)) {
+//                    Text("예측 결과 보기")
+//                        .padding()
+//                        .background(Color.orange)
+//                        .foregroundColor(.white)
+//                        .cornerRadius(10)
+//                }
+//            }
             
             List(connectivityManager.receivedData) { entry in
                 VStack(alignment: .leading) {
