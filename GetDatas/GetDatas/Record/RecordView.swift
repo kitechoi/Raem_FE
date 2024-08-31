@@ -252,7 +252,7 @@ struct RecordView: View {
 //                .background(Color.orange)
 //                .foregroundColor(.white)
 //                .cornerRadius(10)
-//                
+//
 //                NavigationLink(destination: DreamAiPredictionView(predictionManager: predictionManager)) {
 //                    Text("예측 결과 보기")
 //                        .padding()

@@ -18,6 +18,7 @@ struct AccountManagementView: View {
     @EnvironmentObject var sessionManager: SessionManager
     @State private var showRecordView = false
     @State private var showSleepDataView = false
+    @State private var showTrainingView = false // 재학습 뷰
     
     var body: some View {
         NavigationView {
@@ -125,7 +126,7 @@ struct AccountManagementView: View {
                 }
                 .padding(.horizontal, 16)
                 
-                // 실시간 데이터와 수면 데이터 버튼 섹션
+                // 실시간 데이터와 수면 데이터 버튼, Ai 재학습 버튼 섹션
                 HStack {
                     NavigationLink(destination: RecordView(), isActive: $showRecordView) {
                         Button(action: {
@@ -148,6 +149,19 @@ struct AccountManagementView: View {
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 50)
                                 .background(Color.orange)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                    }
+                    // 재학습하기 버튼 섹션
+                    NavigationLink(destination: TrainingView(), isActive: $showTrainingView) {
+                        Button(action: {
+                            showTrainingView = true
+                        }) {
+                            Text("재학습하기")
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                                .background(Color.blue)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }

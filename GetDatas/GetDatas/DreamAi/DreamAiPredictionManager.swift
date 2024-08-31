@@ -82,7 +82,6 @@ class DreamAiPredictionManager: ObservableObject {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
             let date = dateFormatter.string(from: Date())
-            
 //            let userName = UserDefaults.standard.string(forKey: "userName") ?? UIDevice.current.name
             let userName = "yeon" // 회원가입 확정되면 수정해야.
             let fileName = "\(userName)_DreamAi_(\(date)).csv"
