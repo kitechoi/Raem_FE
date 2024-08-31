@@ -16,7 +16,7 @@ struct SettingView: View {
         let blue = UserDefaults.standard.double(forKey: "blue")
         let turnOnDuration = UserDefaults.standard.integer(forKey: "TurnOnDuration")
         let turnOffAfter = UserDefaults.standard.integer(forKey: "TurnOffAfter")
-        let brightness = UserDefaults.standard.double(forKey: "Brightness")
+        let brightness = UserDefaults.standard.double(forKey: "brightness")
         
         if red != 0 || green != 0 || blue != 0 { // 저장된 값이 있을 때
             _lightColor = State(initialValue: Color(.sRGB, red: red, green: green, blue: blue, opacity: 1.0))
@@ -37,8 +37,11 @@ struct SettingView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            // 상단 타이틀 및 뒤로가기 버튼
-            CustomTopBar(title: "설정")
+            HStack {
+                Text("설정")
+                    .font(.system(size: 28, weight: .bold))
+                Spacer()
+            }
 
             
             ScrollView {
@@ -51,11 +54,11 @@ struct SettingView: View {
                             .resizable()
                             .frame(width: 18, height: 20)
                         Slider(value: $brightness, in: 0...100, step: 10)
-                            .onChange(of: brightness) { newValue in
-                                if newValue < 10 {
+                            .onChange(of: brightness) {
+                                if brightness < 10 {
                                     brightness = 10
                                 }
-                                saveBrightness(brightness: newValue)
+                                saveBrightness(brightness: brightness)
                             }
                             .accentColor(.deepNavy)
                             .padding(.vertical, 10)
@@ -71,8 +74,8 @@ struct SettingView: View {
                         .foregroundColor(.black)
                     Spacer()
                     ColorPicker("", selection: $lightColor, supportsOpacity: false)
-                        .onChange(of: lightColor) { newColor in
-                            saveColor(color: newColor)
+                        .onChange(of: lightColor) {
+                            saveColor(color: lightColor)
                         }
                         .labelsHidden()
                 }
@@ -172,7 +175,8 @@ struct SettingView: View {
             }
             
         }
-        .padding()
+        .padding(.top, 70)
+        .padding(.horizontal, 16)
 //        .onAppear {
 //            if let connectSuccess = bleManager.connectSuccess {
 //                isConnected = connectSuccess
