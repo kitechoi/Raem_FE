@@ -56,13 +56,13 @@ struct HomeView: View {
                                 .font(Font.system(size: 14))
                                 .foregroundColor(.gray)
                             Spacer()
-                            Button(action: {
-                                // 더보기 액션 추가
-                            }) {
-                                Text("더보기")
-                                    .font(Font.system(size: 14))
-                                    .foregroundColor(Color.home_mint)
-                            }
+//                            Button(action: {
+//                                // 더보기 액션 추가
+//                            }) {
+//                                Text("더보기")
+//                                    .font(Font.system(size: 14))
+//                                    .foregroundColor(Color.home_mint)
+//                            }
                         }
                     }
                     .padding(.horizontal, 23) // 좌우 여백 추가
@@ -76,7 +76,9 @@ struct HomeView: View {
                                 .foregroundColor(.black)
                             Spacer()
                             Button(action: {
-                                // 분석 보기 액션 추가
+                                NotificationCenter.default.post(name: Notification.Name("changeBottomNav"),
+                                                                object: BottomNav.Tab.sleep)
+                                
                             }) {
                                 Text("분석 보기")
                                     .font(Font.system(size: 15))
@@ -172,7 +174,7 @@ struct HomeView: View {
                             HStack {
                                 Image("bed")
                                     .resizable()
-                                    .frame(width: 24, height: 24)
+                                    .frame(width: 24, height: 18)
                                 Spacer()
                                 Button(action: {
                                     NotificationCenter.default.post(name: Notification.Name("changeHomeView"),

@@ -1,4 +1,5 @@
 import SwiftUI
+import Charts
 
 struct SleepView: View {
     @State private var selectedTab: Tab = .today
@@ -365,24 +366,444 @@ struct DailySleepView: View {
     }
 }
 
+struct Score: Identifiable {
+  let label: String
+  let avgScore: Float
+  
+  var id: String { label }
+}
+
 struct WeeklySleepView: View {
+    let scores: [Score] = [
+        .init(label: "Mon", avgScore: 3.5),
+        .init(label: "Tue", avgScore: 2),
+        .init(label: "Web", avgScore: 4),
+        .init(label: "Thu", avgScore: 1.5),
+        .init(label: "Fri", avgScore: 0),
+        .init(label: "Sat", avgScore: 3),
+        .init(label: "Sum", avgScore: 3)
+    ]
     
     var body: some View {
-        Text("Weekly Sleep View")
+        VStack(alignment: .leading, spacing: 16){
+            VStack(spacing: 20) {
+                HStack {
+                    Text("수면 별점")
+                        .font(.system(size: 24, weight: .bold))
+                    Spacer()
+                }
+                
+                Chart {
+                    ForEach(scores) { score in
+                        BarMark(
+                            x: .value("weekDay", score.label),
+                            y: .value("score", score.avgScore),
+                            width: 20
+                        )
+                        .foregroundStyle(Color.deepNavy)
+                        
+                    }
+                }
+                .chartYAxis {
+                    AxisMarks(values: .stride(by: 1))
+                }
+                .chartYScale(domain: 0...5)
+                .frame(height: 170)
+            }
+            .padding(.vertical, 8)
+            
+            VStack(spacing: 20) {
+                HStack {
+                    Text("이번 주 평균 수면 깊이")
+                        .font(.system(size: 24, weight: .bold))
+                    Spacer()
+                }
+                
+                VStack(alignment: .leading){
+                    HStack{
+                        Spacer()
+                        VStack(alignment: .leading) {
+                            HStack(spacing: 45) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HStack(spacing: 16) {
+                                        Image("moon")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                        VStack(alignment: .leading, spacing: 4){
+                                            Text("6시간 52분")
+                                                .font(Font.system(size: 18, weight: .bold))
+                                                .foregroundColor(.black)
+                                            Text("Time in sleep")
+                                                .font(Font.system(size: 12))
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                }
+                                .padding(.trailing, 10)
+
+                                VStack(spacing: 4) {
+                                    HStack(spacing: 16) {
+                                        Image("zzz")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                        VStack(alignment: .leading, spacing: 4){
+                                            Text("25분")
+                                                .font(Font.system(size: 18, weight: .bold))
+                                                .foregroundColor(.black)
+                                            Text("Fell asleep")
+                                                .font(Font.system(size: 12))
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            HStack(spacing: 45) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HStack(spacing: 16) {
+                                        Image("watch")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                        VStack(alignment: .leading, spacing:4) {
+                                            Text("7시간 23분")
+                                                .font(Font.system(size: 18, weight: .bold))
+                                                .foregroundColor(.black)
+                                            Text("Went to bed")
+                                                .font(Font.system(size: 12))
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                }
+                                .padding(.trailing, 10)
+
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HStack(spacing: 16) {
+                                        Image("sun")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text("07시 12분")
+                                                .font(Font.system(size: 18, weight: .bold))
+                                                .foregroundColor(.black)
+                                            Text("Wake up time")
+                                                .font(Font.system(size: 12))
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(.top, 25)
+                        }
+                        Spacer()
+                    }
+                }
+                .padding(22)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.gray.opacity(0.1))
+                )
+            }
+        }
     }
 }
 
 struct MonthlySleepView: View {
+    let scores: [Score] = [
+        .init(label: "1주차", avgScore: 3.5),
+        .init(label: "2주차", avgScore: 4),
+        .init(label: "3주차", avgScore: 3.3),
+        .init(label: "4주차", avgScore: 1.25),
+        .init(label: "5주차", avgScore: 1)
+    ]
     
     var body: some View {
-        Text("Monthly Sleep View")
+        VStack(alignment: .leading, spacing: 16){
+            VStack(spacing: 20) {
+                HStack {
+                    Text("수면 별점")
+                        .font(.system(size: 24, weight: .bold))
+                    Spacer()
+                }
+                
+                Chart {
+                    ForEach(scores) { score in
+                        BarMark(
+                            x: .value("weekNum", score.label),
+                            y: .value("score", score.avgScore),
+                            width: 20
+                        )
+                        .foregroundStyle(Color.deepNavy)
+                        
+                    }
+                }
+                .chartYAxis {
+                    AxisMarks(values: .stride(by: 1))
+                }
+                .chartYScale(domain: 0...5)
+                .frame(height: 170)
+            }
+            .padding(.vertical, 8)
+            
+            VStack(spacing: 20) {
+                HStack {
+                    Text("이번 달 평균 수면 깊이")
+                        .font(.system(size: 24, weight: .bold))
+                    Spacer()
+                }
+                
+                VStack(alignment: .leading){
+                    HStack{
+                        Spacer()
+                        VStack(alignment: .leading) {
+                            HStack(spacing: 45) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HStack(spacing: 16) {
+                                        Image("moon")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                        VStack(alignment: .leading, spacing: 4){
+                                            Text("6시간 52분")
+                                                .font(Font.system(size: 18, weight: .bold))
+                                                .foregroundColor(.black)
+                                            Text("Time in sleep")
+                                                .font(Font.system(size: 12))
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                }
+                                .padding(.trailing, 10)
+
+                                VStack(spacing: 4) {
+                                    HStack(spacing: 16) {
+                                        Image("zzz")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                        VStack(alignment: .leading, spacing: 4){
+                                            Text("25분")
+                                                .font(Font.system(size: 18, weight: .bold))
+                                                .foregroundColor(.black)
+                                            Text("Fell asleep")
+                                                .font(Font.system(size: 12))
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            HStack(spacing: 45) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HStack(spacing: 16) {
+                                        Image("watch")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                        VStack(alignment: .leading, spacing:4) {
+                                            Text("7시간 23분")
+                                                .font(Font.system(size: 18, weight: .bold))
+                                                .foregroundColor(.black)
+                                            Text("Went to bed")
+                                                .font(Font.system(size: 12))
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                }
+                                .padding(.trailing, 10)
+
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HStack(spacing: 16) {
+                                        Image("sun")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text("07시 12분")
+                                                .font(Font.system(size: 18, weight: .bold))
+                                                .foregroundColor(.black)
+                                            Text("Wake up time")
+                                                .font(Font.system(size: 12))
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(.top, 25)
+                        }
+                        Spacer()
+                    }
+                }
+                .padding(22)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.gray.opacity(0.1))
+                )
+            }
+        }
     }
 }
 
 struct AnnuallySleepView: View {
+    let scores: [Score] = [
+        .init(label: "1월", avgScore: 3.5),
+        .init(label: "2월", avgScore: 4),
+        .init(label: "3월", avgScore: 3.3),
+        .init(label: "4월", avgScore: 1.25),
+        .init(label: "5월", avgScore: 1),
+        .init(label: "6월", avgScore: 2),
+        .init(label: "7월", avgScore: 0),
+    ]
     
     var body: some View {
-        Text("Annyally Sleep View")
+        VStack(alignment: .leading, spacing: 16){
+            VStack(spacing: 20) {
+                HStack {
+                    Text("수면 별점")
+                        .font(.system(size: 24, weight: .bold))
+                    Spacer()
+                }
+                
+                Chart {
+                    ForEach(scores) { score in
+                        BarMark(
+                            x: .value("month", score.label),
+                            y: .value("score", score.avgScore),
+                            width: 20
+                        )
+                        .foregroundStyle(Color.deepNavy)
+                        
+                    }
+                }
+                .chartYAxis {
+                    AxisMarks(values: .stride(by: 1))
+                }
+                .chartYScale(domain: 0...5)
+                .frame(height: 170)
+            }
+            .padding(.vertical, 8)
+            
+            VStack(spacing: 20) {
+                HStack {
+                    Text("이번 달 평균 수면 깊이")
+                        .font(.system(size: 24, weight: .bold))
+                    Spacer()
+                }
+                
+                VStack(alignment: .leading){
+                    HStack{
+                        Spacer()
+                        VStack(alignment: .leading) {
+                            HStack(spacing: 45) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HStack(spacing: 16) {
+                                        Image("moon")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                        VStack(alignment: .leading, spacing: 4){
+                                            Text("6시간 52분")
+                                                .font(Font.system(size: 18, weight: .bold))
+                                                .foregroundColor(.black)
+                                            Text("Time in sleep")
+                                                .font(Font.system(size: 12))
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                }
+                                .padding(.trailing, 10)
+
+                                VStack(spacing: 4) {
+                                    HStack(spacing: 16) {
+                                        Image("zzz")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                        VStack(alignment: .leading, spacing: 4){
+                                            Text("25분")
+                                                .font(Font.system(size: 18, weight: .bold))
+                                                .foregroundColor(.black)
+                                            Text("Fell asleep")
+                                                .font(Font.system(size: 12))
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            HStack(spacing: 45) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HStack(spacing: 16) {
+                                        Image("watch")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                        VStack(alignment: .leading, spacing:4) {
+                                            Text("7시간 23분")
+                                                .font(Font.system(size: 18, weight: .bold))
+                                                .foregroundColor(.black)
+                                            Text("Went to bed")
+                                                .font(Font.system(size: 12))
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                }
+                                .padding(.trailing, 10)
+
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HStack(spacing: 16) {
+                                        Image("sun")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text("07시 12분")
+                                                .font(Font.system(size: 18, weight: .bold))
+                                                .foregroundColor(.black)
+                                            Text("Wake up time")
+                                                .font(Font.system(size: 12))
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(.top, 25)
+                        }
+                        Spacer()
+                    }
+                }
+                .padding(22)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.gray.opacity(0.1))
+                )
+            }
+            
+            VStack(spacing: 20) {
+                HStack {
+                    Text("2024 수면 레포트")
+                        .font(.system(size: 24, weight: .bold))
+                    Spacer()
+                }
+                
+                VStack(alignment: .leading, spacing: 12){
+                    HStack {
+                        Text("전체 수면 패턴")
+                            .font(.system(size: 17, weight: .bold))
+                        Spacer()
+                    }
+                    
+                    Text("1월과 3월에 수면 시간과 질의 변동이 있었으나 2월에 안정화됨\n총 수면 시간과 수면의 질이 점차 개선되는 추세")
+                        .font(.system(size: 17))
+                    
+                    HStack {
+                        Text("개선 사항")
+                            .font(.system(size: 17, weight: .bold))
+                        Spacer()
+                    }
+                    .padding(.top, 16)
+                    
+                    Text("스마트폰 사용 줄이기, 카페인 섭취 조절 성공\n매일 같은 시간에 잠들기, 수면 환경 지속적 개선")
+                        .font(.system(size: 17))
+                }
+                .padding(22)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.gray.opacity(0.1))
+                )
+            }
+        }
     }
 }
 
