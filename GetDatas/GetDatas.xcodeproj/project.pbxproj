@@ -47,6 +47,11 @@
 		739AE9702C700950006BAF47 /* SleepDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE96F2C700950006BAF47 /* SleepDetailView.swift */; };
 		739AE9722C700ADE006BAF47 /* SleepRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9712C700ADE006BAF47 /* SleepRatingView.swift */; };
 		739AE9742C700C31006BAF47 /* BedTimeAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */; };
+		73E1F5B02C833DF0000118C7 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E1F5AF2C833DEF000118C7 /* Album.swift */; };
+		73E1F5B22C833E03000118C7 /* AlbumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E1F5B12C833E03000118C7 /* AlbumView.swift */; };
+		73E1F5B42C833E1C000118C7 /* MiniPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E1F5B32C833E1C000118C7 /* MiniPlayerView.swift */; };
+		73E1F5B62C833E2E000118C7 /* MusicPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E1F5B52C833E2E000118C7 /* MusicPlayerView.swift */; };
+		73E1F5BA2C8342DC000118C7 /* 1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 73E1F5B92C8342DC000118C7 /* 1.mp3 */; };
 		A82DF18F2C7B331A00EF097E /* MainContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82DF18E2C7B331A00EF097E /* MainContentView.swift */; };
 		A82DF1922C7B5AC100EF097E /* BLEManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82DF1912C7B5AC100EF097E /* BLEManager.swift */; };
 /* End PBXBuildFile section */
@@ -121,6 +126,11 @@
 		739AE96F2C700950006BAF47 /* SleepDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepDetailView.swift; sourceTree = "<group>"; };
 		739AE9712C700ADE006BAF47 /* SleepRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepRatingView.swift; sourceTree = "<group>"; };
 		739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedTimeAlarmView.swift; sourceTree = "<group>"; };
+		73E1F5AF2C833DEF000118C7 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
+		73E1F5B12C833E03000118C7 /* AlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumView.swift; sourceTree = "<group>"; };
+		73E1F5B32C833E1C000118C7 /* MiniPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniPlayerView.swift; sourceTree = "<group>"; };
+		73E1F5B52C833E2E000118C7 /* MusicPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerView.swift; sourceTree = "<group>"; };
+		73E1F5B92C8342DC000118C7 /* 1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 1.mp3; sourceTree = "<group>"; };
 		A82DF18E2C7B331A00EF097E /* MainContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentView.swift; sourceTree = "<group>"; };
 		A82DF1912C7B5AC100EF097E /* BLEManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -188,11 +198,10 @@
 		3B445A022BF0F0E900AFA631 /* GetDatas */ = {
 			isa = PBXGroup;
 			children = (
-
+				73E1F5B92C8342DC000118C7 /* 1.mp3 */,
+				73E1F5AE2C83106D000118C7 /* Sounds */,
 				0C24AD692C7CB725004CF022 /* DreamAi */,
 				A82DF1902C7B5A8F00EF097E /* BLEManager */,
-				0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */,
-				0CD786AC2C772246004677B7 /* MlTestView.swift */,
 				3BA82A3C2C79E61D00CE24F2 /* Setting */,
 				3B0542222C75CAD100A4CB0D /* Component */,
 				3BF207E92C735C79000DEDA9 /* Record */,
@@ -247,7 +256,6 @@
 			children = (
 				3BA82A3D2C79E64A00CE24F2 /* SettingsView.swift */,
 				3BA82A3F2C79E7C500CE24F2 /* SleepView.swift */,
-				3BA82A412C79E82600CE24F2 /* SoundsView.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -325,6 +333,18 @@
 				739AE96D2C70077B006BAF47 /* AccountDeletionView.swift */,
 			);
 			path = AccountManagement;
+			sourceTree = "<group>";
+		};
+		73E1F5AE2C83106D000118C7 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				3BA82A412C79E82600CE24F2 /* SoundsView.swift */,
+				73E1F5AF2C833DEF000118C7 /* Album.swift */,
+				73E1F5B12C833E03000118C7 /* AlbumView.swift */,
+				73E1F5B32C833E1C000118C7 /* MiniPlayerView.swift */,
+				73E1F5B52C833E2E000118C7 /* MusicPlayerView.swift */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 		A82DF1902C7B5A8F00EF097E /* BLEManager */ = {
@@ -419,6 +439,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73E1F5BA2C8342DC000118C7 /* 1.mp3 in Resources */,
 				3B445A0B2BF0F0EA00AFA631 /* Preview Assets.xcassets in Resources */,
 				3B445A082BF0F0EA00AFA631 /* Assets.xcassets in Resources */,
 			);
@@ -454,15 +475,19 @@
 				3BF207EB2C735CA4000DEDA9 /* RecordView.swift in Sources */,
 				3BA82A422C79E82600CE24F2 /* SoundsView.swift in Sources */,
 				736119592C68A59300F3FF11 /* LoginView.swift in Sources */,
+				73E1F5B42C833E1C000118C7 /* MiniPlayerView.swift in Sources */,
 				3BA82A392C79E1EC00CE24F2 /* BottomNav.swift in Sources */,
 				736119522C68A23300F3FF11 /* Colors.swift in Sources */,
 				3B3554042C776E8D005FA172 /* SleepDataView.swift in Sources */,
 				736119662C68AE5800F3FF11 /* HomeView.swift in Sources */,
 				3BA82A3B2C79E49D00CE24F2 /* WatchButton.swift in Sources */,
 				736119482C68948100F3FF11 /* LoadingView.swift in Sources */,
+				73E1F5B62C833E2E000118C7 /* MusicPlayerView.swift in Sources */,
+				73E1F5B22C833E03000118C7 /* AlbumView.swift in Sources */,
 				7361196C2C68B6C400F3FF11 /* SleepTrackingView.swift in Sources */,
 				0C24AD6D2C7CBE15004CF022 /* DreamAiProcesser.swift in Sources */,
 				3BA82A3E2C79E64A00CE24F2 /* SettingsView.swift in Sources */,
+				73E1F5B02C833DF0000118C7 /* Album.swift in Sources */,
 				7361195D2C68A6D100F3FF11 /* RegisterView.swift in Sources */,
 				7361195F2C68A99000F3FF11 /* RegisterCompleteView.swift in Sources */,
 				739AE96A2C6DE037006BAF47 /* EmailChangeView.swift in Sources */,
