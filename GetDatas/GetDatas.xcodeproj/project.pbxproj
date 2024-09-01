@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C20A0D62C845261006790A8 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C20A0D52C845261006790A8 /* DocumentPicker.swift */; };
 		0C24AD6B2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD6A2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel */; };
 		0C24AD6D2C7CBE15004CF022 /* DreamAiProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD6C2C7CBE15004CF022 /* DreamAiProcesser.swift */; };
 		0C24AD762C7CC95E004CF022 /* DreamAiPredictionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD752C7CC95E004CF022 /* DreamAiPredictionManager.swift */; };
@@ -82,6 +83,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0C20A0D52C845261006790A8 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		0C24AD6A2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = DreamDetector_TabularClassifier.mlmodel; sourceTree = "<group>"; };
 		0C24AD6C2C7CBE15004CF022 /* DreamAiProcesser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamAiProcesser.swift; sourceTree = "<group>"; };
 		0C24AD752C7CC95E004CF022 /* DreamAiPredictionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamAiPredictionManager.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			children = (
 				0CFAD4892C83940300791BF5 /* TrainingView.swift */,
 				0CFAD48B2C839CD200791BF5 /* TrainProcesser.swift */,
+				0C20A0D52C845261006790A8 /* DocumentPicker.swift */,
 			);
 			path = AiTraning;
 			sourceTree = "<group>";
@@ -478,6 +481,7 @@
 				0CFAD48C2C839CD200791BF5 /* TrainProcesser.swift in Sources */,
 				739AE9682C6DD742006BAF47 /* NameChangeView.swift in Sources */,
 				3B05422A2C75CB3700A4CB0D /* BackButton.swift in Sources */,
+				0C20A0D62C845261006790A8 /* DocumentPicker.swift in Sources */,
 				736119612C68AA8800F3FF11 /* DeviceRegistrationView.swift .swift in Sources */,
 				739AE9702C700950006BAF47 /* SleepDetailView.swift in Sources */,
 				739AE96E2C70077B006BAF47 /* AccountDeletionView.swift in Sources */,

@@ -1,3 +1,5 @@
+// TrainingView.swift
+
 import SwiftUI
 import CoreML
 
@@ -8,6 +10,8 @@ struct TrainingView: View {
     @State private var recordFileURL: URL?
     @State private var showFileUploadAlert = false
     @State private var fileUploadMessage = ""
+    @State private var showDocumentPicker = false
+    @State private var combinedFileURL: URL?
     
     var body: some View {
         VStack(spacing: 16) {
@@ -54,7 +58,10 @@ struct TrainingView: View {
             Button("DreamAi 재학습 시작") {
                 if let recordFileURL = recordFileURL, let userFileURL = userFileURL {
                     let processor = TrainProcessor()
-                    processor.preprocessAndTrain(recordFilePath: recordFileURL.path, userFilePath: userFileURL.path)
+                    processor.preprocessAndTrain(recordFilePath: recordFileURL.path, userFilePath: userFileURL.path) { fileURL in
+                        combinedFileURL = fileURL
+                        showDocumentPicker = true
+                    }
                 } else {
                     fileUploadMessage = "모든 파일을 업로드해야 합니다."
                     showFileUploadAlert = true
@@ -69,5 +76,16 @@ struct TrainingView: View {
             }
         }
         .padding()
+        .sheet(isPresented: $showDocumentPicker) {
+            if let fileURL = combinedFileURL {
+                DocumentPicker(fileURL: fileURL) { success in
+                    if success {
+                        print("파일이 성공적으로 저장되었습니다.")
+                    } else {
+                        print("파일 저장이 취소되었습니다.")
+                    }
+                }
+            }
+        }
     }
 }
