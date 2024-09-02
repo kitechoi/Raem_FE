@@ -48,7 +48,8 @@ struct SoundsView: View {
                         .animation(.spring())
                 }
             }
-            .navigationBarTitle("Sound page", displayMode: .inline)
+            // Remove or set the navigation bar title to an empty string
+            .navigationBarTitle("", displayMode: .inline)
         }
     }
 }
