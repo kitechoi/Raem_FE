@@ -20,10 +20,10 @@ struct AccountManagementView: View {
     @State private var showSleepDataView = false
     
     var body: some View {
-        NavigationView {
             VStack {
                 // 상단 타이틀 및 뒤로가기 버튼
                 CustomTopBar(title: "계정 관리")
+                
                 Spacer()
                 
                 // 프로필 이미지 및 변경 버튼
@@ -219,7 +219,7 @@ struct AccountManagementView: View {
             .background(Color.white)
             .edgesIgnoringSafeArea(.all)
             .navigationBarBackButtonHidden(true)
-        }
+            .navigationBarHidden(true)
     }
     
     func logout() {

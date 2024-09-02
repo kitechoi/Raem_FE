@@ -23,12 +23,7 @@ struct CustomTopBar: View {
         .padding(.horizontal, 16)
         .padding(.top, 60)
         .background(Color.white)
-    }
-}
-
-struct CustomTopBar_Previews: PreviewProvider {
-    static var previews: some View {
-        CustomTopBar(title: "계정 관리")
-            .edgesIgnoringSafeArea(.top)
+//        .navigationBarBackButtonHidden(true)
+//        .navigationBarHidden(true)
     }
 }
