@@ -13,7 +13,7 @@ class DreamAiPredictionManager: ObservableObject {
         
         aiProcessor.performPrediction(data: data) { isSleeping, probability, timestamp in
             DispatchQueue.main.async {
-                print("...DreamAi 호출...")
+//                print("...DreamAi 호출...")
                 self.predictionResults.append((timestamp: timestamp, isSleeping: isSleeping, probability: probability))
                 // 데이터 받을 때마다 자는지 안자는지 체크
                 self.nowSleepState(isSleeping: isSleeping, timestamp: timestamp)
@@ -30,21 +30,21 @@ class DreamAiPredictionManager: ObservableObject {
     
     // 실시간으로 자는지 안 자는지 확인하는 함수
     private func nowSleepState(isSleeping: Bool, timestamp: String) {
-        let logMessage = "예측 결과:"
+        let logMessage = "DreamAi 예측 결과:"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let currentDate = Date()
         let formattedDate = dateFormatter.string(from: currentDate)
         
         if let nowState = predictionResults.last {
-            print("\(logMessage) \(nowState) 예측 수행 시각: \(formattedDate)")
+            print("\(logMessage) \(nowState) //예측 수행 시각: \(formattedDate)")
             
             // 예측 윈도우에서 첫 번째와 마지막 튜플의 시간만 출력
-            let window = aiProcessor.lastPredictionWindow
-            if let firstTuple = window.first, let lastTuple = window.last {
-                print("예측 윈도우의 첫 번째 튜플 시각: \(firstTuple.timestamp)")
-                print("예측 윈도우의 마지막 튜플 시각: \(lastTuple.timestamp)")
-            }
+//            let window = aiProcessor.lastPredictionWindow
+//            if let firstTuple = window.first, let lastTuple = window.last {
+//                print("예측 윈도우의 첫 번째 튜플 시각: \(firstTuple.timestamp)")
+//                print("예측 윈도우의 마지막 튜플 시각: \(lastTuple.timestamp)")
+//            }
         } else {
             print("\(logMessage) 예측 결과가 없습니다. \(formattedDate)")
         }
@@ -77,30 +77,28 @@ class DreamAiPredictionManager: ObservableObject {
     }
 
 
-    
     func exportPredictionsToCSV() -> URL? {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let date = dateFormatter.string(from: Date())
-//            let userName = UserDefaults.standard.string(forKey: "userName") ?? UIDevice.current.name
-            let userName = "yeon" // 회원가입 확정되면 수정해야.
-            let fileName = "\(userName)_DreamAi_(\(date)).csv"
-            
-            let path = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
-            var csvText = "Timestamp,Is Sleeping,Probability\n"
-            
-            for entry in predictionResults {
-                let isSleepingText = entry.isSleeping ? 0 : 1
-                let newLine = "\(entry.timestamp),\(isSleepingText),\(entry.probability)\n"
-                csvText.append(contentsOf: newLine)
-            }
-            
-            do {
-                try csvText.write(to: path, atomically: true, encoding: .utf8)
-                return path
-            } catch {
-                print("Failed to create CSV file: \(error)")
-                return nil
-            }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let date = dateFormatter.string(from: Date())
+        let userName = "yeon"
+        let fileName = "\(userName)_DreamAi_(\(date)).csv"
+        
+        let path = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+        var csvText = "Timestamp,Is Sleeping,Probability\n"
+        
+        for entry in predictionResults {
+            let isSleepingText = entry.isSleeping ? 0 : 1
+            let newLine = "\(entry.timestamp),\(isSleepingText),\(entry.probability)\n"
+            csvText.append(contentsOf: newLine)
         }
+        
+        do {
+            try csvText.write(to: path, atomically: true, encoding: .utf8)
+            return path
+        } catch {
+            print("Failed to create CSV file: \(error)")
+            return nil
+        }
+    }
 }

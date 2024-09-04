@@ -154,18 +154,18 @@ struct AccountManagementView: View {
                         }
                     }
                     // 재학습하기 버튼 섹션
-                    NavigationLink(destination: TrainingView(), isActive: $showTrainingView) {
-                        Button(action: {
-                            showTrainingView = true
-                        }) {
-                            Text("재학습하기")
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 50)
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                        }
-                    }
+//                    NavigationLink(destination: TrainingView(), isActive: $showTrainingView) {
+//                        Button(action: {
+//                            showTrainingView = true
+//                        }) {
+//                            Text("재학습하기")
+//                                .frame(maxWidth: .infinity)
+//                                .frame(height: 50)
+//                                .background(Color.blue)
+//                                .foregroundColor(.white)
+//                                .cornerRadius(10)
+//                        }
+//                    }
                 }
                 .padding(.horizontal, 16)
                 

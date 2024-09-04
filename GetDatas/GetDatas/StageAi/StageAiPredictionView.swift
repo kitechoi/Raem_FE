@@ -38,19 +38,19 @@ struct StageAiPredictionView: View {
 
             Spacer()
             
-            Button("예측 결과 CSV로 내보내기") {
-                if let csvURL = stageAiPredictionManager.exportPredictionsToCSV() {
-                    let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
-                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                       let rootVC = windowScene.windows.first?.rootViewController {
-                        rootVC.present(activityVC, animated: true)
-                    }
-                }
-            }
-            .padding()
-            .background(Color.orange)
-            .foregroundColor(.white)
-            .cornerRadius(10)
+//            Button("StageAi 예측 결과 CSV로 내보내기") {
+//                if let csvURL = stageAiPredictionManager.exportPredictionsToCSV() {
+//                    let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
+//                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+//                       let rootVC = windowScene.windows.first?.rootViewController {
+//                        rootVC.present(activityVC, animated: true)
+//                    }
+//                }
+//            }
+//            .padding()
+//            .background(Color.orange)
+//            .foregroundColor(.white)
+//            .cornerRadius(10)
         }
         .padding()
     }

@@ -16,6 +16,7 @@
 		0C8583EC2C882FC3002E7BD2 /* StageAiProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583EB2C882FC3002E7BD2 /* StageAiProcesser.swift */; };
 		0C8583EE2C883117002E7BD2 /* StageAiPredictionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583ED2C883117002E7BD2 /* StageAiPredictionManager.swift */; };
 		0C8583F02C883280002E7BD2 /* StageAiPredictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583EF2C883280002E7BD2 /* StageAiPredictionView.swift */; };
+		0C8583F22C88938E002E7BD2 /* CSVExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583F12C88938E002E7BD2 /* CSVExporter.swift */; };
 		0CFAD48A2C83940300791BF5 /* TrainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFAD4892C83940300791BF5 /* TrainingView.swift */; };
 		0CFAD48C2C839CD200791BF5 /* TrainProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFAD48B2C839CD200791BF5 /* TrainProcesser.swift */; };
 		3B05422A2C75CB3700A4CB0D /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0542292C75CB3700A4CB0D /* BackButton.swift */; };
@@ -96,6 +97,7 @@
 		0C8583EB2C882FC3002E7BD2 /* StageAiProcesser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageAiProcesser.swift; sourceTree = "<group>"; };
 		0C8583ED2C883117002E7BD2 /* StageAiPredictionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageAiPredictionManager.swift; sourceTree = "<group>"; };
 		0C8583EF2C883280002E7BD2 /* StageAiPredictionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageAiPredictionView.swift; sourceTree = "<group>"; };
+		0C8583F12C88938E002E7BD2 /* CSVExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVExporter.swift; sourceTree = "<group>"; };
 		0CFAD4892C83940300791BF5 /* TrainingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingView.swift; sourceTree = "<group>"; };
 		0CFAD48B2C839CD200791BF5 /* TrainProcesser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainProcesser.swift; sourceTree = "<group>"; };
 		3B0542292C75CB3700A4CB0D /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 			children = (
 				3BF207EA2C735CA4000DEDA9 /* RecordView.swift */,
 				3B3554032C776E8D005FA172 /* SleepDataView.swift */,
+				0C8583F12C88938E002E7BD2 /* CSVExporter.swift */,
 			);
 			path = Record;
 			sourceTree = "<group>";
@@ -512,6 +515,7 @@
 				736119592C68A59300F3FF11 /* LoginView.swift in Sources */,
 				73E1F5B42C833E1C000118C7 /* MiniPlayerView.swift in Sources */,
 				3BA82A392C79E1EC00CE24F2 /* BottomNav.swift in Sources */,
+				0C8583F22C88938E002E7BD2 /* CSVExporter.swift in Sources */,
 				736119522C68A23300F3FF11 /* Colors.swift in Sources */,
 				3B3554042C776E8D005FA172 /* SleepDataView.swift in Sources */,
 				736119662C68AE5800F3FF11 /* HomeView.swift in Sources */,
@@ -791,6 +795,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Raem;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "블루투스 권한 필요";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "블루투스 주변기기 사용 권한 필요";
+				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "앱이 문서에 접근하여 데이터를 처리합니다.";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "데이터 접근을 위한 접근 권한이 필요합니다";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "데이터 접근을 위해 접근 권한이 필요합니다";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "데이터 접근을 위한 접근 권한이 필요합니다";
@@ -839,6 +844,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Raem;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "블루투스 권한 필요";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "블루투스 주변기기 사용 권한 필요";
+				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "앱이 문서에 접근하여 데이터를 처리합니다.";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "데이터 접근을 위한 접근 권한이 필요합니다";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "데이터 접근을 위해 접근 권한이 필요합니다";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "데이터 접근을 위한 접근 권한이 필요합니다";
