@@ -50,10 +50,10 @@ class DreamAiProcessor {
     func performPrediction(data: [MeasurementData], completion: @escaping (Bool, Double, String) -> Void) {
         let windowSize = 90
 
-        // 최신 데이터 90개만 사용
+        // 최신 데이터 90개씩 사용하여 예측 수행
         let startIndex = max(0, data.count - windowSize)
         let window = Array(data[startIndex..<data.count])
-        lastPredictionWindow = window // 윈도우 데이터 저장
+        lastPredictionWindow = window
         
         // 90개 미만의 데이터일 경우 예측을 수행하지 않음
         guard window.count == windowSize else {
@@ -66,11 +66,10 @@ class DreamAiProcessor {
                 let configuration = MLModelConfiguration()
                 let model = try DreamDetector_TabularClassifier(configuration: configuration)
                 let output = try model.prediction(input: features)
-                let isSleeping = output.is_sleeping == 0 // 0이면 잠, 1이면 안잠
+                let isSleeping = output.is_sleeping == 0 // 0이면 수면, 1이면 깨어있음
                 let probability = output.is_sleepingProbability[output.is_sleeping] ?? 0.0
                 let timestamp = window.last?.timestamp ?? ""
                 
-                // 클로저를 통해 결과 반환
                 completion(isSleeping, probability, timestamp)
                 
             } catch {

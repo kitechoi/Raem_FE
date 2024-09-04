@@ -13,18 +13,9 @@ struct MeasurementData: Codable, Identifiable {
 class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var receivedData: [MeasurementData] = []
     @Published var predictionManager = DreamAiPredictionManager()
-//    @ObservedObject var predictionManager = DreamAiPredictionManager() // 연: 자동 예측 수행을 위해 추가함(0831)
-    
-    //var bleManager: BLEManager
-    
-//    init(bleManager: BLEManager) {
-//        self.bleManager = bleManager
-//        super.init()
-//        if WCSession.isSupported() {
-//            WCSession.default.delegate = self
-//            WCSession.default.activate()
-//        }
-//    }
+    @Published var stageAiPredictionManager = StageAiPredictionManager()
+    private let fileManager = FileManager.default
+    private let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     
     override init() {
         super.init()
@@ -45,59 +36,26 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             let receivedData = try JSONDecoder().decode([MeasurementData].self, from: messageData)
             DispatchQueue.main.async {
                 self.receivedData.append(contentsOf: receivedData)
-                //self.printHeartRates() // 데이터가 로드될 때마다 심박수를 평가하고 출력
                 print("-------------------")
                 print("Received Data Count: \(self.receivedData.count)")  // 데이터 수신 갯수 확인
-                self.predictionManager.processReceivedData(self.receivedData)  // 수신 후 예측 시작
+                self.predictionManager.processReceivedData(self.receivedData)  // DreamAi 수신 후 예측 시작
+                self.stageAiPredictionManager.processReceivedData(self.receivedData) // StageAi
             }
         } catch {
             print("Failed to decode received data: \(error.localizedDescription)")
         }
     }
 
-//    func printHeartRates() {
-//        for entry in receivedData {
-//            if entry.heartRate < 60 {
-//                bleManager.controllLED("255,0,0")
-//                print("red : 60이하, 현재 심박수: \(entry.heartRate)")
-//            } else if entry.heartRate >= 65 && entry.heartRate < 70 {
-//                bleManager.controllLED("255,128,0")
-//                print("orange : 65이상 70미만, 현재 심박수: \(entry.heartRate)")
-//            } else if entry.heartRate >= 70 && entry.heartRate < 75 {
-//                bleManager.controllLED("255,255,0")
-//                print("yellow : 70이상 75미만, 현재 심박수: \(entry.heartRate)")
-//            } else if entry.heartRate >= 75 && entry.heartRate < 80 {
-//                bleManager.controllLED("0,255,0")
-//                print("green : 75이상 80미만, 현재 심박수: \(entry.heartRate)")
-//            } else if entry.heartRate >= 80 && entry.heartRate < 85 {
-//                bleManager.controllLED("0,128,255")
-//                print("blue : 80이상 85미만, 현재 심박수: \(entry.heartRate)")
-//            } else if entry.heartRate >= 85 && entry.heartRate < 90 {
-//                bleManager.controllLED("0,0,255")
-//                print("navy : 85이상 90미만, 현재 심박수: \(entry.heartRate)")
-//            } else if entry.heartRate >= 90 && entry.heartRate < 95 {
-//                bleManager.controllLED("128,0,255")
-//                print("purple : 90이상 95미만, 현재 심박수: \(entry.heartRate)")
-//            } else if entry.heartRate >= 95 && entry.heartRate < 100 {
-//                bleManager.controllLED("255,255,255")
-//                print("white : 95이상 100미만, 현재 심박수: \(entry.heartRate)")
-//            } else {
-//                bleManager.controllLED("255,0,255")
-//                print("pink : 100이상, 현재 심박수: \(entry.heartRate)")
-//            }
-//        }
-//        bleManager.controllLED("Done")
-//        print("black : 모든 심박수 처리 완료")
-//    }
-    
+    // 실시간 데이터 CSV로 내보내기
     func exportDataToCSV() -> URL? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let date = dateFormatter.string(from: Date())
         
+        // 파일 이름 설정
         let fileName = "record(\(date)).csv"
+        let path = documentsDirectory.appendingPathComponent(fileName)
         
-        let path = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
         var csvText = "Timestamp,Heart Rate,Acceleration X,Acceleration Y,Acceleration Z\n"
         
         for entry in receivedData {
@@ -107,6 +65,7 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         
         do {
             try csvText.write(to: path, atomically: true, encoding: .utf8)
+            print("CSV 파일 생성 성공: \(path.path)")
             return path
         } catch {
             print("Failed to create CSV file: \(error)")
@@ -114,61 +73,39 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         }
     }
     
+    // DreamAi 예측 결과 CSV로 내보내기
+    func exportDreamAiDataToCSV() -> URL? {
+        return predictionManager.exportPredictionsToCSV()
+    }
+
+    // StageAi 예측 결과 CSV로 내보내기
+    func exportStageAiDataToCSV() -> URL? {
+        return stageAiPredictionManager.exportPredictionsToCSV()
+    }
+
+    func shareCSV(paths: [URL], completion: @escaping () -> Void) {
+        let activityViewController = UIActivityViewController(activityItems: paths, applicationActivities: nil)
+
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootViewController = windowScene.windows.first?.rootViewController {
+            
+            if let presentedVC = rootViewController.presentedViewController {
+                presentedVC.dismiss(animated: false) {
+                    rootViewController.present(activityViewController, animated: true, completion: completion)
+                }
+            } else {
+                rootViewController.present(activityViewController, animated: true, completion: completion)
+            }
+        }
+    }
+
     func clearReceivedData() {
         receivedData.removeAll()
     }
-
-//     func printHeartRates() {
-//         for entry in receivedData {
-//             if(entry.heartRate < 60) {
-//                 //red
-//                 //bleManager.controllLED("255,0,0")
-//                 print("red : 60이하, 현재 심박수: \(entry.heartRate)")
-//             } else if (entry.heartRate >= 65 && entry.heartRate < 70) {
-//                 //orange
-//                 //bleManager.controllLED("255,128,0")
-//                 print("orange : 65이상 70미만, 현재 심박수: \(entry.heartRate)")
-//             } else if (entry.heartRate >= 70 && entry.heartRate < 75) {
-//                 //yellow
-//                 //bleManager.controllLED("255,255,0")
-//                 print("yellow : 70이상 75미만, 현재 심박수: \(entry.heartRate)")
-//             } else if (entry.heartRate >= 75 && entry.heartRate < 80) {
-//                 //green
-//                 //bleManager.controllLED("0,255,0")
-//                 print("green : 75이상 80미만, 현재 심박수: \(entry.heartRate)")
-//             } else if (entry.heartRate >= 80 && entry.heartRate < 85) {
-//                 //blue
-//                 //bleManager.controllLED("0,128,255")
-//                 print("blue : 80이상 85미만, 현재 심박수: \(entry.heartRate)")
-//             } else if (entry.heartRate >= 85 && entry.heartRate < 90) {
-//                 //navy
-//                 //bleManager.controllLED("0,0,255")
-//                 print("navy : 85이상 90미만, 현재 심박수: \(entry.heartRate)")
-//             } else if (entry.heartRate >= 90 && entry.heartRate < 95) {
-//                 //purple
-//                 //bleManager.controllLED("128,0,255")
-//                 print("purple")
-//             } else if (entry.heartRate >= 95 && entry.heartRate < 100) {
-//                 //white
-//                 //bleManager.controllLED("0,0,0")
-//                 print("white")
-//             } else {
-//                 //pink
-//                 //bleManager.controllLED("255,0,255")
-//                 print("pink")
-//             }
-//         }
-//         //bleManager.controllLED("0,0,0")
-//         print("black")
-//     }
 }
 
 struct RecordView: View {
-//     @EnvironmentObject var bleManager: BLEManager
-//     @ObservedObject var connectivityManager = iPhoneConnectivityManager(bleManager: BLEManager())
-
     @ObservedObject var connectivityManager = iPhoneConnectivityManager()
-//    @ObservedObject var predictionManager = DreamAiPredictionManager()
     
     var body: some View {
         VStack {
@@ -177,20 +114,16 @@ struct RecordView: View {
             if !connectivityManager.receivedData.isEmpty {
                 HStack {
                     Button("CSV로 내보내기") {
-                        if let csvURL = connectivityManager.exportDataToCSV() {
+                        if let csvURL = connectivityManager.exportDataToCSV(),
+                           let dreamAiURL = connectivityManager.exportDreamAiDataToCSV(),
+                           let stageAiURL = connectivityManager.exportStageAiDataToCSV() {
                             DispatchQueue.main.async {
-                                let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
-                                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                                   let rootVC = windowScene.windows.first?.rootViewController {
-                                    if rootVC.presentedViewController == nil {
-                                        rootVC.present(activityVC, animated: true)
-                                    } else {
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                            rootVC.present(activityVC, animated: true)
-                                        }
-                                    }
+                                connectivityManager.shareCSV(paths: [csvURL, dreamAiURL, stageAiURL]) {
+                                    print("모든 CSV 파일 공유 완료.")
                                 }
                             }
+                        } else {
+                            print("CSV 파일을 불러오지 못했습니다.")
                         }
                     }
                     .padding()
@@ -206,15 +139,7 @@ struct RecordView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
-                //                예측 시작 버튼 주석화함. 자동 예측 수행하도록 변경했기 때문임.
-                //                Button("예측 시작") {
-                //                    predictionManager.processReceivedData(connectivityManager.receivedData)
-                //                }
-                //                .padding()
-                //                .background(Color.blue)
-                //                .foregroundColor(.white)
-                //                .cornerRadius(10)
-                
+
                 Button("예측 결과 CSV로 내보내기") {
                     if let csvURL = connectivityManager.predictionManager.exportPredictionsToCSV() {
                         let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
@@ -236,9 +161,16 @@ struct RecordView: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
+
+                NavigationLink(destination: StageAiPredictionView(stageAiPredictionManager: connectivityManager.stageAiPredictionManager)) {
+                    Text("StageAi 예측 결과 보기")
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
             }
-            
-            
+        
             //                Button("예측 결과 CSV로 내보내기") {
             //                    if let csvURL = predictionManager.exportPredictionsToCSV() {
             //                        let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
@@ -271,9 +203,6 @@ struct RecordView: View {
                     Text("Z: \(entry.accelerationZ, specifier: "%.2f")")
                 }
                 .padding(.vertical, 5)
-                .onAppear{
-                    //connectivityManager.printHeartRates()
-                }
             }
         }
         .background(Color.black)

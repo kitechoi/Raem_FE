@@ -7,10 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C20A0D62C845261006790A8 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C20A0D52C845261006790A8 /* DocumentPicker.swift */; };
 		0C24AD6B2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD6A2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel */; };
 		0C24AD6D2C7CBE15004CF022 /* DreamAiProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD6C2C7CBE15004CF022 /* DreamAiProcesser.swift */; };
 		0C24AD762C7CC95E004CF022 /* DreamAiPredictionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD752C7CC95E004CF022 /* DreamAiPredictionManager.swift */; };
 		0C24AD782C7CC977004CF022 /* DreamAiPredictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD772C7CC977004CF022 /* DreamAiPredictionView.swift */; };
+		0C8583EA2C88260B002E7BD2 /* StageAi_MyTabularClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583E92C88260B002E7BD2 /* StageAi_MyTabularClassifier.mlmodel */; };
+		0C8583EC2C882FC3002E7BD2 /* StageAiProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583EB2C882FC3002E7BD2 /* StageAiProcesser.swift */; };
+		0C8583EE2C883117002E7BD2 /* StageAiPredictionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583ED2C883117002E7BD2 /* StageAiPredictionManager.swift */; };
+		0C8583F02C883280002E7BD2 /* StageAiPredictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583EF2C883280002E7BD2 /* StageAiPredictionView.swift */; };
+		0C8583F22C88938E002E7BD2 /* CSVExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583F12C88938E002E7BD2 /* CSVExporter.swift */; };
+		0CFAD48A2C83940300791BF5 /* TrainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFAD4892C83940300791BF5 /* TrainingView.swift */; };
+		0CFAD48C2C839CD200791BF5 /* TrainProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFAD48B2C839CD200791BF5 /* TrainProcesser.swift */; };
 		3B05422A2C75CB3700A4CB0D /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0542292C75CB3700A4CB0D /* BackButton.swift */; };
 		3B05422C2C75CB9200A4CB0D /* TopNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B05422B2C75CB9200A4CB0D /* TopNav.swift */; };
 		3B2555DD2C7727B400F298BF /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2555DC2C7727B400F298BF /* DataManager.swift */; };
@@ -43,7 +51,6 @@
 		739AE9682C6DD742006BAF47 /* NameChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9672C6DD742006BAF47 /* NameChangeView.swift */; };
 		739AE96A2C6DE037006BAF47 /* EmailChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9692C6DE037006BAF47 /* EmailChangeView.swift */; };
 		739AE96C2C6DE368006BAF47 /* PasswordChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE96B2C6DE368006BAF47 /* PasswordChangeView.swift */; };
-		739AE96E2C70077B006BAF47 /* AccountDeletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE96D2C70077B006BAF47 /* AccountDeletionView.swift */; };
 		739AE9702C700950006BAF47 /* SleepDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE96F2C700950006BAF47 /* SleepDetailView.swift */; };
 		739AE9742C700C31006BAF47 /* BedTimeAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */; };
 		73E1F5B02C833DF0000118C7 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E1F5AF2C833DEF000118C7 /* Album.swift */; };
@@ -80,10 +87,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0C20A0D52C845261006790A8 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		0C24AD6A2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = DreamDetector_TabularClassifier.mlmodel; sourceTree = "<group>"; };
 		0C24AD6C2C7CBE15004CF022 /* DreamAiProcesser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamAiProcesser.swift; sourceTree = "<group>"; };
 		0C24AD752C7CC95E004CF022 /* DreamAiPredictionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamAiPredictionManager.swift; sourceTree = "<group>"; };
 		0C24AD772C7CC977004CF022 /* DreamAiPredictionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamAiPredictionView.swift; sourceTree = "<group>"; };
+		0C8583E92C88260B002E7BD2 /* StageAi_MyTabularClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = StageAi_MyTabularClassifier.mlmodel; sourceTree = "<group>"; };
+		0C8583EB2C882FC3002E7BD2 /* StageAiProcesser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageAiProcesser.swift; sourceTree = "<group>"; };
+		0C8583ED2C883117002E7BD2 /* StageAiPredictionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageAiPredictionManager.swift; sourceTree = "<group>"; };
+		0C8583EF2C883280002E7BD2 /* StageAiPredictionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageAiPredictionView.swift; sourceTree = "<group>"; };
+		0C8583F12C88938E002E7BD2 /* CSVExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVExporter.swift; sourceTree = "<group>"; };
+		0CFAD4892C83940300791BF5 /* TrainingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingView.swift; sourceTree = "<group>"; };
+		0CFAD48B2C839CD200791BF5 /* TrainProcesser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainProcesser.swift; sourceTree = "<group>"; };
 		3B0542292C75CB3700A4CB0D /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		3B05422B2C75CB9200A4CB0D /* TopNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNav.swift; sourceTree = "<group>"; };
 		3B2555DC2C7727B400F298BF /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
@@ -121,7 +136,6 @@
 		739AE9672C6DD742006BAF47 /* NameChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameChangeView.swift; sourceTree = "<group>"; };
 		739AE9692C6DE037006BAF47 /* EmailChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailChangeView.swift; sourceTree = "<group>"; };
 		739AE96B2C6DE368006BAF47 /* PasswordChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeView.swift; sourceTree = "<group>"; };
-		739AE96D2C70077B006BAF47 /* AccountDeletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionView.swift; sourceTree = "<group>"; };
 		739AE96F2C700950006BAF47 /* SleepDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepDetailView.swift; sourceTree = "<group>"; };
 		739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedTimeAlarmView.swift; sourceTree = "<group>"; };
 		73E1F5AF2C833DEF000118C7 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
@@ -162,6 +176,27 @@
 			path = DreamAi;
 			sourceTree = "<group>";
 		};
+		0CF496022C8776BF0065A588 /* StageAi */ = {
+			isa = PBXGroup;
+			children = (
+				0C8583E92C88260B002E7BD2 /* StageAi_MyTabularClassifier.mlmodel */,
+				0C8583EB2C882FC3002E7BD2 /* StageAiProcesser.swift */,
+				0C8583ED2C883117002E7BD2 /* StageAiPredictionManager.swift */,
+				0C8583EF2C883280002E7BD2 /* StageAiPredictionView.swift */,
+			);
+			path = StageAi;
+			sourceTree = "<group>";
+		};
+		0CFAD4882C8393CC00791BF5 /* AiTraning */ = {
+			isa = PBXGroup;
+			children = (
+				0CFAD4892C83940300791BF5 /* TrainingView.swift */,
+				0CFAD48B2C839CD200791BF5 /* TrainProcesser.swift */,
+				0C20A0D52C845261006790A8 /* DocumentPicker.swift */,
+			);
+			path = AiTraning;
+			sourceTree = "<group>";
+		};
 		3B0542222C75CAD100A4CB0D /* Component */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,8 +231,10 @@
 		3B445A022BF0F0E900AFA631 /* GetDatas */ = {
 			isa = PBXGroup;
 			children = (
+				0CF496022C8776BF0065A588 /* StageAi */,
 				73E1F5B92C8342DC000118C7 /* 1.mp3 */,
 				73E1F5AE2C83106D000118C7 /* Sounds */,
+				0CFAD4882C8393CC00791BF5 /* AiTraning */,
 				0C24AD692C7CB725004CF022 /* DreamAi */,
 				A82DF1902C7B5A8F00EF097E /* BLEManager */,
 				3BA82A3C2C79E61D00CE24F2 /* Setting */,
@@ -263,6 +300,7 @@
 			children = (
 				3BF207EA2C735CA4000DEDA9 /* RecordView.swift */,
 				3B3554032C776E8D005FA172 /* SleepDataView.swift */,
+				0C8583F12C88938E002E7BD2 /* CSVExporter.swift */,
 			);
 			path = Record;
 			sourceTree = "<group>";
@@ -327,7 +365,6 @@
 				739AE9672C6DD742006BAF47 /* NameChangeView.swift */,
 				739AE9692C6DE037006BAF47 /* EmailChangeView.swift */,
 				739AE96B2C6DE368006BAF47 /* PasswordChangeView.swift */,
-				739AE96D2C70077B006BAF47 /* AccountDeletionView.swift */,
 			);
 			path = AccountManagement;
 			sourceTree = "<group>";
@@ -461,11 +498,12 @@
 				736119542C68A30100F3FF11 /* CarouselView.swift .swift in Sources */,
 				3B05422C2C75CB9200A4CB0D /* TopNav.swift in Sources */,
 				3BA82A402C79E7C500CE24F2 /* SleepView.swift in Sources */,
+				0CFAD48C2C839CD200791BF5 /* TrainProcesser.swift in Sources */,
 				739AE9682C6DD742006BAF47 /* NameChangeView.swift in Sources */,
 				3B05422A2C75CB3700A4CB0D /* BackButton.swift in Sources */,
+				0C20A0D62C845261006790A8 /* DocumentPicker.swift in Sources */,
 				736119612C68AA8800F3FF11 /* DeviceRegistrationView.swift .swift in Sources */,
 				739AE9702C700950006BAF47 /* SleepDetailView.swift in Sources */,
-				739AE96E2C70077B006BAF47 /* AccountDeletionView.swift in Sources */,
 				A82DF18F2C7B331A00EF097E /* MainContentView.swift in Sources */,
 				3BC998AE2C7C5BE800B9C3E1 /* CustomTopBar.swift in Sources */,
 				3BF207EB2C735CA4000DEDA9 /* RecordView.swift in Sources */,
@@ -473,6 +511,7 @@
 				736119592C68A59300F3FF11 /* LoginView.swift in Sources */,
 				73E1F5B42C833E1C000118C7 /* MiniPlayerView.swift in Sources */,
 				3BA82A392C79E1EC00CE24F2 /* BottomNav.swift in Sources */,
+				0C8583F22C88938E002E7BD2 /* CSVExporter.swift in Sources */,
 				736119522C68A23300F3FF11 /* Colors.swift in Sources */,
 				3B3554042C776E8D005FA172 /* SleepDataView.swift in Sources */,
 				736119662C68AE5800F3FF11 /* HomeView.swift in Sources */,
@@ -481,17 +520,22 @@
 				73E1F5B62C833E2E000118C7 /* MusicPlayerView.swift in Sources */,
 				73E1F5B22C833E03000118C7 /* AlbumView.swift in Sources */,
 				7361196C2C68B6C400F3FF11 /* SleepTrackingView.swift in Sources */,
+				0C8583F02C883280002E7BD2 /* StageAiPredictionView.swift in Sources */,
 				0C24AD6D2C7CBE15004CF022 /* DreamAiProcesser.swift in Sources */,
 				3BA82A3E2C79E64A00CE24F2 /* SettingsView.swift in Sources */,
 				73E1F5B02C833DF0000118C7 /* Album.swift in Sources */,
 				7361195D2C68A6D100F3FF11 /* RegisterView.swift in Sources */,
+				0C8583EC2C882FC3002E7BD2 /* StageAiProcesser.swift in Sources */,
 				7361195F2C68A99000F3FF11 /* RegisterCompleteView.swift in Sources */,
+				0C8583EE2C883117002E7BD2 /* StageAiPredictionManager.swift in Sources */,
 				739AE96A2C6DE037006BAF47 /* EmailChangeView.swift in Sources */,
 				739AE9642C6DB1ED006BAF47 /* AccountManagementView.swift in Sources */,
 				A82DF1922C7B5AC100EF097E /* BLEManager.swift in Sources */,
 				739AE9662C6DB91F006BAF47 /* ImagePicker.swift in Sources */,
+				0C8583EA2C88260B002E7BD2 /* StageAi_MyTabularClassifier.mlmodel in Sources */,
 				0C24AD782C7CC977004CF022 /* DreamAiPredictionView.swift in Sources */,
 				0C24AD762C7CC95E004CF022 /* DreamAiPredictionManager.swift in Sources */,
+				0CFAD48A2C83940300791BF5 /* TrainingView.swift in Sources */,
 				3B445A042BF0F0E900AFA631 /* GetDatasApp.swift in Sources */,
 				739AE96C2C6DE368006BAF47 /* PasswordChangeView.swift in Sources */,
 				739AE9742C700C31006BAF47 /* BedTimeAlarmView.swift in Sources */,
@@ -747,6 +791,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Raem;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "블루투스 권한 필요";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "블루투스 주변기기 사용 권한 필요";
+				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "앱이 문서에 접근하여 데이터를 처리합니다.";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "데이터 접근을 위한 접근 권한이 필요합니다";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "데이터 접근을 위해 접근 권한이 필요합니다";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "데이터 접근을 위한 접근 권한이 필요합니다";
@@ -795,6 +840,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Raem;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "블루투스 권한 필요";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "블루투스 주변기기 사용 권한 필요";
+				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "앱이 문서에 접근하여 데이터를 처리합니다.";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "데이터 접근을 위한 접근 권한이 필요합니다";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "데이터 접근을 위해 접근 권한이 필요합니다";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "데이터 접근을 위한 접근 권한이 필요합니다";

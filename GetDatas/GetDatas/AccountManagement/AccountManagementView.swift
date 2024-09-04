@@ -210,7 +210,7 @@ struct AccountManagementView: View {
                             )
                     }
                     .fullScreenCover(isPresented: $showAccountDeletionView) {
-                        AccountDeletionView()
+//                        AccountDeletionView()
                     }
                 }
                 .padding(.horizontal, 16)

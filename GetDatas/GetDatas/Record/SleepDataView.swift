@@ -195,13 +195,14 @@ struct SleepDataView: View {
         // 사용자 이메일 또는 기본 사용자 이름 결정
         let userEmailOrDefaultName = sessionManager.isLoggedIn ? sessionManager.email : "사용자"
         
-        // 파일 이름을 "이메일(끝나는날짜).csv" 또는 "사용자(끝나는날짜).csv"로 설정
+        // Documents 디렉토리로 파일 저장 위치 변경
+        let fileManager = FileManager.default
+        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
         let fileName = "\(userEmailOrDefaultName)(\(formattedEndDate)).csv"
-        let path = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+        let path = documentsDirectory.appendingPathComponent(fileName)
         
         var csvText = "start,end,level,level(Int)\n"
         
-        // 현재 표시된 데이터를 기반으로 CSV 생성
         let filteredData: [HKSleepAnalysis]
         switch displayState {
         case .allData:
@@ -229,19 +230,27 @@ struct SleepDataView: View {
         
         do {
             try csvText.write(to: path, atomically: true, encoding: .utf8)
+            print("CSV 파일 생성 성공: \(path.path)")
             shareCSV(path: path)
         } catch {
-            print("Failed to create CSV file: \(error)")
+            print("CSV 파일 생성 실패: \(error)")
         }
     }
 
     func shareCSV(path: URL) {
         let activityViewController = UIActivityViewController(activityItems: [path], applicationActivities: nil)
 
-        // 현재 활성화된 윈도우 씬을 가져옵니다.
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let rootViewController = windowScene.windows.first?.rootViewController {
-            rootViewController.present(activityViewController, animated: true, completion: nil)
+            
+            if let presentedVC = rootViewController.presentedViewController {
+                // 이미 다른 뷰가 표시 중이면 닫고 새로 표시
+                presentedVC.dismiss(animated: false) {
+                    rootViewController.present(activityViewController, animated: true, completion: nil)
+                }
+            } else {
+                rootViewController.present(activityViewController, animated: true, completion: nil)
+            }
         }
     }
 
