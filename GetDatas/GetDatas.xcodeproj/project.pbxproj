@@ -12,6 +12,10 @@
 		0C24AD6D2C7CBE15004CF022 /* DreamAiProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD6C2C7CBE15004CF022 /* DreamAiProcesser.swift */; };
 		0C24AD762C7CC95E004CF022 /* DreamAiPredictionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD752C7CC95E004CF022 /* DreamAiPredictionManager.swift */; };
 		0C24AD782C7CC977004CF022 /* DreamAiPredictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD772C7CC977004CF022 /* DreamAiPredictionView.swift */; };
+		0C8583EA2C88260B002E7BD2 /* StageAi_MyTabularClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583E92C88260B002E7BD2 /* StageAi_MyTabularClassifier.mlmodel */; };
+		0C8583EC2C882FC3002E7BD2 /* StageAiProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583EB2C882FC3002E7BD2 /* StageAiProcesser.swift */; };
+		0C8583EE2C883117002E7BD2 /* StageAiPredictionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583ED2C883117002E7BD2 /* StageAiPredictionManager.swift */; };
+		0C8583F02C883280002E7BD2 /* StageAiPredictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583EF2C883280002E7BD2 /* StageAiPredictionView.swift */; };
 		0CFAD48A2C83940300791BF5 /* TrainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFAD4892C83940300791BF5 /* TrainingView.swift */; };
 		0CFAD48C2C839CD200791BF5 /* TrainProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFAD48B2C839CD200791BF5 /* TrainProcesser.swift */; };
 		3B05422A2C75CB3700A4CB0D /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0542292C75CB3700A4CB0D /* BackButton.swift */; };
@@ -88,6 +92,10 @@
 		0C24AD6C2C7CBE15004CF022 /* DreamAiProcesser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamAiProcesser.swift; sourceTree = "<group>"; };
 		0C24AD752C7CC95E004CF022 /* DreamAiPredictionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamAiPredictionManager.swift; sourceTree = "<group>"; };
 		0C24AD772C7CC977004CF022 /* DreamAiPredictionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamAiPredictionView.swift; sourceTree = "<group>"; };
+		0C8583E92C88260B002E7BD2 /* StageAi_MyTabularClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = StageAi_MyTabularClassifier.mlmodel; sourceTree = "<group>"; };
+		0C8583EB2C882FC3002E7BD2 /* StageAiProcesser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageAiProcesser.swift; sourceTree = "<group>"; };
+		0C8583ED2C883117002E7BD2 /* StageAiPredictionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageAiPredictionManager.swift; sourceTree = "<group>"; };
+		0C8583EF2C883280002E7BD2 /* StageAiPredictionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageAiPredictionView.swift; sourceTree = "<group>"; };
 		0CFAD4892C83940300791BF5 /* TrainingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingView.swift; sourceTree = "<group>"; };
 		0CFAD48B2C839CD200791BF5 /* TrainProcesser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainProcesser.swift; sourceTree = "<group>"; };
 		3B0542292C75CB3700A4CB0D /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
@@ -168,6 +176,17 @@
 			path = DreamAi;
 			sourceTree = "<group>";
 		};
+		0CF496022C8776BF0065A588 /* StageAi */ = {
+			isa = PBXGroup;
+			children = (
+				0C8583E92C88260B002E7BD2 /* StageAi_MyTabularClassifier.mlmodel */,
+				0C8583EB2C882FC3002E7BD2 /* StageAiProcesser.swift */,
+				0C8583ED2C883117002E7BD2 /* StageAiPredictionManager.swift */,
+				0C8583EF2C883280002E7BD2 /* StageAiPredictionView.swift */,
+			);
+			path = StageAi;
+			sourceTree = "<group>";
+		};
 		0CFAD4882C8393CC00791BF5 /* AiTraning */ = {
 			isa = PBXGroup;
 			children = (
@@ -212,6 +231,7 @@
 		3B445A022BF0F0E900AFA631 /* GetDatas */ = {
 			isa = PBXGroup;
 			children = (
+				0CF496022C8776BF0065A588 /* StageAi */,
 				73E1F5B92C8342DC000118C7 /* 1.mp3 */,
 				73E1F5AE2C83106D000118C7 /* Sounds */,
 				0CFAD4882C8393CC00791BF5 /* AiTraning */,
@@ -500,15 +520,19 @@
 				73E1F5B62C833E2E000118C7 /* MusicPlayerView.swift in Sources */,
 				73E1F5B22C833E03000118C7 /* AlbumView.swift in Sources */,
 				7361196C2C68B6C400F3FF11 /* SleepTrackingView.swift in Sources */,
+				0C8583F02C883280002E7BD2 /* StageAiPredictionView.swift in Sources */,
 				0C24AD6D2C7CBE15004CF022 /* DreamAiProcesser.swift in Sources */,
 				3BA82A3E2C79E64A00CE24F2 /* SettingsView.swift in Sources */,
 				73E1F5B02C833DF0000118C7 /* Album.swift in Sources */,
 				7361195D2C68A6D100F3FF11 /* RegisterView.swift in Sources */,
+				0C8583EC2C882FC3002E7BD2 /* StageAiProcesser.swift in Sources */,
 				7361195F2C68A99000F3FF11 /* RegisterCompleteView.swift in Sources */,
+				0C8583EE2C883117002E7BD2 /* StageAiPredictionManager.swift in Sources */,
 				739AE96A2C6DE037006BAF47 /* EmailChangeView.swift in Sources */,
 				739AE9642C6DB1ED006BAF47 /* AccountManagementView.swift in Sources */,
 				A82DF1922C7B5AC100EF097E /* BLEManager.swift in Sources */,
 				739AE9662C6DB91F006BAF47 /* ImagePicker.swift in Sources */,
+				0C8583EA2C88260B002E7BD2 /* StageAi_MyTabularClassifier.mlmodel in Sources */,
 				0C24AD782C7CC977004CF022 /* DreamAiPredictionView.swift in Sources */,
 				0C24AD762C7CC95E004CF022 /* DreamAiPredictionManager.swift in Sources */,
 				0CFAD48A2C83940300791BF5 /* TrainingView.swift in Sources */,

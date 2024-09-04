@@ -13,6 +13,7 @@ struct MeasurementData: Codable, Identifiable {
 class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var receivedData: [MeasurementData] = []
     @Published var predictionManager = DreamAiPredictionManager()
+    @Published var stageAiPredictionManager = StageAiPredictionManager()
 //    @ObservedObject var predictionManager = DreamAiPredictionManager() // 연: 자동 예측 수행을 위해 추가함(0831)
     
     //var bleManager: BLEManager
@@ -48,7 +49,8 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                 //self.printHeartRates() // 데이터가 로드될 때마다 심박수를 평가하고 출력
                 print("-------------------")
                 print("Received Data Count: \(self.receivedData.count)")  // 데이터 수신 갯수 확인
-                self.predictionManager.processReceivedData(self.receivedData)  // 수신 후 예측 시작
+                self.predictionManager.processReceivedData(self.receivedData)  // DreamAi 수신 후 예측 시작
+                self.stageAiPredictionManager.processReceivedData(self.receivedData) // StageAi
             }
         } catch {
             print("Failed to decode received data: \(error.localizedDescription)")
@@ -236,7 +238,30 @@ struct RecordView: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
+                // StageAi 예측 결과 CSV로 내보내기 버튼
+                Button("StageAi 예측 결과 CSV로 내보내기") {
+                    if let csvURL = connectivityManager.stageAiPredictionManager.exportPredictionsToCSV() {
+                        let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
+                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                           let rootVC = windowScene.windows.first?.rootViewController {
+                            rootVC.present(activityVC, animated: true)
+                        }
+                    }
+                }
+                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                
+                NavigationLink(destination: StageAiPredictionView(stageAiPredictionManager: connectivityManager.stageAiPredictionManager)) {
+                    Text("StageAi 예측 결과 보기")
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
             }
+            
                 
                 
 //                Button("예측 결과 CSV로 내보내기") {
