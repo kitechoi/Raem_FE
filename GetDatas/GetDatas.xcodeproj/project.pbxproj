@@ -51,7 +51,6 @@
 		739AE9682C6DD742006BAF47 /* NameChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9672C6DD742006BAF47 /* NameChangeView.swift */; };
 		739AE96A2C6DE037006BAF47 /* EmailChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9692C6DE037006BAF47 /* EmailChangeView.swift */; };
 		739AE96C2C6DE368006BAF47 /* PasswordChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE96B2C6DE368006BAF47 /* PasswordChangeView.swift */; };
-		739AE96E2C70077B006BAF47 /* AccountDeletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE96D2C70077B006BAF47 /* AccountDeletionView.swift */; };
 		739AE9702C700950006BAF47 /* SleepDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE96F2C700950006BAF47 /* SleepDetailView.swift */; };
 		739AE9742C700C31006BAF47 /* BedTimeAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */; };
 		73E1F5B02C833DF0000118C7 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E1F5AF2C833DEF000118C7 /* Album.swift */; };
@@ -137,7 +136,6 @@
 		739AE9672C6DD742006BAF47 /* NameChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameChangeView.swift; sourceTree = "<group>"; };
 		739AE9692C6DE037006BAF47 /* EmailChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailChangeView.swift; sourceTree = "<group>"; };
 		739AE96B2C6DE368006BAF47 /* PasswordChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeView.swift; sourceTree = "<group>"; };
-		739AE96D2C70077B006BAF47 /* AccountDeletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletionView.swift; sourceTree = "<group>"; };
 		739AE96F2C700950006BAF47 /* SleepDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepDetailView.swift; sourceTree = "<group>"; };
 		739AE9732C700C31006BAF47 /* BedTimeAlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedTimeAlarmView.swift; sourceTree = "<group>"; };
 		73E1F5AF2C833DEF000118C7 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
@@ -367,7 +365,6 @@
 				739AE9672C6DD742006BAF47 /* NameChangeView.swift */,
 				739AE9692C6DE037006BAF47 /* EmailChangeView.swift */,
 				739AE96B2C6DE368006BAF47 /* PasswordChangeView.swift */,
-				739AE96D2C70077B006BAF47 /* AccountDeletionView.swift */,
 			);
 			path = AccountManagement;
 			sourceTree = "<group>";
@@ -507,7 +504,6 @@
 				0C20A0D62C845261006790A8 /* DocumentPicker.swift in Sources */,
 				736119612C68AA8800F3FF11 /* DeviceRegistrationView.swift .swift in Sources */,
 				739AE9702C700950006BAF47 /* SleepDetailView.swift in Sources */,
-				739AE96E2C70077B006BAF47 /* AccountDeletionView.swift in Sources */,
 				A82DF18F2C7B331A00EF097E /* MainContentView.swift in Sources */,
 				3BC998AE2C7C5BE800B9C3E1 /* CustomTopBar.swift in Sources */,
 				3BF207EB2C735CA4000DEDA9 /* RecordView.swift in Sources */,

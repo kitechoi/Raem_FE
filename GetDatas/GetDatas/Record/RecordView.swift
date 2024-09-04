@@ -139,6 +139,20 @@ struct RecordView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
+
+                Button("예측 결과 CSV로 내보내기") {
+                    if let csvURL = connectivityManager.predictionManager.exportPredictionsToCSV() {
+                        let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
+                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                           let rootVC = windowScene.windows.first?.rootViewController {
+                            rootVC.present(activityVC, animated: true)
+                        }
+                    }
+                }
+                .padding()
+                .background(Color.orange)
+                .foregroundColor(.white)
+                .cornerRadius(10)
                 
                 NavigationLink(destination: DreamAiPredictionView(predictionManager: connectivityManager.predictionManager)) {
                     Text("예측 결과 보기")
@@ -156,6 +170,29 @@ struct RecordView: View {
                         .cornerRadius(10)
                 }
             }
+        
+            //                Button("예측 결과 CSV로 내보내기") {
+            //                    if let csvURL = predictionManager.exportPredictionsToCSV() {
+            //                        let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
+            //                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+            //                           let rootVC = windowScene.windows.first?.rootViewController {
+            //                            rootVC.present(activityVC, animated: true)
+            //                        }
+            //                    }
+            //                }
+            //                .padding()
+            //                .background(Color.orange)
+            //                .foregroundColor(.white)
+            //                .cornerRadius(10)
+            //
+            //                NavigationLink(destination: DreamAiPredictionView(predictionManager: predictionManager)) {
+            //                    Text("예측 결과 보기")
+            //                        .padding()
+            //                        .background(Color.orange)
+            //                        .foregroundColor(.white)
+            //                        .cornerRadius(10)
+            //                }
+            //            }
             
             List(connectivityManager.receivedData) { entry in
                 VStack(alignment: .leading) {
@@ -168,7 +205,8 @@ struct RecordView: View {
                 .padding(.vertical, 5)
             }
         }
-        .foregroundColor(.white)
+        .background(Color.black)
         .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
 }

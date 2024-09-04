@@ -18,13 +18,12 @@ struct AccountManagementView: View {
     @EnvironmentObject var sessionManager: SessionManager
     @State private var showRecordView = false
     @State private var showSleepDataView = false
-    @State private var showTrainingView = false // 재학습 뷰
     
     var body: some View {
-        NavigationView {
             VStack {
                 // 상단 타이틀 및 뒤로가기 버튼
                 CustomTopBar(title: "계정 관리")
+                
                 Spacer()
                 
                 // 프로필 이미지 및 변경 버튼
@@ -126,7 +125,7 @@ struct AccountManagementView: View {
                 }
                 .padding(.horizontal, 16)
                 
-                // 실시간 데이터와 수면 데이터 버튼, Ai 재학습 버튼 섹션
+                // 실시간 데이터와 수면 데이터 버튼 섹션
                 HStack {
                     NavigationLink(destination: RecordView(), isActive: $showRecordView) {
                         Button(action: {
@@ -153,19 +152,6 @@ struct AccountManagementView: View {
                                 .cornerRadius(10)
                         }
                     }
-                    // 재학습하기 버튼 섹션
-//                    NavigationLink(destination: TrainingView(), isActive: $showTrainingView) {
-//                        Button(action: {
-//                            showTrainingView = true
-//                        }) {
-//                            Text("재학습하기")
-//                                .frame(maxWidth: .infinity)
-//                                .frame(height: 50)
-//                                .background(Color.blue)
-//                                .foregroundColor(.white)
-//                                .cornerRadius(10)
-//                        }
-//                    }
                 }
                 .padding(.horizontal, 16)
                 
@@ -224,7 +210,7 @@ struct AccountManagementView: View {
                             )
                     }
                     .fullScreenCover(isPresented: $showAccountDeletionView) {
-                        AccountDeletionView()
+//                        AccountDeletionView()
                     }
                 }
                 .padding(.horizontal, 16)
@@ -233,7 +219,7 @@ struct AccountManagementView: View {
             .background(Color.white)
             .edgesIgnoringSafeArea(.all)
             .navigationBarBackButtonHidden(true)
-        }
+            .navigationBarHidden(true)
     }
     
     func logout() {

@@ -182,8 +182,9 @@ struct SleepDataView: View {
         .onAppear {
            requestHealthAuthorization()
        }
+        .background(Color.black)
         .navigationBarBackButtonHidden(true)
-        
+        .navigationBarHidden(true)
     }
 
     func exportDataToCSV() {
@@ -361,8 +362,8 @@ struct HKSleepAnalysis: Identifiable, Hashable {
         case 0: return "In Bed"
         case 1: return "Unspecified"
         case 2: return "Awake"
-        case 3: return "Deep"
-        case 4: return "Core"
+        case 3: return "Core"
+        case 4: return "Deep"
         case 5: return "Rem"
         default: return "Unknown"
         }
