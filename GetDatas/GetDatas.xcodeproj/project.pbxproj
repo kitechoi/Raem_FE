@@ -31,7 +31,6 @@
 		3B445A1A2BF0F0EB00AFA631 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B445A192BF0F0EB00AFA631 /* Assets.xcassets */; };
 		3B445A1D2BF0F0EB00AFA631 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B445A1C2BF0F0EB00AFA631 /* Preview Assets.xcassets */; };
 		3BA82A392C79E1EC00CE24F2 /* BottomNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA82A382C79E1EC00CE24F2 /* BottomNav.swift */; };
-		3BA82A3B2C79E49D00CE24F2 /* WatchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA82A3A2C79E49D00CE24F2 /* WatchButton.swift */; };
 		3BA82A3E2C79E64A00CE24F2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA82A3D2C79E64A00CE24F2 /* SettingsView.swift */; };
 		3BA82A402C79E7C500CE24F2 /* SleepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA82A3F2C79E7C500CE24F2 /* SleepView.swift */; };
 		3BA82A422C79E82600CE24F2 /* SoundsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA82A412C79E82600CE24F2 /* SoundsView.swift */; };
@@ -116,7 +115,6 @@
 		3B869B752BF4730B00890FB8 /* GetDatas-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GetDatas-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 		3B90127B2BF439E3001253B5 /* GetDatas Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "GetDatas Watch App.entitlements"; sourceTree = "<group>"; };
 		3BA82A382C79E1EC00CE24F2 /* BottomNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNav.swift; sourceTree = "<group>"; };
-		3BA82A3A2C79E49D00CE24F2 /* WatchButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchButton.swift; sourceTree = "<group>"; };
 		3BA82A3D2C79E64A00CE24F2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3BA82A3F2C79E7C500CE24F2 /* SleepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepView.swift; sourceTree = "<group>"; };
 		3BA82A412C79E82600CE24F2 /* SoundsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundsView.swift; sourceTree = "<group>"; };
@@ -202,7 +200,6 @@
 			children = (
 				736119512C68A23300F3FF11 /* Colors.swift */,
 				3B0542292C75CB3700A4CB0D /* BackButton.swift */,
-				3BA82A3A2C79E49D00CE24F2 /* WatchButton.swift */,
 				3BC998AD2C7C5BE800B9C3E1 /* CustomTopBar.swift */,
 				3BA82A382C79E1EC00CE24F2 /* BottomNav.swift */,
 				3B05422B2C75CB9200A4CB0D /* TopNav.swift */,
@@ -515,7 +512,6 @@
 				736119522C68A23300F3FF11 /* Colors.swift in Sources */,
 				3B3554042C776E8D005FA172 /* SleepDataView.swift in Sources */,
 				736119662C68AE5800F3FF11 /* HomeView.swift in Sources */,
-				3BA82A3B2C79E49D00CE24F2 /* WatchButton.swift in Sources */,
 				736119482C68948100F3FF11 /* LoadingView.swift in Sources */,
 				73E1F5B62C833E2E000118C7 /* MusicPlayerView.swift in Sources */,
 				73E1F5B22C833E03000118C7 /* AlbumView.swift in Sources */,
