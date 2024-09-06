@@ -7,8 +7,15 @@ enum DisplayState {
     case levelSorted
 }
 
+enum SleepStage {
+    case rem
+    case core
+    case deep
+}
+
 struct SleepDataView: View {
     @EnvironmentObject var sessionManager: SessionManager // 이메일 사용을 위한 SessionManager
+    @ObservedObject var predictionManager = DreamAiPredictionManager()
     @State private var startDate = Date()
     @State private var endDate = Date()
     @State private var temporaryStartDate = Date()
@@ -110,18 +117,33 @@ struct SleepDataView: View {
             }
             .padding()
             
-            Button(action: {
-                loadSleepData()
-                displayState = .allData
-            }) {
-                Text("수면 데이터 불러오기")
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+            HStack {
+                Button(action: {
+                    loadSleepData()
+                    displayState = .allData
+                }) {
+                    Text("수면 데이터 불러오기")
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                .padding()
+
+                Button(action: saveDataToServer) {
+                    Text("json")
+                        .padding()
+                        .background(Color.white)
+                        .foregroundColor(.blue)
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.blue, lineWidth: 2)
+                        )
+                }
+                .padding()
             }
-            .padding()
             
             HStack {
                 Button(action: {
@@ -186,7 +208,164 @@ struct SleepDataView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
     }
+    
+    func calculateTotalSleepTime(for sleepStage: SleepStage) -> TimeInterval {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // `timestamp`의 포맷과 동일하게 설정
 
+        var totalTime: TimeInterval = 0
+        var previousDate: Date?
+
+        for result in predictionManager.predictionResults {
+            let isMatchingStage: Bool
+            switch sleepStage {
+            case .rem:
+                isMatchingStage = result.isSleeping && result.probability > 0.8
+            case .core:
+                isMatchingStage = result.isSleeping && result.probability > 0.5
+            case .deep:
+                isMatchingStage = result.isSleeping && result.probability > 0.9
+            }
+
+            // `timestamp`를 `Date`로 변환
+            if let currentDate = dateFormatter.date(from: result.timestamp), isMatchingStage {
+                if let previousDate = previousDate {
+                    // 두 시간의 차이를 더해줌
+                    totalTime += currentDate.timeIntervalSince(previousDate)
+                }
+                // 이전 날짜를 현재 날짜로 업데이트
+                previousDate = currentDate
+            }
+        }
+
+        return totalTime
+    }
+    func saveDataToServer() {
+        let isoDateFormatter = ISO8601DateFormatter()
+        isoDateFormatter.formatOptions = [.withInternetDateTime] // ISO 8601 형식
+        
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "HH:mm" // 시, 분 형식
+        let durationFormatter = DateFormatter()
+        durationFormatter.dateFormat = "HH:mm:ss" // 시, 분, 초 형식
+        
+        // 현재 날짜와 시간을 가져와서 대체할 sleptAt 기본값으로 사용
+        let sleptAt = Date() // 현재 시간을 Date 타입으로 사용
+
+        // DreamAiPredictionManager에서 예측된 데이터 가져오기
+        let fellAsleepAtString = predictionManager.predictionResults.first(where: { $0.isSleeping })?.timestamp ?? "22:00"
+        let awakeAtString = predictionManager.predictionResults.last(where: { $0.isSleeping })?.timestamp ?? "08:00"
+        
+        // 문자열을 Date로 변환
+        guard let fellAsleepAt = timeFormatter.date(from: fellAsleepAtString),
+              let awakeAt = timeFormatter.date(from: awakeAtString) else {
+            print("시간 변환 오류")
+            return
+        }
+
+        // 총 REM 수면 시간 계산 (데이터 없을 시 7시간 7분 7초로 대체)
+        let remSleepTime: Date
+        if predictionManager.predictionResults.isEmpty {
+            remSleepTime = durationFormatter.date(from: "07:07:07")!
+        } else {
+            remSleepTime = Date(timeIntervalSince1970: calculateTotalSleepTime(for: .rem))
+        }
+
+        // 총 수면 시간 계산 (REM + Core + Deep), 데이터 없을 시 10시간으로 대체
+        let totalSleepTime: Date
+        if predictionManager.predictionResults.isEmpty {
+            totalSleepTime = durationFormatter.date(from: "10:00:00")!
+        } else {
+            let totalSleepDuration = calculateTotalSleepTime(for: .core) + calculateTotalSleepTime(for: .deep) + calculateTotalSleepTime(for: .rem)
+            totalSleepTime = Date(timeIntervalSince1970: totalSleepDuration)
+        }
+        
+        // 서버로 보낼 요청 본문 (Date -> String으로 변환)
+        let requestBody: [String: Any] = [
+            "sleptAt": isoDateFormatter.string(from: sleptAt), // Date -> String 변환
+            "score": 3, // 고정값 3
+            "fellAsleepAt": timeFormatter.string(from: fellAsleepAt), // Date -> String 변환
+            "awakeAt": timeFormatter.string(from: awakeAt), // Date -> String 변환
+            "rem": durationFormatter.string(from: remSleepTime), // Date -> String 변환
+            "sleepTime": durationFormatter.string(from: totalSleepTime) // Date -> String 변환
+        ]
+        
+        // 요청 본문 로그로 출력
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: requestBody, options: .prettyPrinted)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print("Request Body: \(jsonString)")
+            }
+        } catch {
+            print("Error serializing JSON: \(error)")
+        }
+        
+        // 서버로 데이터 전송
+        guard let url = URL(string: "https://www.raem.shop/api/sleep/data?type=json") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // SessionManager에서 accessToken을 가져오기
+        if let accessToken = sessionManager.accessToken {
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization") // Authorization 헤더 추가
+        } else {
+            print("Access Token이 없습니다.")
+            return
+        }
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    print("Error sending data to server: \(error)")
+                    showAlert(title: "Error", message: "데이터 전송 실패")
+                    return
+                }
+
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("HTTP Response Status Code: \(httpResponse.statusCode)")
+                }
+
+                // 응답 데이터 확인 (서버 오류 메시지 확인 가능)
+                if let data = data {
+                    do {
+                        if let responseData = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                           let success = responseData["isSuccess"] as? Bool, success == true {
+                            print("성공적으로 저장되었습니다.")
+                        } else {
+                            print("응답 데이터가 예상한 형식이 아닙니다.")
+                        }
+                    } catch {
+                        print("응답 데이터 처리 중 오류 발생: \(error)")
+                    }
+                }
+            }
+            
+            task.resume()
+        } catch {
+            print("Error serializing JSON: \(error)")
+            showAlert(title: "Error", message: "데이터 직렬화 실패")
+        }
+    }
+
+
+
+    func showAlert(title: String, message: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            
+            // 현재 활성화된 윈도우 씬을 가져옵니다.
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let rootViewController = windowScene.windows.first?.rootViewController {
+                rootViewController.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
     func exportDataToCSV() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
