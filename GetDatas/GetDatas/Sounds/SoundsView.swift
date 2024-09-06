@@ -19,12 +19,14 @@ struct SoundsView: View {
             VStack {
                 ScrollView {
                     VStack(alignment: .leading) {
-                        Spacer().frame(height: 50)
+                        Spacer()
 
                         Text("수면을 위한 음악")
                             .font(.title)
                             .bold()
                             .padding([.leading, .trailing], 16)
+                            .padding(.top, 20)
+                            .foregroundColor(.black)
 
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
                             ForEach(albums) { album in
@@ -38,6 +40,7 @@ struct SoundsView: View {
                         }
                         .padding()
                     }
+                    .background(Color.white)
                 }
 
                 Spacer()
@@ -48,8 +51,7 @@ struct SoundsView: View {
                         .animation(.spring())
                 }
             }
-            // Remove or set the navigation bar title to an empty string
-            .navigationBarTitle("", displayMode: .inline)
+            .background(Color.white)
         }
     }
 }

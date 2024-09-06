@@ -40,7 +40,8 @@ struct SettingView: View {
             HStack {
                 Text("설정")
                     .font(.system(size: 28, weight: .bold))
-                Spacer()
+                    .padding(.top, 20)
+                    .foregroundColor(.black)
             }
 
             
@@ -150,25 +151,6 @@ struct SettingView: View {
                                 .cornerRadius(10)
                         }
                         .disabled(isConnected) // 비활성화된 버튼
-                    }
-                    
-                    HStack {
-                        NavigationLink(destination: RecordView()) {
-                            Text("실시간 데이터")
-                                .foregroundColor(.white)
-                                .padding()
-                                .background(Color.green)
-                                .cornerRadius(10)
-                                .frame(maxWidth: .infinity)
-                        }
-                        NavigationLink(destination: SleepDataView()) {
-                            Text("수면 데이터")
-                                .foregroundColor(.white)
-                                .padding()
-                                .background(Color.orange)
-                                .cornerRadius(10)
-                                .frame(maxWidth: .infinity)
-                        }
                     }
                     
                 }

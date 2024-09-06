@@ -66,6 +66,8 @@ struct MainContentView: View {
             .background(Color.white)
         }
         .background(Color.white)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
 }
 

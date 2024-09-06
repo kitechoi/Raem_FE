@@ -1,5 +1,6 @@
 import SwiftUI
 import Charts
+import HealthKit
 
 struct SleepView: View {
     @State private var selectedTab: Tab = .today
@@ -16,7 +17,8 @@ struct SleepView: View {
         VStack(alignment: .leading, spacing: 20) {
             HStack {
                 Text("수면 분석")
-                    .font(.system(size: 28, weight: .bold))
+                    .font(.system(size: 28, weight: .bold)).foregroundColor(.black)
+                
                 Spacer()
             }
             
@@ -123,6 +125,11 @@ struct DailySleepView: View {
     @State private var sleepHour: String = "09"
     @State private var sleepMinute: String = "41"
     
+    @State private var sleepData: [HKSleepAnalysis] = []
+    @State private var loadingData: Bool = false
+    
+    private let healthStore = HKHealthStore()
+    
     enum Reason {
         case caffeine
         case exercise
@@ -169,7 +176,7 @@ struct DailySleepView: View {
                 VStack(spacing: 20) {
                     HStack {
                         Text("수면 깊이")
-                            .font(.system(size: 24, weight: .bold))
+                            .font(.system(size: 24, weight: .bold)).foregroundColor(.black)
                         Spacer()
                     }
                     
@@ -181,13 +188,13 @@ struct DailySleepView: View {
                                     .frame(width: 30, height: 30)
                                 
                                 Text("\(sleepHour)")
-                                    .font(.system(size: 24, weight: .bold)) +
+                                    .font(.system(size: 24, weight: .bold)).foregroundColor(.black) +
                                 Text("시")
-                                    .font(.system(size: 20, weight: .bold)) +
+                                    .font(.system(size: 20, weight: .bold)).foregroundColor(.black) +
                                 Text(" \(sleepMinute)")
-                                    .font(.system(size: 24, weight: .bold)) +
+                                    .font(.system(size: 24, weight: .bold)).foregroundColor(.black) +
                                 Text("분")
-                                    .font(.system(size: 20, weight: .bold))
+                                    .font(.system(size: 20, weight: .bold)).foregroundColor(.black)
                             }
                             
                             Spacer()
@@ -202,86 +209,109 @@ struct DailySleepView: View {
                             .padding(.top, 2)
                             .padding(.bottom, 12)
                         
-                        //그래프
+                        //그래프 추가
+                        VStack(alignment: .leading, spacing: 20) {
+                            if loadingData {
+                                ProgressView("Loading data...")
+                                    .progressViewStyle(CircularProgressViewStyle())
+                                    .frame(height: 200)
+                            } else if sleepData.isEmpty {
+                                Text("No sleep data available.")
+                                    .foregroundColor(.gray)
+                                    .frame(height: 200)
+                            } else {
+                                Chart {
+                                    ForEach(sleepData) { data in
+                                        LineMark(
+                                            x: .value("Time", data.startDate, unit: .hour),
+                                            y: .value("Level", data.level)
+                                        )
+                                        .foregroundStyle(self.color(for: data.level))
+                                    }
+                                }
+                                .frame(height: 200)
+                            }
+                        }
+                        .onAppear(perform: loadSleepData)
                         
                         HStack{
-                            Spacer()
-                            VStack(alignment: .leading) {
-                                HStack(spacing: 45) {
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        HStack(spacing: 16) {
-                                            Image("moon")
-                                                .resizable()
-                                                .frame(width: 24, height: 24)
-                                            VStack(alignment: .leading, spacing: 4){
-                                                Text("6시간 52분")
-                                                    .font(Font.system(size: 18, weight: .bold))
-                                                    .foregroundColor(.black)
-                                                Text("Time in sleep")
-                                                    .font(Font.system(size: 12))
-                                                    .foregroundColor(.gray)
-                                            }
-                                        }
-                                    }
-                                    .padding(.trailing, 10)
+                              Spacer()
+                              VStack(alignment: .leading) {
+                                  HStack(spacing: 45) {
+                                      VStack(alignment: .leading, spacing: 4) {
+                                          HStack(spacing: 16) {
+                                              Image("moon")
+                                                  .resizable()
+                                                  .frame(width: 24, height: 24)
+                                              VStack(alignment: .leading, spacing: 4){
+                                                  Text("6시간 52분")
+                                                      .font(Font.system(size: 18, weight: .bold))
+                                                      .foregroundColor(.black)
+                                                  Text("Time in sleep")
+                                                      .font(Font.system(size: 12))
+                                                      .foregroundColor(.gray)
+                                              }
+                                          }
+                                      }
+                                      .padding(.trailing, 10)
 
-                                    VStack(spacing: 4) {
-                                        HStack(spacing: 16) {
-                                            Image("zzz")
-                                                .resizable()
-                                                .frame(width: 24, height: 24)
-                                            VStack(alignment: .leading, spacing: 4){
-                                                Text("25분")
-                                                    .font(Font.system(size: 18, weight: .bold))
-                                                    .foregroundColor(.black)
-                                                Text("Fell asleep")
-                                                    .font(Font.system(size: 12))
-                                                    .foregroundColor(.gray)
-                                            }
-                                        }
-                                    }
-                                }
-                                .padding(.top, 20)
-                                
-                                HStack(spacing: 45) {
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        HStack(spacing: 16) {
-                                            Image("watch")
-                                                .resizable()
-                                                .frame(width: 24, height: 24)
-                                            VStack(alignment: .leading, spacing:4) {
-                                                Text("7시간 23분")
-                                                    .font(Font.system(size: 18, weight: .bold))
-                                                    .foregroundColor(.black)
-                                                Text("Went to bed")
-                                                    .font(Font.system(size: 12))
-                                                    .foregroundColor(.gray)
-                                            }
-                                        }
-                                    }
-                                    .padding(.trailing, 10)
+                                      VStack(spacing: 4) {
+                                          HStack(spacing: 16) {
+                                              Image("zzz")
+                                                  .resizable()
+                                                  .frame(width: 24, height: 24)
+                                              VStack(alignment: .leading, spacing: 4){
+                                                  Text("25분")
+                                                      .font(Font.system(size: 18, weight: .bold))
+                                                      .foregroundColor(.black)
+                                                  Text("Fell asleep")
+                                                      .font(Font.system(size: 12))
+                                                      .foregroundColor(.gray)
+                                              }
+                                          }
+                                      }
+                                  }
+                                  .padding(.top, 20)
+                                  
+                                  HStack(spacing: 45) {
+                                      VStack(alignment: .leading, spacing: 4) {
+                                          HStack(spacing: 16) {
+                                              Image("watch")
+                                                  .resizable()
+                                                  .frame(width: 24, height: 24)
+                                              VStack(alignment: .leading, spacing:4) {
+                                                  Text("7시간 23분")
+                                                      .font(Font.system(size: 18, weight: .bold))
+                                                      .foregroundColor(.black)
+                                                  Text("Went to bed")
+                                                      .font(Font.system(size: 12))
+                                                      .foregroundColor(.gray)
+                                              }
+                                          }
+                                      }
+                                      .padding(.trailing, 10)
 
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        HStack(spacing: 16) {
-                                            Image("sun")
-                                                .resizable()
-                                                .frame(width: 24, height: 24)
-                                            VStack(alignment: .leading, spacing: 4) {
-                                                Text("07시 12분")
-                                                    .font(Font.system(size: 18, weight: .bold))
-                                                    .foregroundColor(.black)
-                                                Text("Wake up time")
-                                                    .font(Font.system(size: 12))
-                                                    .foregroundColor(.gray)
-                                            }
-                                        }
-                                    }
-                                }
-                                .padding(.top, 25)
-                                .padding(.bottom, 18)
-                            }
-                            Spacer()
-                        }
+                                      VStack(alignment: .leading, spacing: 4) {
+                                          HStack(spacing: 16) {
+                                              Image("sun")
+                                                  .resizable()
+                                                  .frame(width: 24, height: 24)
+                                              VStack(alignment: .leading, spacing: 4) {
+                                                  Text("07시 12분")
+                                                      .font(Font.system(size: 18, weight: .bold))
+                                                      .foregroundColor(.black)
+                                                  Text("Wake up time")
+                                                      .font(Font.system(size: 12))
+                                                      .foregroundColor(.gray)
+                                              }
+                                          }
+                                      }
+                                  }
+                                  .padding(.top, 25)
+                                  .padding(.bottom, 18)
+                              }
+                              Spacer()
+                          }
                     }
                     .padding(22)
                     .background(
@@ -364,6 +394,48 @@ struct DailySleepView: View {
                 .foregroundColor(Color.gray)
         }
     }
+    
+    private func loadSleepData() {
+        guard #available(iOS 16.0, *) else {
+            return
+        }
+        
+        // Set the start date to August 16, 2024, at 12:00 PM
+        let startDateComponents = DateComponents(year: 2024, month: 8, day: 16, hour: 12, minute: 0)
+        let startDate = Calendar.current.date(from: startDateComponents)!
+        
+        // Set the end date to August 17, 2024, at 12:00 PM
+        let endDateComponents = DateComponents(year: 2024, month: 8, day: 17, hour: 12, minute: 0)
+        let endDate = Calendar.current.date(from: endDateComponents)!
+        
+        
+        let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
+        
+        let query = HKSampleQuery(sampleType: sleepType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, results, error) in
+            guard let results = results as? [HKCategorySample], error == nil else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                sleepData = results.map { HKSleepAnalysis(sample: $0) }
+                loadingData = false
+            }
+        }
+        
+        healthStore.execute(query)
+        loadingData = true
+    }
+    
+    private func color(for level: Int) -> Color {
+        switch level {
+        case 2: return .red // Awake
+        case 5: return .purple // REM
+        case 3: return .blue // Core
+        case 4: return .green // Deep
+        default: return .gray
+        }
+    }
 }
 
 struct Score: Identifiable {
@@ -390,9 +462,9 @@ struct WeeklySleepView: View {
                 HStack {
                     Text("수면 별점")
                         .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.black)
                     Spacer()
                 }
-                
                 Chart {
                     ForEach(scores) { score in
                         BarMark(
@@ -405,10 +477,29 @@ struct WeeklySleepView: View {
                     }
                 }
                 .chartYAxis {
-                    AxisMarks(values: .stride(by: 1))
+                    AxisMarks(values: .stride(by: 1)) { value in
+                        AxisGridLine()
+                            .foregroundStyle(Color.gray)
+                        AxisTick()
+                            .foregroundStyle(Color.gray)
+                        AxisValueLabel()
+                            .foregroundStyle(Color.gray)
+                    }
+                }
+                .chartXAxis {
+                    AxisMarks(values: .automatic) { value in
+                        AxisGridLine()
+                            .foregroundStyle(Color.gray)
+                        AxisTick()
+                            .foregroundStyle(Color.gray)
+                        AxisValueLabel()
+                            .foregroundStyle(Color.gray)
+                    }
                 }
                 .chartYScale(domain: 0...5)
                 .frame(height: 170)
+
+                
             }
             .padding(.vertical, 8)
             
@@ -416,6 +507,7 @@ struct WeeklySleepView: View {
                 HStack {
                     Text("이번 주 평균 수면 깊이")
                         .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.black)
                     Spacer()
                 }
                 
@@ -524,7 +616,6 @@ struct MonthlySleepView: View {
                         .font(.system(size: 24, weight: .bold))
                     Spacer()
                 }
-                
                 Chart {
                     ForEach(scores) { score in
                         BarMark(
@@ -533,14 +624,31 @@ struct MonthlySleepView: View {
                             width: 20
                         )
                         .foregroundStyle(Color.deepNavy)
-                        
                     }
                 }
                 .chartYAxis {
-                    AxisMarks(values: .stride(by: 1))
+                    AxisMarks(values: .stride(by: 1)) { value in
+                        AxisGridLine()
+                            .foregroundStyle(Color.gray)
+                        AxisTick()
+                            .foregroundStyle(Color.gray)
+                        AxisValueLabel()
+                            .foregroundStyle(Color.gray)
+                    }
+                }
+                .chartXAxis {
+                    AxisMarks(values: .automatic) { value in
+                        AxisGridLine()
+                            .foregroundStyle(Color.gray)
+                        AxisTick()
+                            .foregroundStyle(Color.gray)
+                        AxisValueLabel()
+                            .foregroundStyle(Color.gray)
+                    }
                 }
                 .chartYScale(domain: 0...5)
                 .frame(height: 170)
+
             }
             .padding(.vertical, 8)
             
@@ -667,14 +775,31 @@ struct AnnuallySleepView: View {
                             width: 20
                         )
                         .foregroundStyle(Color.deepNavy)
-                        
                     }
                 }
                 .chartYAxis {
-                    AxisMarks(values: .stride(by: 1))
+                    AxisMarks(values: .stride(by: 1)) { value in
+                        AxisGridLine()
+                            .foregroundStyle(Color.gray)
+                        AxisTick()
+                            .foregroundStyle(Color.gray)
+                        AxisValueLabel()
+                            .foregroundStyle(Color.gray)
+                    }
+                }
+                .chartXAxis {
+                    AxisMarks(values: .automatic) { value in
+                        AxisGridLine()
+                            .foregroundStyle(Color.gray)
+                        AxisTick()
+                            .foregroundStyle(Color.gray)
+                        AxisValueLabel()
+                            .foregroundStyle(Color.gray)
+                    }
                 }
                 .chartYScale(domain: 0...5)
                 .frame(height: 170)
+
             }
             .padding(.vertical, 8)
             
@@ -812,3 +937,4 @@ struct SleepView_Previews: PreviewProvider {
         SleepView()
     }
 }
+
