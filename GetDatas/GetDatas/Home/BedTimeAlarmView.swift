@@ -74,12 +74,13 @@ struct BedtimeView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            DatePicker("Please enter a date", selection: $selectedTime, displayedComponents: .hourAndMinute)
-            .datePickerStyle(WheelDatePickerStyle())
+            DatePicker("Please select time", selection: $selectedTime, displayedComponents: [.hourAndMinute])
+                .datePickerStyle(.wheel)
             .labelsHidden()
             .padding(.horizontal, 16)
-            .onChange(of: selectedTime) { newValue in
-                UserDefaults.standard.set(newValue, forKey: "selectedBedTime")
+            .environment(\.colorScheme, .light)
+            .onChange(of: selectedTime) {
+                UserDefaults.standard.set(selectedTime, forKey: "selectedBedTime")
             }
 
             Text("수면 시간 목표는 7시간 30분 입니다.\n취침시간 및 알람시간에 근거함")
@@ -136,8 +137,9 @@ struct AlarmView: View {
             .datePickerStyle(WheelDatePickerStyle())
             .labelsHidden()
             .padding(.horizontal, 16)
-            .onChange(of: selectedTime) { newValue in
-                UserDefaults.standard.set(newValue, forKey: "selectedAlarmTime")
+            .environment(\.colorScheme, .light)
+            .onChange(of: selectedTime) {
+                UserDefaults.standard.set(selectedTime, forKey: "selectedAlarmTime")
             }
 
             Text("수면 시간 목표는 7시간 30분 입니다.\n취침시간 및 알람시간에 근거함")

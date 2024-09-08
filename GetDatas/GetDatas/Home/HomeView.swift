@@ -1,4 +1,5 @@
 import SwiftUI
+import UserNotifications
 
 struct HomeView: View {
     @State private var showSleepTrackingView = false  // SleepTrackingView로 이동하기 위한 상태
@@ -38,6 +39,63 @@ struct HomeView: View {
         return formatter
     }()
     
+    // 알림 권한 요청 함수
+    private func requestNotificationAuthorization() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
+            if let error = error {
+                print("알림 권한 요청 오류: \(error.localizedDescription)")
+            }
+            if granted {
+                print("알림 권한이 승인되었습니다.")
+            } else {
+                print("알림 권한이 거부되었습니다.")
+            }
+        }
+    }
+    
+    // 알림 예약 함수
+    private func scheduleBedtimeNotification() {
+        guard startBedtime else {
+            cancelBedtimeNotification()
+            return
+        }
+
+        let content = UNMutableNotificationContent()
+        content.title = "수면 시간 알림"
+        content.body = "지정하신 수면 시간입니다."
+        content.sound = .default
+
+        // 타임존 설정 (예: 사용자의 지역 타임존 사용)
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone.current // 또는 특정 타임존 설정 가능
+
+        // 매일 반복되는 알림을 위해 날짜를 제외하고 시간과 분만 사용
+        let triggerDate = calendar.dateComponents([.hour, .minute], from: selectedBedtime)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
+
+        let request = UNNotificationRequest(identifier: "bedtimeNotification", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("알림 예약 오류: \(error.localizedDescription)")
+            } else {
+                print("매일 알림 예약 완료: \(triggerDate)")
+            }
+        }
+    }
+    
+    // 알림 취소 함수
+    private func cancelBedtimeNotification() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["bedtimeNotification"])
+    }
+    
+    // 상태가 변경될 때 알림 업데이트
+    private func updateBedtimeNotification() {
+        if startBedtime == true {
+            scheduleBedtimeNotification()
+        } else {
+            cancelBedtimeNotification()
+        }
+    }
 
     var body: some View {
         ZStack {
@@ -257,6 +315,13 @@ struct HomeView: View {
             .background(Color.white)
             .edgesIgnoringSafeArea(.all)
             .navigationBarHidden(true)
+            .onAppear {
+                requestNotificationAuthorization()
+                updateBedtimeNotification()
+            }
+            .onChange(of: startBedtime) {
+                updateBedtimeNotification()
+            }
         }
     }
     
