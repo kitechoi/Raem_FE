@@ -8,7 +8,7 @@ class DreamAiPredictionManager: ObservableObject {
     private var bleManager: BLEManager
     private var previousSleepStates: [(timestamp: String, isSleeping: Bool)] = []
     private let aiProcessor = DreamAiProcessor()
-    private var isPredictionPaused = false  // 취침 플래그 (continuedSleepings면 예측중지)
+    private var isPredictionPaused = false  // DreamAi 취침 플래그 (continuedSleepings면 예측중지)
     
     private var timer: Timer?
     private var currentVolume = 80 //TODO: 현재 폰의 음량에 맞게 변경
