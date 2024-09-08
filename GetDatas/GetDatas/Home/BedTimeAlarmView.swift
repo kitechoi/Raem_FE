@@ -81,6 +81,7 @@ struct BedtimeView: View {
                 .datePickerStyle(WheelDatePickerStyle())
                 .labelsHidden()
                 .padding(.horizontal, 16)
+                .environment(\.colorScheme, .light)
                 .onChange(of: selectedTime) { newValue in
                     UserDefaults.standard.set(newValue, forKey: "selectedBedTime")
                 }
@@ -195,6 +196,7 @@ struct AlarmView: View {
                 .datePickerStyle(WheelDatePickerStyle())
                 .labelsHidden()
                 .padding(.horizontal, 16)
+                .environment(\.colorScheme, .light)
 //                .onChange(of: selectedTime) { newValue in
 //                    UserDefaults.standard.set(newValue, forKey: "selectedAlarmTime")
 //                }
