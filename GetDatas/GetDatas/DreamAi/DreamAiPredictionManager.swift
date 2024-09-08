@@ -5,8 +5,20 @@ import Combine
 class DreamAiPredictionManager: ObservableObject {
     @Published var predictionResults: [(timestamp: String, isSleeping: Bool, probability: Double)] = []
     
+    private var bleManager: BLEManager
     private var previousSleepStates: [(timestamp: String, isSleeping: Bool)] = []
     private let aiProcessor = DreamAiProcessor()
+    
+    private var timer: Timer?
+    private var currentVolume = 80 //TODO: 현재 폰의 음량에 맞게 변경
+    private let step = 5
+    private var intervals = 0
+    private let maxIntervals = 5
+    private var isAdjustingVolume = false
+    
+    init(bleManager: BLEManager) {
+        self.bleManager = bleManager
+    }
     
     func processReceivedData(_ data: [MeasurementData]) {
 //        clearPredictions()  // 이전 예측 결과를 삭제
@@ -71,11 +83,37 @@ class DreamAiPredictionManager: ObservableObject {
                 if let firstSleepingTimestamp = previousSleepStates.first?.timestamp {
                     print("연속 \(consecutiveCount)번 이상 사용자가 수면 상태")
                     print("잠든 1번째 타임스탬프: \(firstSleepingTimestamp)")
+                    
+                    if !isAdjustingVolume {
+                        isAdjustingVolume = true
+                        startAdjustingVolume()
+                    }
+                    
                 }
             }
         }
     }
 
+    private func startAdjustingVolume() {
+        intervals = 0
+        adjustVolume()
+    }
+    
+    private func adjustVolume() {
+        if intervals < maxIntervals {
+            let volume = currentVolume - (step * intervals)
+            bleManager.setVolume(volume)
+            
+            intervals += 1
+            
+            timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] _ in
+                self?.adjustVolume()
+            }
+        } else {
+            bleManager.turnOffAudio("Off")
+            isAdjustingVolume = false
+        }
+    }
 
     func exportPredictionsToCSV() -> URL? {
         let dateFormatter = DateFormatter()

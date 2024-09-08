@@ -8,6 +8,8 @@ struct MiniPlayerView: View {
     @State private var player: AVAudioPlayer?
     @State private var currentTime: TimeInterval = 0
     @State private var duration: TimeInterval = 60
+    
+    @EnvironmentObject var bleManager: BLEManager
 
     var body: some View {
         VStack {
@@ -28,7 +30,11 @@ struct MiniPlayerView: View {
                 Spacer()
                 
                 Button(action: {
-                    playMusic()
+                    if bleManager.connectSuccess == false {
+                        playMusic()
+                    } else {
+                        bleManager.turnOnAudio("\(album.audioFileName),70")
+                    }
                 }) {
                     Image(systemName: "play.fill")
                         .font(.system(size: 24))
@@ -37,7 +43,11 @@ struct MiniPlayerView: View {
                 
                 Button(action: {
                     isPopupVisible = false
-                    player?.stop() // 팝업이 닫힐 때 음악도 멈추게 합니다.
+                    if bleManager.connectSuccess == false {
+                        player?.stop() // 팝업이 닫힐 때 음악도 멈추게 합니다.
+                    } else {
+                        bleManager.turnOffAudio("Off")
+                    }
                 }) {
                     Image(systemName: "xmark")
                         .font(.system(size: 24))
@@ -51,7 +61,9 @@ struct MiniPlayerView: View {
             .padding([.leading, .trailing, .bottom])
         }
         .onAppear {
-            setupPlayer()
+            if bleManager.connectSuccess == false {
+                setupPlayer()
+            }
         }
     }
 

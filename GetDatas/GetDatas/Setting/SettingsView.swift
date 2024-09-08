@@ -1,15 +1,15 @@
 import SwiftUI
 
 struct SettingView: View {
-    //@EnvironmentObject var bleManager: BLEManager
+    @EnvironmentObject var bleManager: BLEManager
     @State private var brightness: Double = 10
     @State private var colorTemperature: Double = 0.5
     @State private var gradualTime: Int? = 10
     @State private var offTimer: Int? = 5
     @State private var selectedTab: BottomNav.Tab = .settings
-    @State private var lightColor : Color = .lightAmber
+    @State private var lightColor: Color = .lightAmber
     @State private var isConnected: Bool = false
-    
+
     init() {
         let red = UserDefaults.standard.double(forKey: "red")
         let green = UserDefaults.standard.double(forKey: "green")
@@ -44,13 +44,12 @@ struct SettingView: View {
                     .foregroundColor(.black)
             }
 
-            
             ScrollView {
                 VStack(alignment: .leading) {
                     Text("조명 밝기 조절")
                         .bold()
                         .foregroundColor(.black)
-                    HStack{
+                    HStack {
                         Image("darkness")
                             .resizable()
                             .frame(width: 18, height: 20)
@@ -69,8 +68,8 @@ struct SettingView: View {
                     }
                 }
                 
-                HStack{
-                    Text("조명 밝기 조절")
+                HStack {
+                    Text("조명 색상 조절")
                         .bold()
                         .foregroundColor(.black)
                     Spacer()
@@ -81,7 +80,6 @@ struct SettingView: View {
                         .labelsHidden()
                 }
                 .padding(.vertical, 20)
-                
                 
                 VStack(alignment: .leading) {
                     Text("서서히 밝아지는 시간")
@@ -109,11 +107,11 @@ struct SettingView: View {
                     .padding(.bottom, 30)
                 }
                 
-                VStack(alignment:.leading) {
+                VStack(alignment: .leading) {
                     Text("기기 연결 관리")
                         .bold()
                         .foregroundColor(.black)
-                    if isConnected == true {
+                    if isConnected {
                         Text("Ræm과 연결되어 있어요.")
                             .padding(.bottom, 10)
                             .foregroundColor(.black)
@@ -124,53 +122,48 @@ struct SettingView: View {
                     }
                     HStack {
                         Button(action: {
-                            //bleManager.disconnect()
+                            bleManager.disconnect()
                             isConnected = false
                         }) {
                             Text("해제")
                                 .bold()
                                 .frame(maxWidth: .infinity)
                                 .padding()
-                                .background(isConnected == true ? Color.deepNavy : Color.gray)
+                                .background(isConnected ? Color.deepNavy : Color.gray)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
-                            
                         }
                         .disabled(!isConnected)
                         
                         Button(action: {
-                            //bleManager.connectDevice()
+                            bleManager.connectDevice()
                             isConnected = true
                         }) {
                             Text("연결")
                                 .bold()
                                 .frame(maxWidth: .infinity)
                                 .padding()
-                                .background(isConnected == true ? Color.gray : Color.deepNavy)
+                                .background(isConnected ? Color.gray : Color.deepNavy)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
-                        .disabled(isConnected) // 비활성화된 버튼
+                        .disabled(isConnected)
                     }
-                    
                 }
             }
-            
         }
         .padding(.top, 70)
         .padding(.horizontal, 16)
-//        .onAppear {
-//            if let connectSuccess = bleManager.connectSuccess {
-//                isConnected = connectSuccess
-//            }
-//        }
-        
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            // BLEManager 상태 업데이트
+            isConnected = bleManager.connectSuccess
+        }
     }
     
-    func saveColor(color: Color){
+    func saveColor(color: Color) {
         if let uiColor = UIColor(color).cgColor.components {
             let red = uiColor[0]
             let green = uiColor[1]
@@ -182,7 +175,7 @@ struct SettingView: View {
         }
     }
     
-    func saveBrightness(brightness: Double){
+    func saveBrightness(brightness: Double) {
         UserDefaults.standard.set(brightness, forKey: "brightness")
     }
 }
@@ -229,12 +222,4 @@ struct TurnOffTimeOptionButton: View {
                 .cornerRadius(10)
         }
     }
-}
-
-struct SettingView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingView()
-    }
-    
-    
 }

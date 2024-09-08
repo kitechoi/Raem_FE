@@ -47,12 +47,12 @@ struct DeviceRegistrationView: View {
                 .padding(.bottom, 80)  // 하단에 간격 추가
                 .padding(24)
                 .alert(isPresented: Binding<Bool>(
-                    get: { bleManager.connectSuccess != nil },
-                    set: { _ in 
+                    get: { bleManager.connectSuccess != false },
+                    set: { _ in
                         if bleManager.connectSuccess == true {
                             showMainView = true
                         }
-                        bleManager.connectSuccess = nil }
+                        bleManager.connectSuccess = false }
                 )) {
                     Alert(
                         title: Text(bleManager.connectSuccess == true ? "연결 성공" : "연결 실패"),

@@ -1,9 +1,3 @@
-//
-//  BLEManager.swift
-//  GetDatas
-//
-//  Created by 정현조 on 8/25/24.
-//
 import CoreBluetooth
 
 class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeripheralDelegate {
@@ -11,14 +5,23 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     private var centralManager: CBCentralManager!
     private var discoveredPeripheral: CBPeripheral?
     private var connectedPeripheral: CBPeripheral?
-    //@Published var hasKnownRaem: Bool = false //원래 아는 기기인지
-    @Published var connectSuccess: Bool?
+    @Published var connectSuccess: Bool = false
     
-    //LED 제어
+    // LED 제어
     private var LEDService: CBService?
     private var LEDCharacteristic: CBCharacteristic?
     private var LEDServiceUUID: CBUUID = CBUUID(string: "123e4567-e89b-12d3-a456-426614174000")
     private var LEDCharacteristicUUID: CBUUID = CBUUID(string: "123e4567-e89b-12d3-a456-426614174001")
+    
+    // Audio 제어
+    private var AudioService: CBService?
+    private var AudioOnCharacteristic: CBCharacteristic?
+    private var ChangeVolumeCharacteristic: CBCharacteristic?
+    private var AudioOffCharacteristic: CBCharacteristic?
+    private var AudioServiceUUID: CBUUID = CBUUID(string: "123e4567-e89b-12d3-a456-426614175000")
+    private var AudioOnCharacteristicUUID: CBUUID = CBUUID(string: "123e4567-e89b-12d3-a456-426614175001")
+    private var ChangeVolumeCharacteristicUUID: CBUUID = CBUUID(string: "123e4567-e89b-12d3-a456-426614175002")
+    private var AudioOffCharacteristicUUID: CBUUID = CBUUID(string: "123e4567-e89b-12d3-a456-426614175003")
     
     override init() {
         super.init()
@@ -32,6 +35,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     func connectDevice() {
         if let peripheral = discoveredPeripheral {
             centralManager.connect(peripheral, options: nil)
+            connectSuccess = true
         } else {
             print("No peripheral to connect")
         }
@@ -39,9 +43,6 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         if central.state == .poweredOn {
-//            if !hasKnownRaem {
-//                startScanning()
-//            }
             startScanning()
         } else {
             print("Bluetooth is not available.")
@@ -51,28 +52,17 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi RSSI: NSNumber) {
         let deviceName = peripheral.name ?? "Unknown"
         
-//        if deviceName.contains("정현조") {
-//            discoveredPeripheral = peripheral
-//            discoveredPeripheral?.delegate = self
-//        }
-        
         if deviceName == "Raem" {
             discoveredPeripheral = peripheral
             discoveredPeripheral?.delegate = self
+            // 연결 시도는 connectDevice() 메서드를 호출할 때만 진행하도록 수정됨
+            // centralManager.connect(peripheral, options: nil) // 이 부분은 제거됨
         }
     }
     
     // 기기와 연결되었을 때 호출됩니다.
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("Connected to \(peripheral.name ?? "Unknown Device")")
-        
-        // Stop scanning
-        centralManager.stopScan()
-        print("Scanning stopped")
-        
-        // Save UUID for after
-//        let uuid = peripheral.identifier.uuidString
-//        UserDefaults.standard.set(uuid, forKey: "SavedDeviceUUID")
         
         peripheral.discoverServices(nil)
         connectedPeripheral = peripheral
@@ -93,11 +83,11 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
         
         if let services = peripheral.services {
             for service in services {
-                print("Discovered service: \(service)")
-                            
-                // 원하는 서비스 UUID를 확인하고 특성을 검색
                 if service.uuid == LEDServiceUUID {
                     LEDService = service
+                    peripheral.discoverCharacteristics(nil, for: service)
+                } else if service.uuid == AudioServiceUUID {
+                    AudioService = service
                     peripheral.discoverCharacteristics(nil, for: service)
                 }
             }
@@ -114,49 +104,55 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
             for characteristic in characteristics {
                 if characteristic.uuid == LEDCharacteristicUUID {
                     LEDCharacteristic = characteristic
-//                    if characteristic.properties.contains(.write){
-//                        let data = "25.5,25.5,25.5".data(using: .utf8)!
-//                        peripheral.writeValue(data, for: characteristic, type: .withResponse)
-//                    }
+                } else if characteristic.uuid == AudioOnCharacteristicUUID {
+                    AudioOnCharacteristic = characteristic
+                } else if characteristic.uuid == ChangeVolumeCharacteristicUUID {
+                    ChangeVolumeCharacteristic = characteristic
+                } else if characteristic.uuid == AudioOffCharacteristicUUID {
+                    AudioOffCharacteristic = characteristic
                 }
             }
         }
     }
     
-    func disconnect(){
+    func disconnect() {
         if let peripheral = connectedPeripheral {
             centralManager.cancelPeripheralConnection(peripheral)
+            connectSuccess = false
+            print("Successfully Disconnect")
         }
     }
     
-//    func retrieveKnownPeripherals() {
-//        // 저장된 UUID 가져오기
-//        if let savedUUIDString = UserDefaults.standard.string(forKey: "SavedDeviceUUID"),
-//           let uuid = UUID(uuidString: savedUUIDString) {
-//            //스캔 멈추기
-//            centralManager.stopScan()
-//            print("Scanning stopped")
-//            
-//            // 저장된 UUID를 사용하여 기기 검색
-//            let knownPeripherals = centralManager.retrievePeripherals(withIdentifiers: [uuid])
-//            
-//            // 재연결
-//            for peripheral in knownPeripherals {
-//                print("Previously connected device: \(peripheral.name ?? "Unknown")")
-//                centralManager.connect(peripheral, options: nil)
-//            }
-//            
-//            hasKnownRaem = true
-//        } else {
-//            print("No previously saved device UUID found.")
-//        }
-//    }
-    
-    func controllLED(_ data: String){
+    func controllLED(_ data: String) {
         if let peripheral = discoveredPeripheral, let characteristic = LEDCharacteristic {
             peripheral.writeValue(data.data(using: .utf8)!, for: characteristic, type: .withResponse)
         } else {
             print("No connected peripheral or characteristic found")
+        }
+    }
+    
+    func turnOnAudio(_ data: String) {
+        if let peripheral = discoveredPeripheral, let characteristic = AudioOnCharacteristic {
+            peripheral.writeValue(data.data(using: .utf8)!, for: characteristic, type: .withResponse)
+        } else {
+            print("No connected peripheral or audio on characteristic found")
+        }
+    }
+
+    func setVolume(_ volume: Int) {
+        if let peripheral = discoveredPeripheral, let characteristic = ChangeVolumeCharacteristic {
+            peripheral.writeValue(String(volume).data(using: .utf8)!, for: characteristic, type: .withResponse)
+        } else {
+            print("No connected peripheral or volume characteristic found")
+        }
+    }
+
+    func turnOffAudio(_ data: String) {
+        if let peripheral = discoveredPeripheral, let characteristic = AudioOffCharacteristic {
+            print(data)
+            peripheral.writeValue(data.data(using: .utf8)!, for: characteristic, type: .withResponse)
+        } else {
+            print("No connected peripheral or audio off characteristic found")
         }
     }
 }
