@@ -71,6 +71,8 @@ struct BedtimeView: View {
         }
     }()
     @State private var receiveAlarm = true
+    @State private var optimalSleepTime: String = "7시간 30분"
+    @State private var errorMessage: String = ""
 
     var body: some View {
         VStack(spacing: 20) {
@@ -82,10 +84,11 @@ struct BedtimeView: View {
                 UserDefaults.standard.set(newValue, forKey: "selectedBedTime")
             }
 
-            Text("수면 시간 목표는 7시간 30분 입니다.\n취침시간 및 알람시간에 근거함")
+            Text("수면 시간 목표는 \(optimalSleepTime) 입니다.\n취침시간 및 알람시간에 근거함")
                 .font(.system(size: 14))
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
+
 
             Toggle(isOn: $receiveAlarm) {
                 Text("취침 시간 알림 받기")
@@ -101,7 +104,57 @@ struct BedtimeView: View {
             .toggleStyle(SwitchToggleStyle(tint: Color.mint))
         }
         .padding(.top, 20) // 상단 여백 추가
+        .onAppear {
+            fetchOptimalSleepTime()
+        }
+
     }
+    func fetchOptimalSleepTime() {
+        guard let accessToken = UserDefaults.standard.string(forKey: "accessToken") else {
+            return
+        }
+
+        let url = URL(string: "https://www.raem.shop/api/sleep/best")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.errorMessage = "네트워크 오류: \(error.localizedDescription)"
+                }
+                return
+            }
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "데이터를 받지 못했습니다."
+                }
+                return
+            }
+
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("Response JSON: \(jsonString)")
+            }
+
+            do {
+                let responseData = try JSONDecoder().decode(SleepResponse.self, from: data)
+                DispatchQueue.main.async {
+                    if responseData.isSuccess {
+                        self.optimalSleepTime = responseData.data.bestTime
+                    } else {
+                        self.errorMessage = responseData.message  // 서버에서 받은 에러 메시지 표시
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.errorMessage = "응답을 디코딩하는 중 오류가 발생했습니다: \(error.localizedDescription)"
+                }
+            }
+        }.resume()
+    }
+    
 }
 
 struct AlarmView: View {
@@ -112,6 +165,8 @@ struct AlarmView: View {
             return Date()
         }
     }()
+    @State private var optimalSleepTime: String = "7시간 30분"
+    @State private var errorMessage: String = ""
     @State private var showingWakeupSheet = false
     @State private var showingRealarmSheet = false
     @State private var selectedWakeup = {
@@ -140,10 +195,11 @@ struct AlarmView: View {
                 UserDefaults.standard.set(newValue, forKey: "selectedAlarmTime")
             }
 
-            Text("수면 시간 목표는 7시간 30분 입니다.\n취침시간 및 알람시간에 근거함")
+            Text("수면 시간 목표는 \(optimalSleepTime) 입니다.\n취침시간 및 알람시간에 근거함")
                 .font(.system(size: 14))
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
+
 
             VStack(alignment: .center, spacing: 20) {
                 HStack {
@@ -263,7 +319,58 @@ struct AlarmView: View {
             }
         }
         .padding(.top, 20) // 상단 여백 추가
+        .onAppear {
+            fetchOptimalSleepTime()
+        }
+
     }
+    
+    func fetchOptimalSleepTime() {
+        guard let accessToken = UserDefaults.standard.string(forKey: "accessToken") else {
+            return
+        }
+
+        let url = URL(string: "https://www.raem.shop/api/sleep/best")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.errorMessage = "네트워크 오류: \(error.localizedDescription)"
+                }
+                return
+            }
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "데이터를 받지 못했습니다."
+                }
+                return
+            }
+
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("Response JSON: \(jsonString)")
+            }
+
+            do {
+                let responseData = try JSONDecoder().decode(SleepResponse.self, from: data)
+                DispatchQueue.main.async {
+                    if responseData.isSuccess {
+                        self.optimalSleepTime = responseData.data.bestTime
+                    } else {
+                        self.errorMessage = responseData.message  // 서버에서 받은 에러 메시지 표시
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.errorMessage = "응답을 디코딩하는 중 오류가 발생했습니다: \(error.localizedDescription)"
+                }
+            }
+        }.resume()
+    }
+
 }
 
 struct BedTimeAlarmView_Previews: PreviewProvider {
