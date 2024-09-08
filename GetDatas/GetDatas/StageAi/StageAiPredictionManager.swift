@@ -32,6 +32,7 @@ class StageAiPredictionManager: ObservableObject {
                 let predictionOutput = try model.prediction(input: input)
                 let predictedLevel = predictionOutput.level_Int_
                 let predictedProbability = predictionOutput.level_Int_Probability
+                let lastTimestampdata = lastTimestamp
                 
                 let result = StageAiPredictionResult(
                     timestamp: formattedCurrentTime(),
@@ -40,7 +41,7 @@ class StageAiPredictionManager: ObservableObject {
                 )
                 DispatchQueue.main.async {
                     self.predictions.append(result)
-                    print("StageAi 예측 결과: \(predictedLevel), 확률: \(predictedProbability)")
+                    print("StageAi 예측 결과: \(predictedLevel), 확률: \(predictedProbability), 마지막데이터: \(lastTimestampdata) 예측시각: \(self.formattedCurrentTime())")
                 }
 
             } catch {
