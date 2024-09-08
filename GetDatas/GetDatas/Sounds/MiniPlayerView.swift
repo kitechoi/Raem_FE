@@ -5,7 +5,6 @@ struct MiniPlayerView: View {
     var album: Album
     @Binding var isPopupVisible: Bool
     
-    @State private var isPlaying: Bool = false
     @State private var player: AVAudioPlayer?
     @State private var currentTime: TimeInterval = 0
     @State private var duration: TimeInterval = 60
@@ -29,9 +28,9 @@ struct MiniPlayerView: View {
                 Spacer()
                 
                 Button(action: {
-                    togglePlayPause()
+                    playMusic()
                 }) {
-                    Image(systemName: isPlaying ? "pause.fill" : "play.fill")
+                    Image(systemName: "play.fill")
                         .font(.system(size: 24))
                         .foregroundColor(.blue)
                 }
@@ -85,15 +84,12 @@ struct MiniPlayerView: View {
         }
     }
 
-    func togglePlayPause() {
+    func playMusic() {
         guard let player = player else { return }
 
-        if player.isPlaying {
-            player.pause()
-        } else {
+        if !player.isPlaying {
             player.play()
         }
-        isPlaying.toggle()
     }
 }
 

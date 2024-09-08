@@ -47,7 +47,7 @@ struct MusicPlayerView: View {
 
             HStack(spacing: 50) {
                 Button(action: {
-                    // 이전 트랙 기능 구현
+                    stopMusic()
                 }) {
                     Image(systemName: "backward.fill")
                         .font(.system(size: 30))
@@ -55,15 +55,15 @@ struct MusicPlayerView: View {
                 }
 
                 Button(action: {
-                    togglePlayPause()
+                    playMusic()
                 }) {
-                    Image(systemName: isPlaying ? "pause.fill" : "play.fill")
+                    Image(systemName: "play.fill")
                         .font(.system(size: 50))
                         .foregroundColor(.gray)
                 }
 
                 Button(action: {
-                    // 다음 트랙 기능 구현
+                    // 다음 트랙 기능 구현 (필요시 추가)
                 }) {
                     Image(systemName: "forward.fill")
                         .font(.system(size: 30))
@@ -77,6 +77,9 @@ struct MusicPlayerView: View {
         .padding()
         .onAppear {
             setupPlayer()
+        }
+        .onDisappear {
+            stopMusic()  // 뷰가 사라질 때 음악을 멈춤
         }
     }
 
@@ -108,7 +111,6 @@ struct MusicPlayerView: View {
             duration = player?.duration ?? 60
             player?.prepareToPlay()
             player?.volume = 1.0  // 볼륨 설정
-            print("Player initialized successfully")
         } catch {
             print("Failed to initialize player: \(error)")
             return
@@ -122,15 +124,20 @@ struct MusicPlayerView: View {
         }
     }
 
-    func togglePlayPause() {
+    func playMusic() {
         guard let player = player else { return }
 
-        if player.isPlaying {
-            player.pause()
-        } else {
+        if !player.isPlaying {
             player.play()
         }
-        isPlaying.toggle()
+    }
+
+    func stopMusic() {
+        guard let player = player else { return }
+        player.stop()
+        player.currentTime = 0
+        currentTime = 0
+        isPlaying = false
     }
 
     func seekToTime() {
