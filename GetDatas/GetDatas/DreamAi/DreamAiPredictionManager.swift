@@ -81,7 +81,7 @@ class DreamAiPredictionManager: ObservableObject {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let date = dateFormatter.string(from: Date())
-        let userName = "yeon"
+        let userName = "user"
         let fileName = "\(userName)_DreamAi_(\(date)).csv"
         
         let path = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)

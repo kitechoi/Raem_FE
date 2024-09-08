@@ -15,7 +15,8 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var predictionManager = DreamAiPredictionManager()
     @Published var stageAiPredictionManager = StageAiPredictionManager()
     private let fileManager = FileManager.default
-    private let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+//    private let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    private let temporaryDirectory = FileManager.default.temporaryDirectory
     
     override init() {
         super.init()
@@ -54,7 +55,8 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         
         // 파일 이름 설정
         let fileName = "record(\(date)).csv"
-        let path = documentsDirectory.appendingPathComponent(fileName)
+//        let path = documentsDirectory.appendingPathComponent(fileName)
+        let path = temporaryDirectory.appendingPathComponent(fileName)
         
         var csvText = "Timestamp,Heart Rate,Acceleration X,Acceleration Y,Acceleration Z\n"
         
