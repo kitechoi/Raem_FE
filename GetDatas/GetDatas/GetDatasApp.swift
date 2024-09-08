@@ -4,12 +4,20 @@ import SwiftUI
 struct GetDatasApp: App {
     @StateObject private var sessionManager = SessionManager()
     @StateObject private var bleManager = BLEManager()
-
+    @StateObject private var connectivityManager: iPhoneConnectivityManager
+        
+    init() {
+        let bleManager = BLEManager()
+        _bleManager = StateObject(wrappedValue: bleManager)
+        _connectivityManager = StateObject(wrappedValue: iPhoneConnectivityManager(bleManager: bleManager))
+    }
+    
     var body: some Scene {
         WindowGroup {
             LoadingView()
                 .environmentObject(sessionManager)
                 .environmentObject(bleManager)
+                .environmentObject(connectivityManager)
         }
     }
 }

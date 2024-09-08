@@ -1,7 +1,7 @@
 import SwiftUI
 import WatchConnectivity
 
-struct MeasurementData: Codable, Identifiable {
+struct MeasurementData: Codable, Identifiable, Equatable {
     var id = UUID()
     var heartRate: Double
     var accelerationX: Double
@@ -12,19 +12,30 @@ struct MeasurementData: Codable, Identifiable {
 
 class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var receivedData: [MeasurementData] = []
-    @Published var predictionManager = DreamAiPredictionManager()
+    @Published var predictionManager: DreamAiPredictionManager
     @Published var stageAiPredictionManager = StageAiPredictionManager()
     private let fileManager = FileManager.default
-//    private let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     private let temporaryDirectory = FileManager.default.temporaryDirectory
-    
-    override init() {
+    //private let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    private var bleManager: BLEManager
+
+    init(bleManager: BLEManager) {
+        self.bleManager = bleManager
+        self.predictionManager = DreamAiPredictionManager(bleManager: bleManager)
         super.init()
         if WCSession.isSupported() {
             WCSession.default.delegate = self
             WCSession.default.activate()
         }
     }
+    
+//    override init() {
+//        super.init()
+//        if WCSession.isSupported() {
+//            WCSession.default.delegate = self
+//            WCSession.default.activate()
+//        }
+//    }
     
     func sessionDidBecomeInactive(_ session: WCSession) {}
     
@@ -48,6 +59,42 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     }
 
     // 실시간 데이터 CSV로 내보내기
+    func printHeartRates() {
+        for entry in receivedData {
+            if entry.heartRate < 75 {
+                bleManager.controllLED("25.5,0,0")
+                print("red : 75이하, 현재 심박수: \(entry.heartRate)")
+            } else if entry.heartRate >= 75 && entry.heartRate < 77 {
+                bleManager.controllLED("25.5,12.8,0")
+                print("orange : 75이상 77미만, 현재 심박수: \(entry.heartRate)")
+            } else if entry.heartRate >= 77 && entry.heartRate < 79 {
+                bleManager.controllLED("25.5,25.5,0")
+                print("yellow : 77이상 79미만, 현재 심박수: \(entry.heartRate)")
+            } else if entry.heartRate >= 79 && entry.heartRate < 81 {
+                bleManager.controllLED("0,25.5,0")
+                print("green : 79이상 81미만, 현재 심박수: \(entry.heartRate)")
+            } else if entry.heartRate >= 81 && entry.heartRate < 83 {
+                bleManager.controllLED("0,12.8,25.5")
+                print("blue : 81이상 83미만, 현재 심박수: \(entry.heartRate)")
+            } else if entry.heartRate >= 83 && entry.heartRate < 85 {
+                bleManager.controllLED("0,0,25.5")
+                print("navy : 83이상 85미만, 현재 심박수: \(entry.heartRate)")
+            } else if entry.heartRate >= 85 && entry.heartRate < 87 {
+                bleManager.controllLED("12.8,0,25.5")
+                print("purple : 85이상 87미만, 현재 심박수: \(entry.heartRate)")
+            } else if entry.heartRate >= 87 && entry.heartRate < 89 {
+                bleManager.controllLED("25.5,25.5,25.5")
+                print("white : 87이상 89미만, 현재 심박수: \(entry.heartRate)")
+            } else {
+                bleManager.controllLED("25.5,0,25.5")
+                print("pink : 89이상, 현재 심박수: \(entry.heartRate)")
+            }
+            sleep(1)
+        }
+        bleManager.controllLED("0,0,0")
+        print("black : 1분간 모인 심박수 처리 완료")
+    }
+    
     func exportDataToCSV() -> URL? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -107,7 +154,13 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
 }
 
 struct RecordView: View {
-    @ObservedObject var connectivityManager = iPhoneConnectivityManager()
+    @EnvironmentObject var bleManager: BLEManager
+    @StateObject private var connectivityManager: iPhoneConnectivityManager
+
+    init(bleManager: BLEManager) {
+        _connectivityManager = StateObject(wrappedValue: iPhoneConnectivityManager(bleManager: bleManager))
+    }
+    
     
     var body: some View {
         VStack {
@@ -205,6 +258,9 @@ struct RecordView: View {
                     Text("Z: \(entry.accelerationZ, specifier: "%.2f")")
                 }
                 .padding(.vertical, 5)
+            }
+            .onChange(of: connectivityManager.receivedData) {
+                connectivityManager.printHeartRates()
             }
         }
         .background(Color.black)

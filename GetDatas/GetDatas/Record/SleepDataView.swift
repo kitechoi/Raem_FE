@@ -15,7 +15,9 @@ enum SleepStage {
 
 struct SleepDataView: View {
     @EnvironmentObject var sessionManager: SessionManager // 이메일 사용을 위한 SessionManager
-    @ObservedObject var predictionManager = DreamAiPredictionManager()
+    @EnvironmentObject var bleManager: BLEManager
+    @StateObject private var predictionManager: DreamAiPredictionManager
+    
     @State private var startDate = Date()
     @State private var endDate = Date()
     @State private var temporaryStartDate = Date()
@@ -27,6 +29,10 @@ struct SleepDataView: View {
     @State private var displayState: DisplayState = .allData
 
     private let healthStore = HKHealthStore()
+    
+    init() {
+        _predictionManager = StateObject(wrappedValue: DreamAiPredictionManager(bleManager: BLEManager()))
+    }
     
     var body: some View {
         VStack {

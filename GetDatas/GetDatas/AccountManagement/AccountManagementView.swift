@@ -17,6 +17,8 @@ struct AccountManagementView: View {
     @EnvironmentObject var sessionManager: SessionManager
     @State private var showRecordView = false
     @State private var showSleepDataView = false
+    
+    @EnvironmentObject var bleManager: BLEManager
 
     var body: some View {
         VStack {
@@ -119,7 +121,7 @@ struct AccountManagementView: View {
             .padding(.horizontal, 16)
 
             HStack {
-                NavigationLink(destination: RecordView(), isActive: $showRecordView) {
+                NavigationLink(destination: RecordView(bleManager: bleManager), isActive: $showRecordView) {
                     Button(action: {
                         showRecordView = true
                     }) {
