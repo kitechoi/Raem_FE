@@ -51,13 +51,22 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                 print("-------------------")
                 print("Received Data Count: \(self.receivedData.count)")  // 데이터 수신 갯수 확인
                 self.predictionManager.processReceivedData(self.receivedData)  // DreamAi 수신 후 예측 시작
-                self.stageAiPredictionManager.processReceivedData(self.receivedData) // StageAi
+//                self.stageAiPredictionManager.processReceivedData(self.receivedData) // StageAi
+                self.stageAiPredictionManager.predictionTimeCheck(self.receivedData) //
             }
         } catch {
             print("Failed to decode received data: \(error.localizedDescription)")
         }
     }
-
+    // StageAi 예측 시작 시간 체크
+    func performStageAiPredictionCheck() {
+        if !self.receivedData.isEmpty {
+            self.stageAiPredictionManager.predictionTimeCheck(self.receivedData)
+        } else {
+            print("No data available for Stage AI Prediction.")
+        }
+    }
+    
     // 실시간 데이터 CSV로 내보내기
     func printHeartRates() {
         for entry in receivedData {
