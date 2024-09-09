@@ -269,7 +269,7 @@ struct RecordView: View {
                 .padding(.vertical, 5)
             }
             .onChange(of: connectivityManager.receivedData) {
-                connectivityManager.printHeartRates()
+//                connectivityManager.printHeartRates()
             }
         }
         .background(Color.black)
