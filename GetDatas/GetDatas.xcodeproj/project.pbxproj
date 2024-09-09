@@ -30,6 +30,10 @@
 		3B445A162BF0F0EA00AFA631 /* GetDatasApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B445A152BF0F0EA00AFA631 /* GetDatasApp.swift */; };
 		3B445A1A2BF0F0EB00AFA631 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B445A192BF0F0EB00AFA631 /* Assets.xcassets */; };
 		3B445A1D2BF0F0EB00AFA631 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B445A1C2BF0F0EB00AFA631 /* Preview Assets.xcassets */; };
+		3B74A47B2C8DF9D60033FF20 /* DailySleepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B74A47A2C8DF9D60033FF20 /* DailySleepView.swift */; };
+		3B74A47D2C8DF9EC0033FF20 /* WeeklySleepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B74A47C2C8DF9EC0033FF20 /* WeeklySleepView.swift */; };
+		3B74A47F2C8DFA010033FF20 /* MonthlySleepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B74A47E2C8DFA010033FF20 /* MonthlySleepView.swift */; };
+		3B74A4812C8DFA170033FF20 /* AnnuallySleepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B74A4802C8DFA170033FF20 /* AnnuallySleepView.swift */; };
 		3BA82A392C79E1EC00CE24F2 /* BottomNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA82A382C79E1EC00CE24F2 /* BottomNav.swift */; };
 		3BA82A3E2C79E64A00CE24F2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA82A3D2C79E64A00CE24F2 /* SettingsView.swift */; };
 		3BA82A402C79E7C500CE24F2 /* SleepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA82A3F2C79E7C500CE24F2 /* SleepView.swift */; };
@@ -111,6 +115,10 @@
 		3B445A192BF0F0EB00AFA631 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B445A1C2BF0F0EB00AFA631 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3B445A272BF0F10F00AFA631 /* GetDatas.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GetDatas.entitlements; sourceTree = "<group>"; };
+		3B74A47A2C8DF9D60033FF20 /* DailySleepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySleepView.swift; sourceTree = "<group>"; };
+		3B74A47C2C8DF9EC0033FF20 /* WeeklySleepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklySleepView.swift; sourceTree = "<group>"; };
+		3B74A47E2C8DFA010033FF20 /* MonthlySleepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlySleepView.swift; sourceTree = "<group>"; };
+		3B74A4802C8DFA170033FF20 /* AnnuallySleepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnuallySleepView.swift; sourceTree = "<group>"; };
 		3B869B742BF472C800890FB8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3B869B752BF4730B00890FB8 /* GetDatas-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GetDatas-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 		3B90127B2BF439E3001253B5 /* GetDatas Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "GetDatas Watch App.entitlements"; sourceTree = "<group>"; };
@@ -228,28 +236,29 @@
 		3B445A022BF0F0E900AFA631 /* GetDatas */ = {
 			isa = PBXGroup;
 			children = (
-				0CF496022C8776BF0065A588 /* StageAi */,
 				73E1F5B92C8342DC000118C7 /* 1.mp3 */,
-				73E1F5AE2C83106D000118C7 /* Sounds */,
-				0CFAD4882C8393CC00791BF5 /* AiTraning */,
-				0C24AD692C7CB725004CF022 /* DreamAi */,
-				A82DF1902C7B5A8F00EF097E /* BLEManager */,
-				3BA82A3C2C79E61D00CE24F2 /* Setting */,
-				3B0542222C75CAD100A4CB0D /* Component */,
-				3BF207E92C735C79000DEDA9 /* Record */,
 				739AE9622C6DB1D6006BAF47 /* AccountManagement */,
-				7361196A2C68B6A800F3FF11 /* Home */,
-				736119642C68AAB700F3FF11 /* DeviceRegistration */,
-				7361195B2C68A6AE00F3FF11 /* Register */,
-				7361195A2C68A59A00F3FF11 /* Login */,
-				736119562C68A4D400F3FF11 /* Carousel */,
-				736119552C68A48A00F3FF11 /* Loading */,
-				3B445A032BF0F0E900AFA631 /* GetDatasApp.swift */,
-				3B869B742BF472C800890FB8 /* Info.plist */,
-				3B445A272BF0F10F00AFA631 /* GetDatas.entitlements */,
+				0CFAD4882C8393CC00791BF5 /* AiTraning */,
 				3B445A072BF0F0EA00AFA631 /* Assets.xcassets */,
-				3B445A092BF0F0EA00AFA631 /* Preview Content */,
+				A82DF1902C7B5A8F00EF097E /* BLEManager */,
+				736119562C68A4D400F3FF11 /* Carousel */,
+				3B0542222C75CAD100A4CB0D /* Component */,
+				736119642C68AAB700F3FF11 /* DeviceRegistration */,
+				0C24AD692C7CB725004CF022 /* DreamAi */,
+				3B445A272BF0F10F00AFA631 /* GetDatas.entitlements */,
+				3B445A032BF0F0E900AFA631 /* GetDatasApp.swift */,
+				7361196A2C68B6A800F3FF11 /* Home */,
+				3B869B742BF472C800890FB8 /* Info.plist */,
+				736119552C68A48A00F3FF11 /* Loading */,
+				7361195A2C68A59A00F3FF11 /* Login */,
 				A82DF18E2C7B331A00EF097E /* MainContentView.swift */,
+				3B445A092BF0F0EA00AFA631 /* Preview Content */,
+				3BF207E92C735C79000DEDA9 /* Record */,
+				7361195B2C68A6AE00F3FF11 /* Register */,
+				3BA82A3C2C79E61D00CE24F2 /* Setting */,
+				3B74A4792C8DF99D0033FF20 /* Sleep */,
+				73E1F5AE2C83106D000118C7 /* Sounds */,
+				0CF496022C8776BF0065A588 /* StageAi */,
 			);
 			path = GetDatas;
 			sourceTree = "<group>";
@@ -283,11 +292,22 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		3B74A4792C8DF99D0033FF20 /* Sleep */ = {
+			isa = PBXGroup;
+			children = (
+				3BA82A3F2C79E7C500CE24F2 /* SleepView.swift */,
+				3B74A47C2C8DF9EC0033FF20 /* WeeklySleepView.swift */,
+				3B74A47A2C8DF9D60033FF20 /* DailySleepView.swift */,
+				3B74A4802C8DFA170033FF20 /* AnnuallySleepView.swift */,
+				3B74A47E2C8DFA010033FF20 /* MonthlySleepView.swift */,
+			);
+			path = Sleep;
+			sourceTree = "<group>";
+		};
 		3BA82A3C2C79E61D00CE24F2 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
 				3BA82A3D2C79E64A00CE24F2 /* SettingsView.swift */,
-				3BA82A3F2C79E7C500CE24F2 /* SleepView.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -518,6 +538,7 @@
 				7361196C2C68B6C400F3FF11 /* SleepTrackingView.swift in Sources */,
 				0C8583F02C883280002E7BD2 /* StageAiPredictionView.swift in Sources */,
 				0C24AD6D2C7CBE15004CF022 /* DreamAiProcesser.swift in Sources */,
+				3B74A4812C8DFA170033FF20 /* AnnuallySleepView.swift in Sources */,
 				3BA82A3E2C79E64A00CE24F2 /* SettingsView.swift in Sources */,
 				73E1F5B02C833DF0000118C7 /* Album.swift in Sources */,
 				7361195D2C68A6D100F3FF11 /* RegisterView.swift in Sources */,
@@ -535,7 +556,10 @@
 				3B445A042BF0F0E900AFA631 /* GetDatasApp.swift in Sources */,
 				739AE96C2C6DE368006BAF47 /* PasswordChangeView.swift in Sources */,
 				739AE9742C700C31006BAF47 /* BedTimeAlarmView.swift in Sources */,
+				3B74A47B2C8DF9D60033FF20 /* DailySleepView.swift in Sources */,
+				3B74A47F2C8DFA010033FF20 /* MonthlySleepView.swift in Sources */,
 				0C24AD6B2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel in Sources */,
+				3B74A47D2C8DF9EC0033FF20 /* WeeklySleepView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
