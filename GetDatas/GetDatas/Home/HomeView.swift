@@ -2,9 +2,10 @@ import SwiftUI
 import UserNotifications
 
 struct HomeView: View {
+    @State private var optimalSleepTime: String = "7시간"  // 기본값
+    @EnvironmentObject var sessionManager: SessionManager
     @State private var showSleepTrackingView = false  // SleepTrackingView로 이동하기 위한 상태
     @State private var showAccountManagementView = false  // AccountManagementView로 이동하기 위한 상태
-    @EnvironmentObject var sessionManager: SessionManager
     @State private var startBedtime = true
     @State private var receiveAlarm = true
     @State private var selectedBedtime = {
@@ -110,9 +111,9 @@ struct HomeView: View {
                             .foregroundColor(.black)
 
                         HStack {
-                            Text("\(sessionManager.username)님의 최적 수면 시간은 7시간 입니다.")
-                                .font(Font.system(size: 14))
-                                .foregroundColor(.gray)
+                            Text("\(sessionManager.username)님의 최적 수면 시간은 \(optimalSleepTime) 입니다.")
+                                           .font(Font.system(size: 14))
+                                           .foregroundColor(.gray)
                             Spacer()
 //                            Button(action: {
 //                                // 더보기 액션 추가
@@ -321,10 +322,64 @@ struct HomeView: View {
             }
             .onChange(of: startBedtime) {
                 updateBedtimeNotification()
+                fetchOptimalSleepTime()  // 뷰가 나타날 때 API 호출
             }
         }
     }
-    
+    func fetchOptimalSleepTime() {
+        guard let accessToken = sessionManager.accessToken else {
+            return
+        }
+
+        let url = URL(string: "https://www.raem.shop/api/sleep/best")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error fetching optimal sleep time: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+
+            // 서버에서 받은 원본 데이터를 문자열로 출력
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("Response JSON: \(jsonString)")
+            }
+
+            do {
+                let responseData = try JSONDecoder().decode(SleepResponse.self, from: data)
+                DispatchQueue.main.async {
+                    if responseData.isSuccess {
+                        self.optimalSleepTime = responseData.data.bestTime
+                    } else {
+                        // 서버 에러 메시지를 사용자에게 알림
+                        print("Failed to fetch optimal sleep time: \(responseData.message)")
+                        // 에러 메시지를 뷰에서 보여줄 수 있도록 처리 (예: Alert)
+                    }
+                }
+            } catch {
+                print("Error decoding response: \(error.localizedDescription)")
+            }
+        }.resume()
+    }
+
+}
+
+struct SleepResponse: Codable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let data: SleepData
+}
+
+struct SleepData: Codable {
+    let bestTime: String
 }
 
 struct HomeView_Previews: PreviewProvider {

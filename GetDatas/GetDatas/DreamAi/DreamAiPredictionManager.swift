@@ -8,6 +8,7 @@ class DreamAiPredictionManager: ObservableObject {
     private var bleManager: BLEManager
     private var previousSleepStates: [(timestamp: String, isSleeping: Bool)] = []
     private let aiProcessor = DreamAiProcessor()
+    private var isPredictionPaused = false  // DreamAi 취침 플래그 (continuedSleepings면 예측중지)
     
     private var timer: Timer?
     private var currentVolume = 80 //TODO: 현재 폰의 음량에 맞게 변경
@@ -21,8 +22,10 @@ class DreamAiPredictionManager: ObservableObject {
     }
     
     func processReceivedData(_ data: [MeasurementData]) {
-//        clearPredictions()  // 이전 예측 결과를 삭제
-        
+        guard !isPredictionPaused else {
+            print("Predictions are paused. No further processing.")
+            return
+        }
         aiProcessor.performPrediction(data: data) { isSleeping, probability, timestamp in
             DispatchQueue.main.async {
 //                print("...DreamAi 호출...")
@@ -38,6 +41,7 @@ class DreamAiPredictionManager: ObservableObject {
     func clearPredictions() {
         predictionResults.removeAll()
         previousSleepStates.removeAll()
+        isPredictionPaused = false
     }
     
     // 실시간으로 자는지 안 자는지 확인하는 함수
@@ -81,6 +85,7 @@ class DreamAiPredictionManager: ObservableObject {
             
             if allSleeping {
                 if let firstSleepingTimestamp = previousSleepStates.first?.timestamp {
+                    isPredictionPaused = true
                     print("연속 \(consecutiveCount)번 이상 사용자가 수면 상태")
                     print("잠든 1번째 타임스탬프: \(firstSleepingTimestamp)")
                     
