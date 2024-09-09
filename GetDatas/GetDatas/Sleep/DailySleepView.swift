@@ -3,6 +3,8 @@ import Charts
 import HealthKit
 
 struct DailyView: View {
+    @EnvironmentObject var sessionManager: SessionManager
+    
     @State private var popUpVisible: Bool = false
     @State private var selectedReason: Reason? = nil
     @State private var rating: Int = 2
@@ -13,6 +15,13 @@ struct DailyView: View {
     @State private var sleepData: [HKSleepAnalysis] = []
     @State private var loadingData: Bool = false
     
+    @State private var sleepTime: String = ""
+    @State private var fellAsleepTime: String = ""
+    @State private var awakeTime: String = ""
+    @State private var timeOnBed: String = ""
+
+    
+    
     private let healthStore = HKHealthStore()
     
     enum Reason {
@@ -22,6 +31,7 @@ struct DailyView: View {
         case alcohol
         case smartphone
     }
+
     
     var body: some View {
         ZStack {
@@ -129,7 +139,7 @@ struct DailyView: View {
                                                 .frame(width: 24, height: 24)
                                             
                                             VStack(alignment: .leading, spacing: 4){
-                                                Text("6시간 52분")
+                                                Text("\(sleepTime)")
                                                     .font(Font.system(size: 18, weight: .bold))
                                                     .foregroundColor(.black)
                                                 Text("Time in sleep")
@@ -146,7 +156,7 @@ struct DailyView: View {
                                                 .resizable()
                                                 .frame(width: 24, height: 24)
                                             VStack(alignment: .leading, spacing: 4){
-                                                Text("25분")
+                                                Text("\(fellAsleepTime)")
                                                     .font(Font.system(size: 18, weight: .bold))
                                                     .foregroundColor(.black)
                                                 Text("Fell asleep")
@@ -165,7 +175,7 @@ struct DailyView: View {
                                                 .resizable()
                                                 .frame(width: 24, height: 24)
                                             VStack(alignment: .leading, spacing:4) {
-                                                Text("7시간 23분")
+                                                Text("\(timeOnBed)")
                                                     .font(Font.system(size: 18, weight: .bold))
                                                     .foregroundColor(.black)
                                                 Text("Went to bed")
@@ -182,7 +192,7 @@ struct DailyView: View {
                                                 .resizable()
                                                 .frame(width: 24, height: 24)
                                             VStack(alignment: .leading, spacing: 4) {
-                                                Text("07시 12분")
+                                                Text("\(awakeTime)")
                                                     .font(Font.system(size: 18, weight: .bold))
                                                     .foregroundColor(.black)
                                                 Text("Wake up time")
@@ -261,7 +271,11 @@ struct DailyView: View {
                 }
                 .transition(.opacity) // 페이드 인/아웃 효과
                 .animation(.easeInOut, value: popUpVisible) // 애니메이션 효과
+           
             }
+        }
+        .onAppear {
+            fetchDailySleepAnalysis()
         }
     }
     
@@ -318,7 +332,82 @@ struct DailyView: View {
         default: return .gray
         }
     }
+    
+    func fetchDailySleepAnalysis() {
+        guard let accessToken = sessionManager.accessToken else {
+            print("No access token found")
+            return
+        }
+
+        let url = URL(string: "https://www.raem.shop/api/sleep/analysis?range=daily")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error fetching daily sleep analysis: \(error.localizedDescription)")
+                return
+            }
+
+            // HTTP 응답 코드 확인
+            if let httpResponse = response as? HTTPURLResponse {
+//                print("HTTP Status Code: \(httpResponse.statusCode)")
+                if httpResponse.statusCode != 200 {
+                    print("Non-200 HTTP response received")
+                    return
+                }
+            }
+
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+
+            // JSON 데이터 출력 (디버깅용)
+//            if let jsonString = String(data: data, encoding: .utf8) {
+//                print("Response JSON: \(jsonString)")
+//            }
+
+            do {
+                let responseData = try JSONDecoder().decode(DailySleepResponse.self, from: data)
+                DispatchQueue.main.async {
+                    if responseData.isSuccess {
+                        self.sleepTime = responseData.data.sleepTime
+                        self.fellAsleepTime = responseData.data.fellAsleepTime
+                        self.awakeTime = responseData.data.awakeTime
+                        self.timeOnBed = responseData.data.timeOnBed
+//                        print("Data successfully fetched and assigned")
+                    } else {
+                        print("Failed to fetch daily sleep analysis: \(responseData.message)")
+                    }
+                }
+            } catch {
+                print("Error decoding response: \(error.localizedDescription)")
+            }
+        }.resume()
+    }
+
+    
+    struct DailySleepResponse: Codable {
+        let isSuccess: Bool
+        let code: String
+        let message: String
+        let data: SleepData
+    }
+    
+    struct SleepData: Codable {
+        let sleptAt: String
+        let score: Int
+        let badAwakeReason: String?
+        let awakeTime: String
+        let fellAsleepTime: String
+        let sleepTime: String
+        let timeOnBed: String
+    }
+
 }
+
 
 struct DailyView_Previews: PreviewProvider {
     static var previews: some View {
