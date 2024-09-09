@@ -19,8 +19,6 @@ struct DailyView: View {
     @State private var fellAsleepTime: String = ""
     @State private var awakeTime: String = ""
     @State private var timeOnBed: String = ""
-
-    
     
     private let healthStore = HKHealthStore()
     
@@ -31,11 +29,10 @@ struct DailyView: View {
         case alcohol
         case smartphone
     }
-
     
     var body: some View {
         ZStack {
-            VStack(alignment: .leading, spacing: 16){
+            VStack(alignment: .leading, spacing: 16) {
                 VStack(spacing: 20) {
                     HStack {
                         Text("수면 별점")
@@ -43,7 +40,7 @@ struct DailyView: View {
                         Spacer()
                     }
                     
-                    HStack(spacing: 10){
+                    HStack(spacing: 10) {
                         ForEach(1...5, id: \.self) { index in
                             Image(systemName: "star.fill")
                                 .resizable()
@@ -71,11 +68,12 @@ struct DailyView: View {
                 VStack(spacing: 20) {
                     HStack {
                         Text("수면 깊이")
-                            .font(.system(size: 24, weight: .bold)).foregroundColor(.black)
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.black)
                         Spacer()
                     }
                     
-                    VStack(alignment: .leading){
+                    VStack(alignment: .leading) {
                         HStack(alignment: .bottom) {
                             HStack(spacing: 12) {
                                 Image("moon")
@@ -83,13 +81,17 @@ struct DailyView: View {
                                     .frame(width: 30, height: 30)
                                 
                                 Text("\(sleepHour)")
-                                    .font(.system(size: 24, weight: .bold)).foregroundColor(.black) +
+                                    .font(.system(size: 24, weight: .bold))
+                                    .foregroundColor(.black) +
                                 Text("시")
-                                    .font(.system(size: 20, weight: .bold)).foregroundColor(.black) +
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(.black) +
                                 Text(" \(sleepMinute)")
-                                    .font(.system(size: 24, weight: .bold)).foregroundColor(.black) +
+                                    .font(.system(size: 24, weight: .bold))
+                                    .foregroundColor(.black) +
                                 Text("분")
-                                    .font(.system(size: 20, weight: .bold)).foregroundColor(.black)
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(.black)
                             }
                             
                             Spacer()
@@ -115,15 +117,20 @@ struct DailyView: View {
                                     .frame(height: 200)
                             } else {
                                 Chart {
-                                    ForEach(sleepData) { data in
-                                        LineMark(
-                                            x: .value("Time", data.startDate, unit: .hour),
-                                            y: .value("Level", data.level)
+                                    ForEach(sleepData.filter { data in
+                                        data.level != 0 && data.level != 1 // 단계 0과 1은 제외
+                                    }) { data in
+                                        RectangleMark(
+                                            xStart: .value("시작 시간", data.startDate),
+                                            xEnd: .value("종료 시간", data.endDate),
+                                            y: .value("수면 단계", levelText(for: data.level))
                                         )
-                                        .foregroundStyle(self.color(for: data.level))
+                                        .foregroundStyle(self.color(for: data.level)) // 수면 단계별 색상 적용
+                                        .cornerRadius(3) // 각 블록에 둥근 모서리 적용
                                     }
                                 }
                                 .frame(height: 200)
+
                             }
                         }
                         .onAppear(perform: loadSleepData)
@@ -138,7 +145,7 @@ struct DailyView: View {
                                                 .resizable()
                                                 .frame(width: 24, height: 24)
                                             
-                                            VStack(alignment: .leading, spacing: 4){
+                                            VStack(alignment: .leading, spacing: 4) {
                                                 Text("\(sleepTime)")
                                                     .font(Font.system(size: 18, weight: .bold))
                                                     .foregroundColor(.black)
@@ -149,13 +156,13 @@ struct DailyView: View {
                                         }
                                     }
                                     .padding(.trailing, 10)
-
+                                    
                                     VStack(spacing: 4) {
                                         HStack(spacing: 16) {
                                             Image("zzz")
                                                 .resizable()
                                                 .frame(width: 24, height: 24)
-                                            VStack(alignment: .leading, spacing: 4){
+                                            VStack(alignment: .leading, spacing: 4) {
                                                 Text("\(fellAsleepTime)")
                                                     .font(Font.system(size: 18, weight: .bold))
                                                     .foregroundColor(.black)
@@ -174,7 +181,7 @@ struct DailyView: View {
                                             Image("watch")
                                                 .resizable()
                                                 .frame(width: 24, height: 24)
-                                            VStack(alignment: .leading, spacing:4) {
+                                            VStack(alignment: .leading, spacing: 4) {
                                                 Text("\(timeOnBed)")
                                                     .font(Font.system(size: 18, weight: .bold))
                                                     .foregroundColor(.black)
@@ -185,7 +192,7 @@ struct DailyView: View {
                                         }
                                     }
                                     .padding(.trailing, 10)
-
+                                    
                                     VStack(alignment: .leading, spacing: 4) {
                                         HStack(spacing: 16) {
                                             Image("sun")
@@ -269,9 +276,8 @@ struct DailyView: View {
                     .cornerRadius(10)
                     .shadow(radius: 10)
                 }
-                .transition(.opacity) // 페이드 인/아웃 효과
-                .animation(.easeInOut, value: popUpVisible) // 애니메이션 효과
-           
+                .transition(.opacity)
+                .animation(.easeInOut, value: popUpVisible)
             }
         }
         .onAppear {
@@ -299,10 +305,10 @@ struct DailyView: View {
             return
         }
         
-        let startDateComponents = DateComponents(year: 2024, month: 8, day: 16, hour: 12, minute: 0)
+        let startDateComponents = DateComponents(year: 2024, month: 8, day: 22, hour: 12, minute: 0)
         let startDate = Calendar.current.date(from: startDateComponents)!
         
-        let endDateComponents = DateComponents(year: 2024, month: 8, day: 17, hour: 12, minute: 0)
+        let endDateComponents = DateComponents(year: 2024, month: 8, day: 23, hour: 12, minute: 0)
         let endDate = Calendar.current.date(from: endDateComponents)!
         
         let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
@@ -326,10 +332,20 @@ struct DailyView: View {
     private func color(for level: Int) -> Color {
         switch level {
         case 2: return .red // Awake
-        case 5: return .purple // REM
         case 3: return .blue // Core
         case 4: return .green // Deep
+        case 5: return .purple // REM
         default: return .gray
+        }
+    }
+    
+    private func levelText(for level: Int) -> String {
+        switch level {
+        case 2: return "Awake"
+        case 3: return "Core"
+        case 4: return "Deep"
+        case 5: return "REM"
+        default: return "Unknown"
         }
     }
     
@@ -350,9 +366,7 @@ struct DailyView: View {
                 return
             }
 
-            // HTTP 응답 코드 확인
             if let httpResponse = response as? HTTPURLResponse {
-//                print("HTTP Status Code: \(httpResponse.statusCode)")
                 if httpResponse.statusCode != 200 {
                     print("Non-200 HTTP response received")
                     return
@@ -364,11 +378,6 @@ struct DailyView: View {
                 return
             }
 
-            // JSON 데이터 출력 (디버깅용)
-//            if let jsonString = String(data: data, encoding: .utf8) {
-//                print("Response JSON: \(jsonString)")
-//            }
-
             do {
                 let responseData = try JSONDecoder().decode(DailySleepResponse.self, from: data)
                 DispatchQueue.main.async {
@@ -377,7 +386,6 @@ struct DailyView: View {
                         self.fellAsleepTime = responseData.data.fellAsleepTime
                         self.awakeTime = responseData.data.awakeTime
                         self.timeOnBed = responseData.data.timeOnBed
-//                        print("Data successfully fetched and assigned")
                     } else {
                         print("Failed to fetch daily sleep analysis: \(responseData.message)")
                     }
@@ -387,7 +395,6 @@ struct DailyView: View {
             }
         }.resume()
     }
-
     
     struct DailySleepResponse: Codable {
         let isSuccess: Bool
@@ -405,12 +412,12 @@ struct DailyView: View {
         let sleepTime: String
         let timeOnBed: String
     }
-
 }
-
 
 struct DailyView_Previews: PreviewProvider {
     static var previews: some View {
         DailyView()
     }
 }
+
+
