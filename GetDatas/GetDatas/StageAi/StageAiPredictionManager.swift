@@ -12,6 +12,7 @@ class StageAiPredictionManager: ObservableObject {
     private var alarmTime: Date?  // 알람 시각
     private var wakeUpBufferMinutes: Int = 30  // 기상 시간 여분
     private var timer: Timer?  // 알람 시각을 체크할 타이머
+    private var isPredictionPaused_StageAi = false // 예측 중지 플래그
     
     // DateFormatter는 매번 생성하지 않고 한번 생성해서 사용
     private let dateFormatter: DateFormatter = {
@@ -78,10 +79,13 @@ class StageAiPredictionManager: ObservableObject {
 
     func processReceivedData(_ data: [MeasurementData]) {
         guard data.count >= windowSize90 else {
-            print("데이터가 충분하지 않습니다.")
+            print("StageAi 데이터가 충분하지 않습니다.")
             return
         }
-
+        guard !isPredictionPaused_StageAi else {
+            print("StageAi는 이미 렘을 찾아서 중지 중입니다.")
+            return
+        }
         performPrediction(data)
     }
 
@@ -108,7 +112,9 @@ class StageAiPredictionManager: ObservableObject {
                     print("StageAi 예측 결과: \(predictedLevel), 확률: \(predictedProbability), 마지막데이터: \(lastTimestampdata) 예측시각: \(self.formattedCurrentTime())")
                     // 렘(5)일 경우, 알람울리기
                     if predictedLevel == 5 {
-                        self.detectedRem()
+                        self.detectedRem()  // 렘수면 시 알림 관련 함수
+                        self.isPredictionPaused_StageAi = true // 렘수면 시 플래그로써 예측이 수행되지 않게 함.
+                        print("렘을 찾았으니, 앞으로 예측을 중지합니다")
                     }
                 }
 
@@ -123,7 +129,7 @@ class StageAiPredictionManager: ObservableObject {
         
         // 로컬 알림 생성
         let content = UNMutableNotificationContent()
-        content.title = "렘수면 알림"
+        content.title = "기상 알림"
         content.body = "렘수면입니다. 일어나세요."
         content.sound = UNNotificationSound.default
         
