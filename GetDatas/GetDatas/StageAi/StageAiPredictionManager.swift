@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import Combine
 import CoreML
+import UserNotifications
 
 class StageAiPredictionManager: ObservableObject {
     @Published var predictions: [StageAiPredictionResult] = []
@@ -11,6 +12,7 @@ class StageAiPredictionManager: ObservableObject {
     private var alarmTime: Date?  // 알람 시각
     private var wakeUpBufferMinutes: Int = 30  // 기상 시간 여분
     private var timer: Timer?  // 알람 시각을 체크할 타이머
+    private var isPredictionPaused_StageAi = false // 예측 중지 플래그
     
     // DateFormatter는 매번 생성하지 않고 한번 생성해서 사용
     private let dateFormatter: DateFormatter = {
@@ -19,13 +21,14 @@ class StageAiPredictionManager: ObservableObject {
         formatter.timeZone = TimeZone.current  // 로컬 시간대로 설정
         return formatter
     }()
-
+    
     init() {
         self.model = try! StageAi_MyTabularClassifier(configuration: MLModelConfiguration())
         
         // 초기화 시 UserDefaults에서 알람 시간 불러오기
         loadAlarmTime()
         startTimerForPredictionCheck()
+        requestNotificationPermission()
     }
 
     // 알람 시간과 여분 시간 설정
@@ -76,10 +79,13 @@ class StageAiPredictionManager: ObservableObject {
 
     func processReceivedData(_ data: [MeasurementData]) {
         guard data.count >= windowSize90 else {
-            print("데이터가 충분하지 않습니다.")
+            print("StageAi 데이터가 충분하지 않습니다.")
             return
         }
-
+        guard !isPredictionPaused_StageAi else {
+            print("StageAi는 이미 렘을 찾아서 중지 중입니다.")
+            return
+        }
         performPrediction(data)
     }
 
@@ -104,6 +110,12 @@ class StageAiPredictionManager: ObservableObject {
                 DispatchQueue.main.async {
                     self.predictions.append(result)
                     print("StageAi 예측 결과: \(predictedLevel), 확률: \(predictedProbability), 마지막데이터: \(lastTimestampdata) 예측시각: \(self.formattedCurrentTime())")
+                    // 렘(5)일 경우, 알람울리기
+                    if predictedLevel == 5 {
+                        self.detectedRem()  // 렘수면 시 알림 관련 함수
+                        self.isPredictionPaused_StageAi = true // 렘수면 시 플래그로써 예측이 수행되지 않게 함.
+                        print("렘을 찾았으니, 앞으로 예측을 중지합니다")
+                    }
                 }
 
             } catch {
@@ -112,6 +124,30 @@ class StageAiPredictionManager: ObservableObject {
         }
     }
 
+    func detectedRem() {
+        print("렘입니다. 예측시각: \(self.formattedCurrentTime())")
+        
+        // 로컬 알림 생성
+        let content = UNMutableNotificationContent()
+        content.title = "기상 알림"
+        content.body = "렘수면입니다. 일어나세요."
+        content.sound = UNNotificationSound.default
+        
+        // 알림을 즉시 표시하도록 설정
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        // 알림 요청 생성
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        
+        // 알림 추가
+        UNUserNotificationCenter.current().add(request) { (error) in
+            if let error = error {
+                print("알림 울림 실패: \(error.localizedDescription)")
+            } else {
+                print("알림 울림 성공")
+            }
+        }
+    }
+    
     private func preprocessDataForPrediction(_ window90: [MeasurementData], window30: [MeasurementData]) -> StageAi_MyTabularClassifierInput? {
         guard window90.count == windowSize90 else {
             print("StageAi 데이터가 충분하지 않아 예측을 수행할 수 없습니다.")
@@ -163,6 +199,18 @@ class StageAiPredictionManager: ObservableObject {
         } catch {
             print("Failed to create CSV file: \(error)")
             return nil
+        }
+    }
+    // 알림 권한 요청 함수
+    private func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if let error = error {
+                print("알림 권한 요청 실패: \(error.localizedDescription)")
+            } else if granted {
+                print("알림 권한이 허용되었습니다.")
+            } else {
+                print("알림 권한이 거부되었습니다.")
+            }
         }
     }
 
