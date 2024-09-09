@@ -7,6 +7,13 @@ struct HomeView: View {
     @State private var showAccountManagementView = false  // AccountManagementView로 이동하기 위한 상태
     @State private var startBedtime = true
     @State private var receiveAlarm = true
+    
+    @State private var sleepTime: String = ""
+    @State private var fellAsleepTime: String = ""
+    @State private var awakeTime: String = ""
+    @State private var timeOnBed: String = ""
+
+    
     @State private var selectedBedtime = {
         if let savedTime = UserDefaults.standard.object(forKey: "selectedBedTime") as? Date {
             return savedTime
@@ -96,7 +103,7 @@ struct HomeView: View {
                                         .resizable()
                                         .frame(width: 24, height: 24)
                                     VStack(alignment: .leading, spacing: 4){
-                                        Text("6시간 52분")
+                                        Text("\(sleepTime)")
                                             .font(Font.system(size: 18, weight: .bold))
                                             .foregroundColor(.black)
                                         Text("Time in sleep")
@@ -112,7 +119,7 @@ struct HomeView: View {
                                         .resizable()
                                         .frame(width: 24, height: 24)
                                     VStack(alignment: .leading, spacing: 4){
-                                        Text("25분")
+                                        Text("\(fellAsleepTime)")
                                             .font(Font.system(size: 18, weight: .bold))
                                             .foregroundColor(.black)
                                         Text("Fell asleep")
@@ -132,7 +139,7 @@ struct HomeView: View {
                                         .resizable()
                                         .frame(width: 24, height: 24)
                                     VStack(alignment: .leading, spacing:4) {
-                                        Text("7시간 23분")
+                                        Text("\(timeOnBed)")
                                             .font(Font.system(size: 18, weight: .bold))
                                             .foregroundColor(.black)
                                         Text("Went to bed")
@@ -148,7 +155,7 @@ struct HomeView: View {
                                         .resizable()
                                         .frame(width: 24, height: 24)
                                     VStack(alignment: .leading, spacing: 4) {
-                                        Text("07시 12분")
+                                        Text("\(awakeTime)")
                                             .font(Font.system(size: 18, weight: .bold))
                                             .foregroundColor(.black)
                                         Text("Wake up time")
@@ -259,10 +266,60 @@ struct HomeView: View {
             .edgesIgnoringSafeArea(.all)
             .navigationBarHidden(true)
             .onAppear {
-                fetchOptimalSleepTime()  // 뷰가 나타날 때 API 호출
+                fetchOptimalSleepTime()
+                fetchDailySleepAnalysis()
             }
         }
     }
+    
+    func fetchDailySleepAnalysis() {
+        guard let accessToken = sessionManager.accessToken else {
+            return
+        }
+
+        let url = URL(string: "https://www.raem.shop/api/sleep/analysis?range=daily")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error fetching daily sleep analysis: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+            
+//            // 서버에서 받은 원본 데이터를 문자열로 출력
+//            if let jsonString = String(data: data, encoding: .utf8) {
+//                print("Response JSON: \(jsonString)")
+//            }
+
+            do {
+                let responseData = try JSONDecoder().decode(DailySleepResponse.self, from: data)
+                DispatchQueue.main.async {
+                    if responseData.isSuccess {
+                        // 데이터를 정상적으로 처리
+                        self.sleepTime = responseData.data.sleepTime
+                        self.fellAsleepTime = responseData.data.fellAsleepTime
+                        self.awakeTime = responseData.data.awakeTime
+                        self.timeOnBed = responseData.data.timeOnBed
+                    } else {
+                        // 서버 에러가 발생했을 때 사용자에게 메시지 표시
+                        print("Failed to fetch daily sleep analysis: \(responseData.message)")
+                    }
+                }
+            } catch {
+                print("Error decoding response: \(error.localizedDescription)")
+            }
+        }.resume()
+    }
+
+
+    
     func fetchOptimalSleepTime() {
         guard let accessToken = sessionManager.accessToken else {
             return
@@ -285,9 +342,9 @@ struct HomeView: View {
             }
 
             // 서버에서 받은 원본 데이터를 문자열로 출력
-            if let jsonString = String(data: data, encoding: .utf8) {
-                print("Response JSON: \(jsonString)")
-            }
+//            if let jsonString = String(data: data, encoding: .utf8) {
+//                print("Response JSON: \(jsonString)")
+//            }
 
             do {
                 let responseData = try JSONDecoder().decode(SleepResponse.self, from: data)
@@ -305,6 +362,24 @@ struct HomeView: View {
             }
         }.resume()
     }
+    
+    struct DailySleepResponse: Codable {
+        let isSuccess: Bool
+        let code: String
+        let message: String
+        let data: SleepData
+    }
+
+    struct SleepData: Codable {
+        let sleptAt: String
+        let score: Int
+        let badAwakeReason: String?
+        let awakeTime: String
+        let fellAsleepTime: String
+        let sleepTime: String
+        let timeOnBed: String
+    }
+
 
 }
 
