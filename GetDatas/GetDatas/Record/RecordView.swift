@@ -104,6 +104,70 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         print("black : 1분간 모인 심박수 처리 완료")
     }
     
+    // S3에 데이터를 업로드하는 함수
+    func uploadCSVToS3(fileURL: URL, accessToken: String, sleptAt: String) {
+        let boundary = "Boundary-\(UUID().uuidString)"
+        var request = URLRequest(url: URL(string: "https://www.raem.shop/api/sleep/data?type=file")!)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        // 요청 본문 생성
+        let httpBody = createMultipartBody(fileURL: fileURL, sleptAt: sleptAt, boundary: boundary)
+        
+        let session = URLSession.shared
+        
+        // `uploadTask(with:from:)`를 사용하여 `Data` 객체를 직접 업로드
+        let task = session.uploadTask(with: request, from: httpBody) { data, response, error in
+            if let error = error {
+                print("Error uploading file: \(error.localizedDescription)")
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                print("CSV 파일이 S3에 성공적으로 업로드되었습니다.")
+            } else {
+                print("파일 업로드 실패. 서버 응답 상태 코드: \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                
+                if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                    print("서버 응답: \(responseString)")
+                }
+            }
+        }
+        
+        task.resume()
+    }
+    
+    // S3에 csv 올릴 때 형식 바꿔주는 함수
+    private func createMultipartBody(fileURL: URL, sleptAt: String, boundary: String) -> Data {
+        var body = Data()
+        
+        // JSON 형식의 `sleptAt` 필드 추가
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"sleptAt\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: application/json\r\n\r\n".data(using: .utf8)!)
+        body.append("\"\(sleptAt)\"\r\n".data(using: .utf8)!) // JSON 형식의 값으로 추가합니다.
+        
+        // CSV 파일 데이터 추가
+        let filename = fileURL.lastPathComponent
+        let mimeType = "text/csv"
+        
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: \(mimeType)\r\n\r\n".data(using: .utf8)!)
+        
+        if let fileData = try? Data(contentsOf: fileURL) {
+            body.append(fileData)
+        }
+        
+        body.append("\r\n".data(using: .utf8)!)
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        return body
+    }
+
+       
+
     func exportDataToCSV() -> URL? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -165,6 +229,7 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
 struct RecordView: View {
     @EnvironmentObject var bleManager: BLEManager
     @StateObject private var connectivityManager: iPhoneConnectivityManager
+    @EnvironmentObject var sessionManager: SessionManager
 
     init(bleManager: BLEManager) {
         _connectivityManager = StateObject(wrappedValue: iPhoneConnectivityManager(bleManager: bleManager))
@@ -203,6 +268,13 @@ struct RecordView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
+                Button("서버 CSV") {
+                    uploadCSVToServer()
+                }
+                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(10)
 
                 Button("예측 결과 CSV로 내보내기") {
                     if let csvURL = connectivityManager.predictionManager.exportPredictionsToCSV() {
@@ -276,4 +348,22 @@ struct RecordView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
     }
+    
+    // S3에 CSV 업로드 설정 함수
+    private func uploadCSVToServer() {
+        guard let csvURL = connectivityManager.exportDataToCSV(),
+              let accessToken = sessionManager.accessToken else {
+            print("CSV 파일 생성 실패 또는 Access Token이 없습니다.")
+            return
+        }
+
+        // 저장 시점의 날짜를 yyyy-MM-dd 형식으로 설정
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let sleptAt = dateFormatter.string(from: Date())  // 현재 날짜를 yyyy-MM-dd 형식으로 변환
+
+        // `uploadCSVToS3` 메서드를 호출할 때 `sleptAt`을 전달합니다.
+        connectivityManager.uploadCSVToS3(fileURL: csvURL, accessToken: accessToken, sleptAt: sleptAt)
+    }
+
 }
