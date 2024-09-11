@@ -16,6 +16,7 @@ struct MonthlyView: View {
                 HStack {
                     Text("수면 별점")
                         .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.black)
                     Spacer()
                 }
                 Chart {
@@ -58,6 +59,7 @@ struct MonthlyView: View {
                 HStack {
                     Text("이번 달 평균 수면 깊이")
                         .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.black)
                     Spacer()
                 }
                 

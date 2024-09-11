@@ -37,6 +37,7 @@ struct DailyView: View {
                     HStack {
                         Text("수면 별점")
                             .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.black)
                         Spacer()
                     }
                     
