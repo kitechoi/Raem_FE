@@ -6,7 +6,6 @@ struct AccountManagementView: View {
     @State private var showNameChangeView = false
     @State private var showEmailChangeView = false
     @State private var showPasswordChangeView = false
-    @State private var savedPassword: String = "********"
     @State private var showLogoutAlert = false
     @State private var logoutSuccess = false
     @State private var showDeletionAlert = false
@@ -17,240 +16,234 @@ struct AccountManagementView: View {
     @EnvironmentObject var sessionManager: SessionManager
     @State private var showRecordView = false
     @State private var showSleepDataView = false
-    
     @EnvironmentObject var bleManager: BLEManager
 
     var body: some View {
-        VStack {
-            CustomTopBar(title: "계정 관리")
-
-            Spacer()
-
+        ScrollView {
             VStack {
-                Button(action: {
-                    isImagePickerPresented = true
-                }) {
-                    ZStack {
-                        Image(uiImage: selectedImage!)
-                            .resizable()
-                            .frame(width: 100, height: 100)
-                            .clipShape(Circle())
+                CustomTopBar(title: "계정 관리")
 
-                        Image(systemName: "camera.fill")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .foregroundColor(.mint)
-                            .background(Circle().fill(Color.white))
-                            .offset(x: 35, y: 35)
-                    }
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
-            .sheet(isPresented: $isImagePickerPresented) {
-                ImagePicker(selectedImage: $selectedImage)
-            }
-
-            Spacer().frame(height: 20)
-
-            VStack(spacing: 16) {
-                HStack {
-                    Text("이름")
-                        .font(.system(size: 16))
-                        .foregroundColor(.gray)
-                    Spacer()
-                    Text(sessionManager.username)
-                        .font(.system(size: 16))
-                        .foregroundColor(.blue)
+                VStack {
                     Button(action: {
-                        showNameChangeView = true
+                        isImagePickerPresented = true
                     }) {
-                        Text("변경")
+                        ZStack {
+                            Image(uiImage: selectedImage!)
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .clipShape(Circle())
+
+                            Image(systemName: "camera.fill")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(.mint)
+                                .background(Circle().fill(Color.white))
+                                .offset(x: 35, y: 35)
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
+                .padding(.top, 20) // 상단과 이미지 간의 여백 조정
+                .sheet(isPresented: $isImagePickerPresented) {
+                    ImagePicker(selectedImage: $selectedImage)
+                }
+
+                Spacer().frame(height: 20)
+
+                VStack(spacing: 16) {
+                    HStack {
+                        Text("이름")
                             .font(.system(size: 16))
-                            .foregroundColor(.mint)
+                            .foregroundColor(.gray)
+                        Spacer()
+                        Text(sessionManager.username)
+                            .font(.system(size: 16))
+                            .foregroundColor(.blue)
+                        Button(action: {
+                            showNameChangeView = true
+                        }) {
+                            Text("변경")
+                                .font(.system(size: 16))
+                                .foregroundColor(.mint)
+                        }
+                        .fullScreenCover(isPresented: $showNameChangeView) {
+                            NameChangeView(currentName: $sessionManager.username)
+                        }
                     }
-                    .fullScreenCover(isPresented: $showNameChangeView) {
-                        NameChangeView(currentName: $sessionManager.username)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray.opacity(0.2))
+                    )
+
+                    HStack {
+                        Text("이메일")
+                            .font(.system(size: 16))
+                            .foregroundColor(.gray)
+                        Spacer()
+                        Text(sessionManager.email)
+                            .font(.system(size: 16))
+                            .foregroundColor(.blue)
+                        Button(action: {
+                            showEmailChangeView = true
+                        }) {
+                            Text("변경")
+                                .font(.system(size: 16))
+                                .foregroundColor(.mint)
+                        }
+                        .fullScreenCover(isPresented: $showEmailChangeView) {
+                            EmailChangeView(currentEmail: $sessionManager.email)
+                        }
                     }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray.opacity(0.2))
+                    )
+
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            showPasswordChangeView = true
+                        }) {
+                            Text("비밀번호 변경")
+                                .font(.system(size: 16))
+                                .foregroundColor(.red)
+                        }
+                        .fullScreenCover(isPresented: $showPasswordChangeView) {
+                            PasswordChangeView()
+                        }
+                    }
+                    .padding()
                 }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray.opacity(0.2))
-                )
+                .padding(.horizontal, 16)
 
                 HStack {
-                    Text("이메일")
-                        .font(.system(size: 16))
-                        .foregroundColor(.gray)
-                    Spacer()
-                    Text(sessionManager.email)
-                        .font(.system(size: 16))
-                        .foregroundColor(.blue)
-                    Button(action: {
-                        showEmailChangeView = true
-                    }) {
-                        Text("변경")
-                            .font(.system(size: 16))
-                            .foregroundColor(.mint)
+                    NavigationLink(destination: RecordView(bleManager: bleManager), isActive: $showRecordView) {
+                        Button(action: {
+                            showRecordView = true
+                        }) {
+                            Text("실시간 데이터")
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                                .background(Color.deepNavy)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
                     }
-                    .fullScreenCover(isPresented: $showEmailChangeView) {
-                        EmailChangeView(currentEmail: $sessionManager.email)
+
+                    NavigationLink(destination: SleepDataView(), isActive: $showSleepDataView) {
+                        Button(action: {
+                            showSleepDataView = true
+                        }) {
+                            Text("수면 데이터")
+                                .foregroundColor(Color.deepNavy)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                                .background(Color(red: 240/255, green: 240/255, blue: 245/255))
+                                .cornerRadius(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.deepNavy)
+                                )
+                        }
                     }
                 }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray.opacity(0.2))
-                )
+                .padding(.horizontal, 16)
+                .padding(.bottom, 20) // 하단 여백 추가
+
+                Spacer()
 
                 HStack {
-                    Spacer()
                     Button(action: {
-                        showPasswordChangeView = true
+                        logout()
                     }) {
-                        Text("비밀번호 변경")
+                        Text("로그아웃")
                             .font(.system(size: 16))
-                            .foregroundColor(.red)
-                    }
-                    .fullScreenCover(isPresented: $showPasswordChangeView) {
-                        PasswordChangeView(savedPassword: $savedPassword)
-                    }
-                }
-                .padding()
-            }
-            .padding(.horizontal, 16)
-
-            HStack {
-                NavigationLink(destination: RecordView(bleManager: bleManager), isActive: $showRecordView) {
-                    Button(action: {
-                        showRecordView = true
-                    }) {
-                        Text("실시간 데이터")
+                            .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .frame(height: 50)
-                            .background(Color.deepNavy)
-                            .foregroundColor(.white)
+                            .background(.red)
                             .cornerRadius(10)
                     }
-                }
+                    .alert(isPresented: $showLogoutAlert) {
+                        if logoutSuccess {
+                            return Alert(
+                                title: Text("로그아웃 성공"),
+                                message: Text("성공적으로 로그아웃되었습니다."),
+                                dismissButton: .default(Text("확인")) {
+                                    navigateToLoadingView = true
+                                }
+                            )
+                        } else {
+                            return Alert(
+                                title: Text("로그아웃 실패"),
+                                message: Text("로그아웃에 실패했습니다. 다시 시도해주세요."),
+                                dismissButton: .default(Text("확인"))
+                            )
+                        }
+                    }
 
-                NavigationLink(destination: SleepDataView(), isActive: $showSleepDataView) {
+                    Spacer()
+
                     Button(action: {
-                        showSleepDataView = true
+                        // 탈퇴 작업을 바로 시작
+                        sessionManager.deleteAccount { success, errorMessage in
+                            if success {
+                                DispatchQueue.main.async {
+                                    deletionErrorMessage = nil
+                                    showAccountDeletionResultAlert = true
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    deletionErrorMessage = errorMessage
+                                    showAccountDeletionResultAlert = true
+                                }
+                            }
+                        }
                     }) {
-                        Text("수면 데이터")
-                            .foregroundColor(Color.deepNavy)
+                        Text("탈퇴하기")
+                            .font(.system(size: 16))
+                            .foregroundColor(Color(red: 100/255, green: 110/255, blue: 120/255))
                             .frame(maxWidth: .infinity)
                             .frame(height: 50)
                             .background(Color(red: 240/255, green: 240/255, blue: 245/255))
                             .cornerRadius(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.deepNavy)
+                                    .stroke(Color(red: 200/255, green: 200/255, blue: 205/255), lineWidth: 1)
                             )
                     }
-                }
-            }
-            .padding(.horizontal, 16)
-
-            Spacer()
-
-            HStack {
-                Button(action: {
-                    logout()
-                }) {
-                    Text("로그아웃")
-                        .font(.system(size: 16))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
-                        .background(.red)
-                        .cornerRadius(10)
-                }
-                .alert(isPresented: $showLogoutAlert) {
-                    if logoutSuccess {
-                        return Alert(
-                            title: Text("로그아웃 성공"),
-                            message: Text("성공적으로 로그아웃되었습니다."),
-                            dismissButton: .default(Text("확인")) {
-                                navigateToLoadingView = true
-                            }
-                        )
-                    } else {
-                        return Alert(
-                            title: Text("로그아웃 실패"),
-                            message: Text("로그아웃에 실패했습니다. 다시 시도해주세요."),
-                            dismissButton: .default(Text("확인"))
-                        )
-                    }
-                }
-
-                Spacer()
-               
-                Button(action: {
-                    // 탈퇴 작업을 바로 시작
-                    print("탈퇴 버튼 클릭됨")
-                    sessionManager.deleteAccount { success, errorMessage in
-                        if success {
-                            // 탈퇴 성공 시
-                            DispatchQueue.main.async {
-                                deletionErrorMessage = nil // 에러 메시지를 초기화
-                                showAccountDeletionResultAlert = true // 알림창 표시
-                            }
+                    .alert(isPresented: $showAccountDeletionResultAlert) {
+                        if deletionErrorMessage == nil {
+                            return Alert(
+                                title: Text("탈퇴 성공"),
+                                message: Text("성공적으로 탈퇴되었습니다."),
+                                dismissButton: .default(Text("확인")) {
+                                    navigateToLoadingView = true
+                                }
+                            )
                         } else {
-                            // 탈퇴 실패 시
-                            DispatchQueue.main.async {
-                                deletionErrorMessage = errorMessage // 실패 메시지 설정
-                                showAccountDeletionResultAlert = true // 알림창 표시
-                            }
+                            return Alert(
+                                title: Text("탈퇴 실패"),
+                                message: Text(deletionErrorMessage ?? "알 수 없는 오류"),
+                                dismissButton: .default(Text("닫기"))
+                            )
                         }
                     }
-                }) {
-                    Text("탈퇴하기")
-                        .font(.system(size: 16))
-                        .foregroundColor(Color(red: 100/255, green: 110/255, blue: 120/255))
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
-                        .background(Color(red: 240/255, green: 240/255, blue: 245/255))
-                        .cornerRadius(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color(red: 200/255, green: 200/255, blue: 205/255), lineWidth: 1)
-                        )
                 }
-                .alert(isPresented: $showAccountDeletionResultAlert) {
-                    if deletionErrorMessage == nil {
-                        // 탈퇴 성공 알림
-                        return Alert(
-                            title: Text("탈퇴 성공"),
-                            message: Text("성공적으로 탈퇴되었습니다."),
-                            dismissButton: .default(Text("확인")) {
-                                navigateToLoadingView = true // 성공 시 로딩 뷰로 이동
-                            }
-                        )
-                    } else {
-                        // 탈퇴 실패 알림
-                        return Alert(
-                            title: Text("탈퇴 실패"),
-                            message: Text(deletionErrorMessage ?? "알 수 없는 오류"),
-                            dismissButton: .default(Text("닫기"))
-                        )
-                    }
+                .padding(.horizontal, 16)
+                .padding(.bottom, 40)
+
+                NavigationLink(destination: LoadingView(), isActive: $navigateToLoadingView) {
+                    EmptyView()
                 }
-
-
             }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 40)
-
-            NavigationLink(destination: LoadingView(), isActive: $navigateToLoadingView) {
-                EmptyView()
-            }
+            .background(Color.white)
+            .edgesIgnoringSafeArea(.all)
+            .navigationBarBackButtonHidden(true)
+            .navigationBarHidden(true)
         }
-        .background(Color.white)
-        .edgesIgnoringSafeArea(.all)
-        .navigationBarBackButtonHidden(true)
-        .navigationBarHidden(true)
     }
 
     func logout() {
@@ -259,3 +252,4 @@ struct AccountManagementView: View {
         showLogoutAlert = true
     }
 }
+
