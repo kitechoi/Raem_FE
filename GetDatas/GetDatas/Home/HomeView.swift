@@ -294,9 +294,9 @@ struct HomeView: View {
             }
             
 //            // 서버에서 받은 원본 데이터를 문자열로 출력
-//            if let jsonString = String(data: data, encoding: .utf8) {
-//                print("Response JSON: \(jsonString)")
-//            }
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("Response JSON: \(jsonString)")
+            }
 
             do {
                 let responseData = try JSONDecoder().decode(DailySleepResponse.self, from: data)
@@ -342,9 +342,9 @@ struct HomeView: View {
             }
 
             // 서버에서 받은 원본 데이터를 문자열로 출력
-//            if let jsonString = String(data: data, encoding: .utf8) {
-//                print("Response JSON: \(jsonString)")
-//            }
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("Response JSON: \(jsonString)")
+            }
 
             do {
                 let responseData = try JSONDecoder().decode(SleepResponse.self, from: data)

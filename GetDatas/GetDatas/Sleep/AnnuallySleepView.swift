@@ -2,7 +2,14 @@ import SwiftUI
 import Charts
 
 struct AnnuallyView: View {
-    let scores: [Score] = [
+    @EnvironmentObject var sessionManager: SessionManager
+    
+    @State private var accessToken: String = ""
+    @State private var sleepPattern: String = "수면 패턴 정보를 가져오는 중입니다..."
+    @State private var improvement: String = "개선 사항 정보를 가져오는 중입니다..."
+    @State private var isLoading: Bool = true
+    
+    let AnnuallyScores: [AnnuallyScores] = [
         .init(label: "1월", avgScore: 3.5),
         .init(label: "2월", avgScore: 4),
         .init(label: "3월", avgScore: 3.3),
@@ -18,11 +25,12 @@ struct AnnuallyView: View {
                 HStack {
                     Text("수면 별점")
                         .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.black)
                     Spacer()
                 }
                 
                 Chart {
-                    ForEach(scores) { score in
+                    ForEach(AnnuallyScores) { score in
                         BarMark(
                             x: .value("month", score.label),
                             y: .value("score", score.avgScore),
@@ -61,6 +69,7 @@ struct AnnuallyView: View {
                 HStack {
                     Text("이번 달 평균 수면 깊이")
                         .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.black)
                     Spacer()
                 }
                 
@@ -165,7 +174,7 @@ struct AnnuallyView: View {
                         Spacer()
                     }
                     
-                    Text("1월과 3월에 수면 시간과 질의 변동이 있었으나 2월에 안정화됨\n총 수면 시간과 수면의 질이 점차 개선되는 추세")
+                    Text(sleepPattern)
                         .font(.system(size: 17))
                         .foregroundStyle(Color.gray)
                     
@@ -177,7 +186,7 @@ struct AnnuallyView: View {
                     }
                     .padding(.top, 16)
                     
-                    Text("스마트폰 사용 줄이기, 카페인 섭취 조절 성공\n매일 같은 시간에 잠들기, 수면 환경 지속적 개선")
+                    Text(improvement)
                         .font(.system(size: 17))
                         .foregroundStyle(Color.gray)
                 }
@@ -188,7 +197,87 @@ struct AnnuallyView: View {
                 )
             }
         }
+        .onAppear {
+            loadSleepAnalysis()
+        }
     }
+    
+    // 서버로부터 데이터를 가져오는 함수
+    func loadSleepAnalysis() {
+        guard let accessToken = sessionManager.accessToken else {
+            print("No access token found")
+            return
+        }
+        
+        guard let url = URL(string: "https://www.raem.shop/api/sleep/analysis/insight") else {
+            print("Invalid URL")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode != 200 {
+                    print("Non-200 HTTP response received: \(httpResponse.statusCode)")
+                    if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                        print("Response body: \(responseString)")
+                    }
+                    return
+                }
+            }
+            
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+            
+            do {
+                let decodedResponse = try JSONDecoder().decode(SleepAnalysisResponse.self, from: data)
+                DispatchQueue.main.async {
+                    if decodedResponse.isSuccess {
+                        self.sleepPattern = decodedResponse.data.sleepPattern
+                        self.improvement = decodedResponse.data.improvement
+                    } else {
+                        print("Server error: \(decodedResponse.message)")
+                    }
+                }
+            } catch {
+                print("Failed to decode response: \(error.localizedDescription)")
+                if let responseString = String(data: data, encoding: .utf8) {
+                    print("Response body: \(responseString)")
+                }
+            }
+        }.resume()
+    }
+
+
+}
+
+struct AnnuallyScores: Identifiable {
+    let id = UUID()
+    let label: String
+    let avgScore: Double
+}
+
+// 서버에서 받은 JSON 데이터에 맞는 구조체
+struct SleepAnalysisResponse: Codable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let data: SleepAnalysisData
+}
+
+struct SleepAnalysisData: Codable {
+    let sleepPattern: String
+    let improvement: String
 }
 
 struct AnnuallyView_Previews: PreviewProvider {
