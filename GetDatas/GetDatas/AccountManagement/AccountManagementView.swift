@@ -12,17 +12,17 @@ struct AccountManagementView: View {
     @State private var showAccountDeletionResultAlert = false
     @State private var deletionErrorMessage: String? = nil
     @State private var navigateToLoadingView = false
-
+    
     @EnvironmentObject var sessionManager: SessionManager
     @State private var showRecordView = false
     @State private var showSleepDataView = false
     @EnvironmentObject var bleManager: BLEManager
-
+    
     var body: some View {
         ScrollView {
             VStack {
                 CustomTopBar(title: "계정 관리")
-
+                
                 VStack {
                     Button(action: {
                         isImagePickerPresented = true
@@ -32,7 +32,7 @@ struct AccountManagementView: View {
                                 .resizable()
                                 .frame(width: 100, height: 100)
                                 .clipShape(Circle())
-
+                            
                             Image(systemName: "camera.fill")
                                 .resizable()
                                 .frame(width: 20, height: 20)
@@ -47,9 +47,9 @@ struct AccountManagementView: View {
                 .sheet(isPresented: $isImagePickerPresented) {
                     ImagePicker(selectedImage: $selectedImage)
                 }
-
+                
                 Spacer().frame(height: 20)
-
+                
                 VStack(spacing: 16) {
                     HStack {
                         Text("이름")
@@ -75,7 +75,7 @@ struct AccountManagementView: View {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.gray.opacity(0.2))
                     )
-
+                    
                     HStack {
                         Text("이메일")
                             .font(.system(size: 16))
@@ -100,7 +100,7 @@ struct AccountManagementView: View {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.gray.opacity(0.2))
                     )
-
+                    
                     HStack {
                         Spacer()
                         Button(action: {
@@ -117,7 +117,7 @@ struct AccountManagementView: View {
                     .padding()
                 }
                 .padding(.horizontal, 16)
-
+                
                 HStack {
                     NavigationLink(destination: RecordView(bleManager: bleManager), isActive: $showRecordView) {
                         Button(action: {
@@ -131,7 +131,7 @@ struct AccountManagementView: View {
                                 .cornerRadius(10)
                         }
                     }
-
+                    
                     NavigationLink(destination: SleepDataView(), isActive: $showSleepDataView) {
                         Button(action: {
                             showSleepDataView = true
@@ -151,9 +151,9 @@ struct AccountManagementView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 20) // 하단 여백 추가
-
+                
                 Spacer()
-
+                
                 HStack {
                     Button(action: {
                         logout()
@@ -183,9 +183,9 @@ struct AccountManagementView: View {
                             )
                         }
                     }
-
+                    
                     Spacer()
-
+                    
                     Button(action: {
                         // 탈퇴 작업을 바로 시작
                         sessionManager.deleteAccount { success, errorMessage in
@@ -234,7 +234,7 @@ struct AccountManagementView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 40)
-
+                
                 NavigationLink(destination: LoadingView(), isActive: $navigateToLoadingView) {
                     EmptyView()
                 }
@@ -245,11 +245,10 @@ struct AccountManagementView: View {
             .navigationBarHidden(true)
         }
     }
-
+    
     func logout() {
         sessionManager.logout()
         logoutSuccess = true
         showLogoutAlert = true
     }
 }
-
