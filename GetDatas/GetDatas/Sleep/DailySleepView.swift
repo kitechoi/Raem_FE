@@ -7,10 +7,15 @@ struct DailyView: View {
     
     @State private var popUpVisible: Bool = false
     @State private var selectedReason: Reason? = nil
-    @State private var rating: Int = 2
-    @State private var sleptAt: String = "2024-08-31"
-    @State private var sleepHour: String = "09"
-    @State private var sleepMinute: String = "41"
+    @State private var rating: Int = UserDefaults.standard.integer(forKey: "sleepRating")
+    @State private var isLoading = false
+    @State private var showAlert = false
+    @State private var sleepDataId: String = "66cb4fd60bb1d036250d4e89" // 서버에서 받은 sleepDataId
+    
+    // 당일 날짜 및 시간으로 초기화
+    @State private var sleptAt: String = formatDate(Date()) // 오늘 날짜
+    @State private var sleepHour: String = formatHour(Date()) // 현재 시
+    @State private var sleepMinute: String = formatMinute(Date()) // 현재 분
     
     @State private var sleepData: [HKSleepAnalysis] = []
     @State private var loadingData: Bool = false
@@ -19,15 +24,15 @@ struct DailyView: View {
     @State private var fellAsleepTime: String = ""
     @State private var awakeTime: String = ""
     @State private var timeOnBed: String = ""
-    
+
     private let healthStore = HKHealthStore()
-    
-    enum Reason {
-        case caffeine
-        case exercise
-        case stress
-        case alcohol
-        case smartphone
+
+    enum Reason: String {
+        case caffeine = "COFFEE"
+        case exercise = "EXERCISE"
+        case stress = "STRESS"
+        case alcohol = "ALCOHOL"
+        case smartphone = "SMARTPHONE"
     }
     
     var body: some View {
@@ -131,7 +136,6 @@ struct DailyView: View {
                                     }
                                 }
                                 .frame(height: 200)
-
                             }
                         }
                         .onAppear(perform: loadSleepData)
@@ -258,15 +262,23 @@ struct DailyView: View {
                             Spacer()
                             
                             Button(action: {
-                                popUpVisible = false
+                                if let reason = selectedReason {
+                                    submitReason(reason: reason.rawValue)
+                                }
                             }) {
-                                Text("기록하기")
-                                    .font(.system(size: 18, weight: .bold))
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 50)
-                                    .background(Color.deepNavy)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
+                                if isLoading {
+                                    ProgressView()
+                                        .progressViewStyle(CircularProgressViewStyle())
+                                        .frame(height: 50)
+                                } else {
+                                    Text("기록하기")
+                                        .font(.system(size: 18, weight: .bold))
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 50)
+                                        .background(Color.deepNavy)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                }
                             }
                             .padding(.horizontal, 16)
                             .padding(.bottom, 20)
@@ -280,6 +292,9 @@ struct DailyView: View {
                 .transition(.opacity)
                 .animation(.easeInOut, value: popUpVisible)
             }
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("기록되었습니다."), message: nil, dismissButton: .default(Text("확인")))
         }
         .onAppear {
             fetchDailySleepAnalysis()
@@ -299,6 +314,81 @@ struct DailyView: View {
                 .font(.system(size: 16))
                 .foregroundColor(Color.gray)
         }
+    }
+
+    private func submitReason(reason: String) {
+        guard let accessToken = sessionManager.accessToken else {
+            print("No access token")
+            return
+        }
+        
+        let url = URL(string: "https://www.raem.shop/api/sleep/data")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = [
+            "sleepDataId": sleepDataId,
+            "reason": reason
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+        } catch {
+            print("Error serializing request body: \(error)")
+            return
+        }
+        
+        isLoading = true
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                isLoading = false
+                showAlert = true
+            }
+            
+            if let error = error {
+                print("Error submitting reason: \(error.localizedDescription)")
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
+                print("Non-200 HTTP response: \(httpResponse.statusCode)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+            
+            do {
+                let responseData = try JSONDecoder().decode(SubmitReasonResponse.self, from: data)
+                if responseData.isSuccess {
+                    print("Reason successfully submitted: \(responseData.data.updatedAt)")
+                    // 일정 시간 후 원래 화면으로 돌아가도록 설정
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        popUpVisible = false
+                    }
+                } else {
+                    print("Failed to submit reason: \(responseData.message)")
+                }
+            } catch {
+                print("Error decoding response: \(error.localizedDescription)")
+            }
+        }.resume()
+    }
+
+    struct SubmitReasonResponse: Codable {
+        let isSuccess: Bool
+        let code: String
+        let message: String
+        let data: ReasonResponseData
+    }
+
+    struct ReasonResponseData: Codable {
+        let updatedAt: String
     }
     
     private func loadSleepData() {
@@ -413,6 +503,25 @@ struct DailyView: View {
         let sleepTime: String
         let timeOnBed: String
     }
+
+    // 날짜 형식화 함수
+    static func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd" // 원하는 날짜 형식
+        return formatter.string(from: date)
+    }
+
+    // 현재 시 추출 함수
+    static func formatHour(_ date: Date) -> String {
+        let hour = Calendar.current.component(.hour, from: date)
+        return String(format: "%02d", hour) // 두 자리로 포맷팅
+    }
+
+    // 현재 분 추출 함수
+    static func formatMinute(_ date: Date) -> String {
+        let minute = Calendar.current.component(.minute, from: date)
+        return String(format: "%02d", minute) // 두 자리로 포맷팅
+    }
 }
 
 struct DailyView_Previews: PreviewProvider {
@@ -420,5 +529,4 @@ struct DailyView_Previews: PreviewProvider {
         DailyView()
     }
 }
-
 
