@@ -105,7 +105,7 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     }
     
     // S3에 데이터를 업로드하는 함수
-    func uploadCSVToS3(fileURL: URL, accessToken: String, sleptAt: String) {
+    func uploadCSVToS3(fileURL: URL, accessToken: String, sleptAt: String, type: String) {
         let boundary = "Boundary-\(UUID().uuidString)"
         var request = URLRequest(url: URL(string: "https://www.raem.shop/api/sleep/data?type=file")!)
         request.httpMethod = "POST"
@@ -113,7 +113,7 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         // 요청 본문 생성
-        let httpBody = createMultipartBody(fileURL: fileURL, sleptAt: sleptAt, boundary: boundary)
+        let httpBody = createMultipartBody(fileURL: fileURL, sleptAt: sleptAt, type: type, boundary: boundary)
         
         let session = URLSession.shared
         
@@ -139,14 +139,19 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     }
     
     // S3에 csv 올릴 때 형식 바꿔주는 함수
-    private func createMultipartBody(fileURL: URL, sleptAt: String, boundary: String) -> Data {
+    private func createMultipartBody(fileURL: URL, sleptAt: String, type: String, boundary: String) -> Data {
         var body = Data()
         
-        // JSON 형식의 `sleptAt` 필드 추가
+        // JSON 형식의 `sleptAt` 및 `type` 필드 추가
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"sleptAt\"\r\n".data(using: .utf8)!)
         body.append("Content-Type: application/json\r\n\r\n".data(using: .utf8)!)
-        body.append("\"\(sleptAt)\"\r\n".data(using: .utf8)!) // JSON 형식의 값으로 추가합니다.
+        body.append("\"\(sleptAt)\"\r\n".data(using: .utf8)!)
+        
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"type\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: application/json\r\n\r\n".data(using: .utf8)!)
+        body.append("\"\(type)\"\r\n".data(using: .utf8)!)
         
         // CSV 파일 데이터 추가
         let filename = fileURL.lastPathComponent
@@ -268,8 +273,8 @@ struct RecordView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
-                Button("서버 CSV") {
-                    uploadCSVToServer()
+                Button("실시간데이터CSV S3로") {
+                    uploadCSVToServer(type: "realtime") // 실시간 데이터
                 }
                 .padding()
                 .background(Color.blue)
@@ -350,7 +355,7 @@ struct RecordView: View {
     }
     
     // S3에 CSV 업로드 설정 함수
-    private func uploadCSVToServer() {
+    private func uploadCSVToServer(type: String) {
         guard let csvURL = connectivityManager.exportDataToCSV(),
               let accessToken = sessionManager.accessToken else {
             print("CSV 파일 생성 실패 또는 Access Token이 없습니다.")
@@ -363,7 +368,7 @@ struct RecordView: View {
         let sleptAt = dateFormatter.string(from: Date())  // 현재 날짜를 yyyy-MM-dd 형식으로 변환
 
         // `uploadCSVToS3` 메서드를 호출할 때 `sleptAt`을 전달합니다.
-        connectivityManager.uploadCSVToS3(fileURL: csvURL, accessToken: accessToken, sleptAt: sleptAt)
+        connectivityManager.uploadCSVToS3(fileURL: csvURL, accessToken: accessToken, sleptAt: sleptAt, type: type)
     }
 
 }
