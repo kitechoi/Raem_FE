@@ -44,7 +44,7 @@ struct WeeklyView: View {
                     Chart {
                         ForEach(sleepEntries) { entry in
                             BarMark(
-                                x: .value("weekDay", entry.sleptAt),
+                                x: .value("weekDay", convertDateToKoreanWeekday(entry.sleptAt)),
                                 y: .value("score", entry.score),
                                 width: 20
                             )
@@ -219,6 +219,20 @@ struct WeeklyView: View {
         let hours = totalMinutes / 60
         let minutes = totalMinutes % 60
         return String(format: "%02d:%02d:%02d", hours, minutes, 0) // 초는 항상 0으로 설정
+    }
+
+    // sleptAt의 날짜를 한국어 요일로 변환하는 함수
+    func convertDateToKoreanWeekday(_ dateString: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.locale = Locale(identifier: "ko_KR") // 한국어로 설정
+        
+        if let date = dateFormatter.date(from: dateString) {
+            dateFormatter.dateFormat = "EEEE" // 요일 형식으로 변환
+            return dateFormatter.string(from: date) // 요일을 반환 (예: "월요일")
+        } else {
+            return dateString // 변환 실패 시 원래 날짜 반환
+        }
     }
 }
 

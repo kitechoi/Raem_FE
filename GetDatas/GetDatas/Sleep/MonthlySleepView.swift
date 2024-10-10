@@ -17,6 +17,7 @@ struct MonthlySleepData: Identifiable {
     let avgScore: Double
     let sleepTimeSum: String // 총 수면 시간
     let awakeSum: String // 총 깨어난 시간
+    let weekIndex: Int // 순차적으로 1주차, 2주차 등
 }
 
 struct MonthlyView: View {
@@ -25,7 +26,6 @@ struct MonthlyView: View {
     @State private var loadingData: Bool = false
     @State private var errorMessage: String? = nil
 
-    // 서버와 연결된 인증 토큰 등을 관리하기 위한 SessionManager 사용
     @EnvironmentObject var sessionManager: SessionManager
 
     var body: some View {
@@ -54,7 +54,7 @@ struct MonthlyView: View {
                     Chart {
                         ForEach(monthlySleepData) { entry in
                             BarMark(
-                                x: .value("Week", entry.tag),
+                                x: .value("Week", "\(entry.weekIndex)주차"),
                                 y: .value("Score", entry.avgScore),
                                 width: 20
                             )
@@ -181,14 +181,17 @@ struct MonthlyView: View {
                 do {
                     let responseData = try JSONDecoder().decode(MonthlySleepResponse.self, from: data)
                     if responseData.isSuccess, let list = responseData.data?.dataList {
-                        self.monthlySleepData = list.map {
+                        // 각 데이터 항목에 순차적으로 주차를 할당
+                        self.monthlySleepData = list.enumerated().map { index, entry in
                             MonthlySleepData(
-                                tag: $0.tag,
-                                avgScore: Double($0.scoreSum) / Double($0.dataCount),
-                                sleepTimeSum: $0.sleepTimeSum,
-                                awakeSum: $0.awakeSum
+                                tag: entry.tag,
+                                avgScore: Double(entry.scoreSum) / Double(entry.dataCount),
+                                sleepTimeSum: entry.sleepTimeSum,
+                                awakeSum: entry.awakeSum,
+                                weekIndex: index + 1 // 1부터 시작하는 주차
                             )
                         }
+
                         // 유효한 sleepTimeSum 필터링 후 계산
                         let validSleepTimes = list.filter { $0.sleepTimeSum != "00:00:00" && !$0.sleepTimeSum.isEmpty }
                         let totalSleepTime = validSleepTimes.map { convertTimeToMinutes($0.sleepTimeSum) }.reduce(0, +)

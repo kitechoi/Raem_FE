@@ -28,7 +28,6 @@ struct AnnuallyView: View {
     @State private var loadingData: Bool = false
     @State private var errorMessage: String? = nil
     
-    // 서버와 연결된 인증 토큰 등을 관리하기 위한 SessionManager 사용
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             VStack(spacing: 20) {
@@ -55,7 +54,7 @@ struct AnnuallyView: View {
                     Chart {
                         ForEach(annuallySleepData) { entry in
                             BarMark(
-                                x: .value("Month", entry.tag),
+                                x: .value("Month", convertTagToKoreanMonth(entry.tag)),
                                 y: .value("Score", entry.avgScore),
                                 width: 20
                             )
@@ -218,6 +217,7 @@ struct AnnuallyView: View {
                 do {
                     let responseData = try JSONDecoder().decode(AnnuallySleepResponse.self, from: data)
                     if responseData.isSuccess, let list = responseData.data?.dataList {
+                        
                         self.annuallySleepData = list.map {
                             AnnuallySleepData(
                                 tag: $0.tag,
@@ -325,6 +325,15 @@ struct AnnuallyView: View {
                 }
             }
         }.resume()
+    }
+    
+    // "2024_8" 형식을 "8월"로 변환하는 함수
+    func convertTagToKoreanMonth(_ tag: String) -> String {
+        let components = tag.split(separator: "_")
+        if components.count == 2, let month = Int(components[1]) {
+            return "\(month)월"
+        }
+        return tag
     }
 }
 
