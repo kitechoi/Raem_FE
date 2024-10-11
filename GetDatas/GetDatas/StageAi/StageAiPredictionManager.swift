@@ -59,7 +59,6 @@ class StageAiPredictionManager: ObservableObject {
         }
     }
 
-    // 수신된 데이터가 있을 때 알람 시각이 맞는지 확인하고 예측을 수행하는 메서드
     func predictionTimeCheck(_ data: [MeasurementData]) {
         guard let alarmTime = self.alarmTime else {
             print("알람 시각이 설정되지 않았습니다.")
@@ -68,14 +67,39 @@ class StageAiPredictionManager: ObservableObject {
 
         let currentTime = Date()
         let predictionTime = alarmTime.addingTimeInterval(TimeInterval(-wakeUpBufferMinutes * 60))
-        
-        if currentTime >= predictionTime && currentTime <= alarmTime {
+        let currentHourMinute = getHourMinute(from: currentTime)
+        let predictionHourMinute = getHourMinute(from: predictionTime)
+        let alarmHourMinute = getHourMinute(from: alarmTime)
+
+        // Debugging: 시, 분만 출력
+        print("currentTime (hour:min):", timeFormatter.string(from: currentHourMinute))
+        print("predictionTime (hour:min):", timeFormatter.string(from: predictionHourMinute))
+        print("alarmTime (hour:min):", timeFormatter.string(from: alarmHourMinute))
+
+        // 시, 분만 비교
+        if currentHourMinute >= predictionHourMinute && currentHourMinute <= alarmHourMinute {
             print("알람 시각이 맞습니다. 예측을 수행합니다.")
             processReceivedData(data)
         } else {
-            print("아직 예측을 수행할 시간이 아닙니다. 아직 \(formattedLocalTime(for: predictionTime)) 이전입니다.")
+            print("아직 예측을 수행할 시간이 아닙니다. 아직 \(timeFormatter.string(from: predictionHourMinute)) 이전입니다.")
         }
     }
+
+    // 시, 분 형식으로 시간 포맷터 설정
+    private let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        formatter.timeZone = TimeZone.current  // 로컬 시간대로 설정
+        return formatter
+    }()
+
+    // 시, 분만을 반환하는 메서드
+    private func getHourMinute(from date: Date) -> Date {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute], from: date)
+        return calendar.date(from: components) ?? date
+    }
+
 
     func processReceivedData(_ data: [MeasurementData]) {
         guard data.count >= windowSize90 else {
