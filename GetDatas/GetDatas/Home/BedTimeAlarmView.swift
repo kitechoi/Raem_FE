@@ -200,7 +200,7 @@ struct AlarmView: View {
             .onChange(of: selectedTime) {
                 UserDefaults.standard.set(selectedTime, forKey: "selectedAlarmTime")
             }
-            
+
             Text("수면 시간 목표는 \(optimalSleepTime) 입니다.\n취침시간 및 알람시간에 근거함")
                 .font(.system(size: 14))
                 .foregroundColor(.gray)
@@ -310,6 +310,7 @@ struct AlarmView: View {
 
             // "설정하기" 버튼 추가
             Button(action: {
+                selectedTime = updateToToday(time: selectedTime)
                 // 설정 버튼 클릭 시, 알람 시간과 여분 시간을 저장
                 UserDefaults.standard.set(selectedTime, forKey: "selectedAlarmTime")
                 UserDefaults.standard.set(selectedWakeup, forKey: "selectedWakeUp")
@@ -385,6 +386,19 @@ struct AlarmView: View {
             }
         }.resume()
     }
+}
+
+private func updateToToday(time: Date) -> Date {
+    let calendar = Calendar.current
+    var components = calendar.dateComponents([.hour, .minute], from: time)
+    let today = Date()
+    let todayComponents = calendar.dateComponents([.year, .month, .day], from: today)
+    
+    components.year = todayComponents.year
+    components.month = todayComponents.month
+    components.day = todayComponents.day
+    
+    return calendar.date(from: components) ?? time
 }
 
 struct BedTimeAlarmView_Previews: PreviewProvider {

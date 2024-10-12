@@ -49,6 +49,7 @@
 		736119612C68AA8800F3FF11 /* DeviceRegistrationView.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 736119602C68AA8800F3FF11 /* DeviceRegistrationView.swift .swift */; };
 		736119662C68AE5800F3FF11 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736119652C68AE5800F3FF11 /* HomeView.swift */; };
 		7361196C2C68B6C400F3FF11 /* SleepTrackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361196B2C68B6C400F3FF11 /* SleepTrackingView.swift */; };
+		738244052CB512DB008AB3BF /* CommonData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738244042CB512DB008AB3BF /* CommonData.swift */; };
 		739AE9642C6DB1ED006BAF47 /* AccountManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9632C6DB1ED006BAF47 /* AccountManagementView.swift */; };
 		739AE9662C6DB91F006BAF47 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9652C6DB91F006BAF47 /* ImagePicker.swift */; };
 		739AE9682C6DD742006BAF47 /* NameChangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739AE9672C6DD742006BAF47 /* NameChangeView.swift */; };
@@ -137,6 +138,7 @@
 		736119602C68AA8800F3FF11 /* DeviceRegistrationView.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeviceRegistrationView.swift .swift"; sourceTree = "<group>"; };
 		736119652C68AE5800F3FF11 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		7361196B2C68B6C400F3FF11 /* SleepTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepTrackingView.swift; sourceTree = "<group>"; };
+		738244042CB512DB008AB3BF /* CommonData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonData.swift; sourceTree = "<group>"; };
 		739AE9632C6DB1ED006BAF47 /* AccountManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManagementView.swift; sourceTree = "<group>"; };
 		739AE9652C6DB91F006BAF47 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		739AE9672C6DD742006BAF47 /* NameChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameChangeView.swift; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 				3B74A47A2C8DF9D60033FF20 /* DailySleepView.swift */,
 				3B74A4802C8DFA170033FF20 /* AnnuallySleepView.swift */,
 				3B74A47E2C8DFA010033FF20 /* MonthlySleepView.swift */,
+				738244042CB512DB008AB3BF /* CommonData.swift */,
 			);
 			path = Sleep;
 			sourceTree = "<group>";
@@ -541,6 +544,7 @@
 				3B74A4812C8DFA170033FF20 /* AnnuallySleepView.swift in Sources */,
 				3BA82A3E2C79E64A00CE24F2 /* SettingsView.swift in Sources */,
 				73E1F5B02C833DF0000118C7 /* Album.swift in Sources */,
+				738244052CB512DB008AB3BF /* CommonData.swift in Sources */,
 				7361195D2C68A6D100F3FF11 /* RegisterView.swift in Sources */,
 				0C8583EC2C882FC3002E7BD2 /* StageAiProcesser.swift in Sources */,
 				7361195F2C68A99000F3FF11 /* RegisterCompleteView.swift in Sources */,

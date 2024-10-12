@@ -7,10 +7,15 @@ struct DailyView: View {
     
     @State private var popUpVisible: Bool = false
     @State private var selectedReason: Reason? = nil
-    @State private var rating: Int = 2
-    @State private var sleptAt: String = "2024-08-31"
-    @State private var sleepHour: String = "09"
-    @State private var sleepMinute: String = "41"
+    @State private var rating: Int = UserDefaults.standard.integer(forKey: "sleepRating")
+    @State private var isLoading = false
+    @State private var showAlert = false
+    @State private var sleepDataId: String = "66cb4fd60bb1d036250d4e89" // 서버에서 받은 sleepDataId
+    
+    // 당일 날짜 및 시간으로 초기화
+    @State private var sleptAt: String = formatDate(Date()) // 오늘 날짜
+    @State private var sleepHour: String = formatHour(Date()) // 현재 시
+    @State private var sleepMinute: String = formatMinute(Date()) // 현재 분
     
     @State private var sleepData: [HKSleepAnalysis] = []
     @State private var loadingData: Bool = false
@@ -20,30 +25,28 @@ struct DailyView: View {
     @State private var awakeTime: String = ""
     @State private var timeOnBed: String = ""
 
-    
-    
     private let healthStore = HKHealthStore()
-    
-    enum Reason {
-        case caffeine
-        case exercise
-        case stress
-        case alcohol
-        case smartphone
-    }
 
+    enum Reason: String {
+        case caffeine = "COFFEE"
+        case exercise = "EXERCISE"
+        case stress = "STRESS"
+        case alcohol = "ALCOHOL"
+        case smartphone = "SMARTPHONE"
+    }
     
     var body: some View {
         ZStack {
-            VStack(alignment: .leading, spacing: 16){
+            VStack(alignment: .leading, spacing: 16) {
                 VStack(spacing: 20) {
                     HStack {
                         Text("수면 별점")
                             .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.black)
                         Spacer()
                     }
                     
-                    HStack(spacing: 10){
+                    HStack(spacing: 10) {
                         ForEach(1...5, id: \.self) { index in
                             Image(systemName: "star.fill")
                                 .resizable()
@@ -71,11 +74,12 @@ struct DailyView: View {
                 VStack(spacing: 20) {
                     HStack {
                         Text("수면 깊이")
-                            .font(.system(size: 24, weight: .bold)).foregroundColor(.black)
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.black)
                         Spacer()
                     }
                     
-                    VStack(alignment: .leading){
+                    VStack(alignment: .leading) {
                         HStack(alignment: .bottom) {
                             HStack(spacing: 12) {
                                 Image("moon")
@@ -83,13 +87,17 @@ struct DailyView: View {
                                     .frame(width: 30, height: 30)
                                 
                                 Text("\(sleepHour)")
-                                    .font(.system(size: 24, weight: .bold)).foregroundColor(.black) +
+                                    .font(.system(size: 24, weight: .bold))
+                                    .foregroundColor(.black) +
                                 Text("시")
-                                    .font(.system(size: 20, weight: .bold)).foregroundColor(.black) +
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(.black) +
                                 Text(" \(sleepMinute)")
-                                    .font(.system(size: 24, weight: .bold)).foregroundColor(.black) +
+                                    .font(.system(size: 24, weight: .bold))
+                                    .foregroundColor(.black) +
                                 Text("분")
-                                    .font(.system(size: 20, weight: .bold)).foregroundColor(.black)
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(.black)
                             }
                             
                             Spacer()
@@ -115,12 +123,16 @@ struct DailyView: View {
                                     .frame(height: 200)
                             } else {
                                 Chart {
-                                    ForEach(sleepData) { data in
-                                        LineMark(
-                                            x: .value("Time", data.startDate, unit: .hour),
-                                            y: .value("Level", data.level)
+                                    ForEach(sleepData.filter { data in
+                                        data.level != 0 && data.level != 1 // 단계 0과 1은 제외
+                                    }) { data in
+                                        RectangleMark(
+                                            xStart: .value("시작 시간", data.startDate),
+                                            xEnd: .value("종료 시간", data.endDate),
+                                            y: .value("수면 단계", levelText(for: data.level))
                                         )
-                                        .foregroundStyle(self.color(for: data.level))
+                                        .foregroundStyle(self.color(for: data.level)) // 수면 단계별 색상 적용
+                                        .cornerRadius(3) // 각 블록에 둥근 모서리 적용
                                     }
                                 }
                                 .frame(height: 200)
@@ -138,7 +150,7 @@ struct DailyView: View {
                                                 .resizable()
                                                 .frame(width: 24, height: 24)
                                             
-                                            VStack(alignment: .leading, spacing: 4){
+                                            VStack(alignment: .leading, spacing: 4) {
                                                 Text("\(sleepTime)")
                                                     .font(Font.system(size: 18, weight: .bold))
                                                     .foregroundColor(.black)
@@ -149,13 +161,13 @@ struct DailyView: View {
                                         }
                                     }
                                     .padding(.trailing, 10)
-
+                                    
                                     VStack(spacing: 4) {
                                         HStack(spacing: 16) {
                                             Image("zzz")
                                                 .resizable()
                                                 .frame(width: 24, height: 24)
-                                            VStack(alignment: .leading, spacing: 4){
+                                            VStack(alignment: .leading, spacing: 4) {
                                                 Text("\(fellAsleepTime)")
                                                     .font(Font.system(size: 18, weight: .bold))
                                                     .foregroundColor(.black)
@@ -174,7 +186,7 @@ struct DailyView: View {
                                             Image("watch")
                                                 .resizable()
                                                 .frame(width: 24, height: 24)
-                                            VStack(alignment: .leading, spacing:4) {
+                                            VStack(alignment: .leading, spacing: 4) {
                                                 Text("\(timeOnBed)")
                                                     .font(Font.system(size: 18, weight: .bold))
                                                     .foregroundColor(.black)
@@ -185,7 +197,7 @@ struct DailyView: View {
                                         }
                                     }
                                     .padding(.trailing, 10)
-
+                                    
                                     VStack(alignment: .leading, spacing: 4) {
                                         HStack(spacing: 16) {
                                             Image("sun")
@@ -250,15 +262,23 @@ struct DailyView: View {
                             Spacer()
                             
                             Button(action: {
-                                popUpVisible = false
+                                if let reason = selectedReason {
+                                    submitReason(reason: reason.rawValue)
+                                }
                             }) {
-                                Text("기록하기")
-                                    .font(.system(size: 18, weight: .bold))
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 50)
-                                    .background(Color.deepNavy)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
+                                if isLoading {
+                                    ProgressView()
+                                        .progressViewStyle(CircularProgressViewStyle())
+                                        .frame(height: 50)
+                                } else {
+                                    Text("기록하기")
+                                        .font(.system(size: 18, weight: .bold))
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 50)
+                                        .background(Color.deepNavy)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                }
                             }
                             .padding(.horizontal, 16)
                             .padding(.bottom, 20)
@@ -269,10 +289,12 @@ struct DailyView: View {
                     .cornerRadius(10)
                     .shadow(radius: 10)
                 }
-                .transition(.opacity) // 페이드 인/아웃 효과
-                .animation(.easeInOut, value: popUpVisible) // 애니메이션 효과
-           
+                .transition(.opacity)
+                .animation(.easeInOut, value: popUpVisible)
             }
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("기록되었습니다."), message: nil, dismissButton: .default(Text("확인")))
         }
         .onAppear {
             fetchDailySleepAnalysis()
@@ -293,16 +315,91 @@ struct DailyView: View {
                 .foregroundColor(Color.gray)
         }
     }
+
+    private func submitReason(reason: String) {
+        guard let accessToken = sessionManager.accessToken else {
+            print("No access token")
+            return
+        }
+        
+        let url = URL(string: "https://www.raem.shop/api/sleep/data")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = [
+            "sleepDataId": sleepDataId,
+            "reason": reason
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+        } catch {
+            print("Error serializing request body: \(error)")
+            return
+        }
+        
+        isLoading = true
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                isLoading = false
+                showAlert = true
+            }
+            
+            if let error = error {
+                print("Error submitting reason: \(error.localizedDescription)")
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
+                print("Non-200 HTTP response: \(httpResponse.statusCode)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+            
+            do {
+                let responseData = try JSONDecoder().decode(SubmitReasonResponse.self, from: data)
+                if responseData.isSuccess {
+                    print("Reason successfully submitted: \(responseData.data.updatedAt)")
+                    // 일정 시간 후 원래 화면으로 돌아가도록 설정
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        popUpVisible = false
+                    }
+                } else {
+                    print("Failed to submit reason: \(responseData.message)")
+                }
+            } catch {
+                print("Error decoding response: \(error.localizedDescription)")
+            }
+        }.resume()
+    }
+
+    struct SubmitReasonResponse: Codable {
+        let isSuccess: Bool
+        let code: String
+        let message: String
+        let data: ReasonResponseData
+    }
+
+    struct ReasonResponseData: Codable {
+        let updatedAt: String
+    }
     
     private func loadSleepData() {
         guard #available(iOS 16.0, *) else {
             return
         }
         
-        let startDateComponents = DateComponents(year: 2024, month: 8, day: 16, hour: 12, minute: 0)
+        let startDateComponents = DateComponents(year: 2024, month: 8, day: 22, hour: 12, minute: 0)
         let startDate = Calendar.current.date(from: startDateComponents)!
         
-        let endDateComponents = DateComponents(year: 2024, month: 8, day: 17, hour: 12, minute: 0)
+        let endDateComponents = DateComponents(year: 2024, month: 8, day: 23, hour: 12, minute: 0)
         let endDate = Calendar.current.date(from: endDateComponents)!
         
         let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
@@ -326,10 +423,20 @@ struct DailyView: View {
     private func color(for level: Int) -> Color {
         switch level {
         case 2: return .red // Awake
-        case 5: return .purple // REM
         case 3: return .blue // Core
         case 4: return .green // Deep
+        case 5: return .purple // REM
         default: return .gray
+        }
+    }
+    
+    private func levelText(for level: Int) -> String {
+        switch level {
+        case 2: return "Awake"
+        case 3: return "Core"
+        case 4: return "Deep"
+        case 5: return "REM"
+        default: return "Unknown"
         }
     }
     
@@ -350,9 +457,7 @@ struct DailyView: View {
                 return
             }
 
-            // HTTP 응답 코드 확인
             if let httpResponse = response as? HTTPURLResponse {
-//                print("HTTP Status Code: \(httpResponse.statusCode)")
                 if httpResponse.statusCode != 200 {
                     print("Non-200 HTTP response received")
                     return
@@ -364,11 +469,6 @@ struct DailyView: View {
                 return
             }
 
-            // JSON 데이터 출력 (디버깅용)
-//            if let jsonString = String(data: data, encoding: .utf8) {
-//                print("Response JSON: \(jsonString)")
-//            }
-
             do {
                 let responseData = try JSONDecoder().decode(DailySleepResponse.self, from: data)
                 DispatchQueue.main.async {
@@ -377,7 +477,6 @@ struct DailyView: View {
                         self.fellAsleepTime = responseData.data.fellAsleepTime
                         self.awakeTime = responseData.data.awakeTime
                         self.timeOnBed = responseData.data.timeOnBed
-//                        print("Data successfully fetched and assigned")
                     } else {
                         print("Failed to fetch daily sleep analysis: \(responseData.message)")
                     }
@@ -387,7 +486,6 @@ struct DailyView: View {
             }
         }.resume()
     }
-
     
     struct DailySleepResponse: Codable {
         let isSuccess: Bool
@@ -406,11 +504,29 @@ struct DailyView: View {
         let timeOnBed: String
     }
 
-}
+    // 날짜 형식화 함수
+    static func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd" // 원하는 날짜 형식
+        return formatter.string(from: date)
+    }
 
+    // 현재 시 추출 함수
+    static func formatHour(_ date: Date) -> String {
+        let hour = Calendar.current.component(.hour, from: date)
+        return String(format: "%02d", hour) // 두 자리로 포맷팅
+    }
+
+    // 현재 분 추출 함수
+    static func formatMinute(_ date: Date) -> String {
+        let minute = Calendar.current.component(.minute, from: date)
+        return String(format: "%02d", minute) // 두 자리로 포맷팅
+    }
+}
 
 struct DailyView_Previews: PreviewProvider {
     static var previews: some View {
         DailyView()
     }
 }
+

@@ -1,10 +1,11 @@
 import SwiftUI
 
 struct SleepDetailView: View {
-    @State private var rating: Int = 0 
+    @State private var rating: Int = 0
     @State private var showSleepRatingView = false
     @State private var showBedTimeAlarmView = false
     @State private var now = Date()
+    @State private var showAlert = false
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     @State private var selectedAlarmTime = {
@@ -34,7 +35,6 @@ struct SleepDetailView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 20) {
-                
                 // 상단 Back 버튼
                 HStack {
                     Button(action: {
@@ -111,8 +111,7 @@ struct SleepDetailView: View {
                                                             object: BedTimeAlarmView.Tab.alarm)
                         }) {
                             Image(systemName: "chevron.right")
-                                .foregroundColor(.gray
-                                )
+                                .foregroundColor(.gray)
                         }
                     }
                     .padding()
@@ -156,8 +155,8 @@ struct SleepDetailView: View {
                             showSleepRatingView = false
                         }
 
-                    ScoreBottomSheet($showSleepRatingView, height: 350) {
-                        VStack{
+                    ScoreBottomSheet(isPresented: $showSleepRatingView, height: 350) {
+                        VStack {
                             Spacer()
                             
                             Text("오늘의 수면은 어땠나요?")
@@ -168,7 +167,7 @@ struct SleepDetailView: View {
                                 .foregroundColor(.gray)
                                 .padding(.vertical, 20)
                             
-                            HStack(spacing: 10){
+                            HStack(spacing: 10) {
                                 ForEach(1...5, id: \.self) { index in
                                     Image(systemName: "star.fill")
                                         .resizable()
@@ -185,7 +184,9 @@ struct SleepDetailView: View {
                             
                             Button(action: {
                                 showSleepRatingView = false
-                                //데이터 전송 함수
+                                showAlert = true
+                                // 데이터 전송 (UserDefaults에 저장)
+                                UserDefaults.standard.set(rating, forKey: "sleepRating")
                             }) {
                                 Text("기록하기")
                                     .font(.system(size: 18, weight: .bold))
@@ -203,6 +204,13 @@ struct SleepDetailView: View {
                     }
                 }
             }
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("기록되었습니다!"), message: Text("홈 화면으로 이동합니다."), dismissButton: .default(Text("확인"), action: {
+                // 홈 화면으로 이동
+                NotificationCenter.default.post(name: Notification.Name("changeHomeView"),
+                                                object: BedTimeAlarmView.Tab.none)
+            }))
         }
     }
     
@@ -226,46 +234,28 @@ struct SleepDetailView: View {
     private var formattedDate: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM월 dd일 EEEE"
-        formatter.amSymbol = "오전"
-        formatter.pmSymbol = "오후"
         formatter.locale = Locale(identifier: "ko_KR")
         return formatter.string(from: now)
     }
 }
 
-struct CornerShape: Shape {
-    var corners: UIRectCorner
-    var radius: CGFloat
-    
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-        return Path(path.cgPath)
-    }
-}
+// ScoreBottomSheet 구조체 추가
+struct ScoreBottomSheet<Content: View>: View {
+    @Binding var isPresented: Bool
+    let height: CGFloat
+    let content: () -> Content
 
-struct ScoreBottomSheet<Content>: View where Content: View {
-    @Binding private var isPresented: Bool
-    public var height: CGFloat
-    public var content: Content
-    
-    @GestureState private var transition: CGFloat = .zero
-    
-    public init(_ isPresented: Binding<Bool>, height: CGFloat, content: () -> Content) {
-        self._isPresented = isPresented
-        self.height = height
-        self.content = content()
-    }
-    
-    public var body: some View {
-        VStack(spacing: 0) {
+    var body: some View {
+        VStack {
+            Spacer()
             VStack {
                 RoundedRectangle(cornerRadius: 100)
                     .foregroundColor(Color.gray.opacity(0.4))
                     .frame(width: 30, height: 5)
                     .padding(.top, 15)
                 
-                // 컨텐츠
-                self.content
+                // 전달된 컨텐츠 표시
+                content()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .padding(.horizontal)
             }
@@ -278,21 +268,25 @@ struct ScoreBottomSheet<Content>: View where Content: View {
         .background(Color.clear)
         .transition(.opacity.combined(with: .move(edge: .bottom)))
         .animation(.easeInOut(duration: 0.8), value: isPresented)
-        .offset(y: transition)
         .gesture(
             DragGesture()
-                .updating($transition) { value, state, _ in
-                    if 0 <= value.translation.height {
-                        let translation = min(self.height, max(-self.height, value.translation.height))
-                        state = translation
-                    }
-                }
-                .onEnded({ value in
+                .onChanged { value in
                     if value.translation.height >= height / 3 {
                         self.isPresented = false
                     }
-                })
+                }
         )
+    }
+}
+
+// Custom shape for the rounded corners
+struct CornerShape: Shape {
+    var corners: UIRectCorner
+    var radius: CGFloat
+    
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
     }
 }
 
