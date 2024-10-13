@@ -11,11 +11,11 @@ struct DemoView: View {
         VStack {
             Text("데모 페이지")
                 .font(.largeTitle)
-                .padding()
+                .padding(.top, 100)
             
             Text("이 페이지는 기능을 시연하기 위한 데모 페이지입니다.")
                 .font(.subheadline)
-                .padding()
+                .padding(.bottom, 20)
             
             if predictions.isEmpty {
                 Text("예측 결과가 없습니다.")
