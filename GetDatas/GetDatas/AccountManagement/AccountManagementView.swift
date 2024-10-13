@@ -17,6 +17,7 @@ struct AccountManagementView: View {
     @State private var showRecordView = false
     @State private var showSleepDataView = false
     @EnvironmentObject var bleManager: BLEManager
+    @State private var showDemoView = false  // 데모 뷰 전환
     
     var body: some View {
         ScrollView {
@@ -244,6 +245,20 @@ struct AccountManagementView: View {
             .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
         }
+        // Demo 페이지 이동 버튼 추가
+        NavigationLink(destination: DemoView(), isActive: $showDemoView) {
+            Button(action: {
+                showDemoView = true
+            }) {
+                Text("데모 페이지")
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+            }
+        }
+        .padding(.horizontal, 16)
     }
     
     func logout() {
