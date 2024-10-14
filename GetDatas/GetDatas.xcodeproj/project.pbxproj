@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C0A8C732CBBB56D00D2C329 /* DemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0A8C722CBBB56D00D2C329 /* DemoView.swift */; };
+		0C0A8C792CBBE77100D2C329 /* test_cropped_realtime_data(0757).csv in Resources */ = {isa = PBXBuildFile; fileRef = 0C0A8C782CBBE77100D2C329 /* test_cropped_realtime_data(0757).csv */; };
 		0C20A0D62C845261006790A8 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C20A0D52C845261006790A8 /* DocumentPicker.swift */; };
 		0C24AD6B2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD6A2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel */; };
 		0C24AD6D2C7CBE15004CF022 /* DreamAiProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD6C2C7CBE15004CF022 /* DreamAiProcesser.swift */; };
@@ -91,6 +93,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0C0A8C722CBBB56D00D2C329 /* DemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoView.swift; sourceTree = "<group>"; };
+		0C0A8C782CBBE77100D2C329 /* test_cropped_realtime_data(0757).csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "test_cropped_realtime_data(0757).csv"; sourceTree = "<group>"; };
 		0C20A0D52C845261006790A8 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		0C24AD6A2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = DreamDetector_TabularClassifier.mlmodel; sourceTree = "<group>"; };
 		0C24AD6C2C7CBE15004CF022 /* DreamAiProcesser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamAiProcesser.swift; sourceTree = "<group>"; };
@@ -184,6 +188,15 @@
 			path = DreamAi;
 			sourceTree = "<group>";
 		};
+		0C502EFE2CBBB0CE00A5BA57 /* TestStageAi */ = {
+			isa = PBXGroup;
+			children = (
+				0C0A8C782CBBE77100D2C329 /* test_cropped_realtime_data(0757).csv */,
+				0C0A8C722CBBB56D00D2C329 /* DemoView.swift */,
+			);
+			path = TestStageAi;
+			sourceTree = "<group>";
+		};
 		0CF496022C8776BF0065A588 /* StageAi */ = {
 			isa = PBXGroup;
 			children = (
@@ -238,6 +251,7 @@
 		3B445A022BF0F0E900AFA631 /* GetDatas */ = {
 			isa = PBXGroup;
 			children = (
+				0C502EFE2CBBB0CE00A5BA57 /* TestStageAi */,
 				73E1F5B92C8342DC000118C7 /* 1.mp3 */,
 				739AE9622C6DB1D6006BAF47 /* AccountManagement */,
 				0CFAD4882C8393CC00791BF5 /* AiTraning */,
@@ -496,6 +510,7 @@
 				73E1F5BA2C8342DC000118C7 /* 1.mp3 in Resources */,
 				3B445A0B2BF0F0EA00AFA631 /* Preview Assets.xcassets in Resources */,
 				3B445A082BF0F0EA00AFA631 /* Assets.xcassets in Resources */,
+				0C0A8C792CBBE77100D2C329 /* test_cropped_realtime_data(0757).csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,6 +563,7 @@
 				7361195D2C68A6D100F3FF11 /* RegisterView.swift in Sources */,
 				0C8583EC2C882FC3002E7BD2 /* StageAiProcesser.swift in Sources */,
 				7361195F2C68A99000F3FF11 /* RegisterCompleteView.swift in Sources */,
+				0C0A8C732CBBB56D00D2C329 /* DemoView.swift in Sources */,
 				0C8583EE2C883117002E7BD2 /* StageAiPredictionManager.swift in Sources */,
 				739AE96A2C6DE037006BAF47 /* EmailChangeView.swift in Sources */,
 				739AE9642C6DB1ED006BAF47 /* AccountManagementView.swift in Sources */,
