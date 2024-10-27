@@ -151,7 +151,7 @@ struct AccountManagementView: View {
                     }
                 }
                 .padding(.horizontal, 16)
-                .padding(.bottom, 20) // 하단 여백 추가
+                .padding(.bottom, 15) // 하단 여백 추가
                 
                 Spacer()
                 
@@ -234,6 +234,21 @@ struct AccountManagementView: View {
                     }
                 }
                 .padding(.horizontal, 16)
+                .padding(.bottom, 15)
+                
+                NavigationLink(destination: DemoView(), isActive: $showDemoView) {
+                    Button(action: {
+                        showDemoView = true
+                    }) {
+                        Text("데모 페이지")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 50)
+                            .background(Color.home_mint)
+                            .cornerRadius(10)
+                    }
+                }
+                .padding(.horizontal, 16)
                 .padding(.bottom, 40)
                 
                 NavigationLink(destination: LoadingView(), isActive: $navigateToLoadingView) {
@@ -245,20 +260,6 @@ struct AccountManagementView: View {
             .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
         }
-        // Demo 페이지 이동 버튼 추가
-        NavigationLink(destination: DemoView(), isActive: $showDemoView) {
-            Button(action: {
-                showDemoView = true
-            }) {
-                Text("데모 페이지")
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-                    .background(Color.blue)
-                    .cornerRadius(10)
-            }
-        }
-        .padding(.horizontal, 16)
     }
     
     func logout() {

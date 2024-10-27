@@ -4,11 +4,12 @@ struct SettingView: View {
     @EnvironmentObject var bleManager: BLEManager
     @State private var brightness: Double = 10
     @State private var colorTemperature: Double = 0.5
-    @State private var gradualTime: Int? = 10
+    @State private var gradualTime: Int? = 20
     @State private var offTimer: Int? = 5
     @State private var selectedTab: BottomNav.Tab = .settings
     @State private var lightColor: Color = .lightAmber
     @State private var isConnected: Bool = false
+    @State private var isColorViewOn: Bool = false
 
     init() {
         let red = UserDefaults.standard.double(forKey: "red")
@@ -79,7 +80,41 @@ struct SettingView: View {
                         }
                         .labelsHidden()
                 }
-                .padding(.vertical, 20)
+                .padding(.vertical, 5)
+                
+                HStack {
+                    if isColorViewOn {
+                        Button(action: {bleManager.controllLED("0,0,0")
+                            isColorViewOn = false
+                        }){
+                            Text("끄기")
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 10) // 상하 패딩을 추가로 설정
+                                .background(Color(red: 240/255, green: 240/255, blue: 245/255))
+                                .foregroundColor(.deepNavy)
+                                .cornerRadius(8)
+                        }
+                    }
+                    
+                    Button(action: {
+                        let uiColor = UIColor(lightColor)
+                        let red = uiColor.cgColor.components?[0] ?? 0
+                        let green = uiColor.cgColor.components?[1] ?? 0
+                        let blue = uiColor.cgColor.components?[2] ?? 0
+                        let brightness = self.brightness
+                        
+                        bleManager.controllLED("\(red * brightness),\(green * brightness),\(blue * brightness)")
+                        isColorViewOn = true
+                    }){
+                        Text("보기")
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 10) // 상하 패딩을 추가로 설정
+                            .background(Color(red: 240/255, green: 240/255, blue: 245/255))
+                            .foregroundColor(.deepNavy)
+                            .cornerRadius(8)
+                    }
+                }
+                .padding(.bottom, 30)
                 
                 VStack(alignment: .leading) {
                     Text("서서히 밝아지는 시간")
@@ -87,9 +122,9 @@ struct SettingView: View {
                         .padding(.bottom, 10)
                         .foregroundColor(.black)
                     HStack {
-                        TimeOptionButton(title: "10분", selectedTime: $gradualTime, timeValue: 10)
-                        TimeOptionButton(title: "15분", selectedTime: $gradualTime, timeValue: 15)
-                        TimeOptionButton(title: "30분", selectedTime: $gradualTime, timeValue: 30)
+                        TimeOptionButton(title: "20초", selectedTime: $gradualTime, timeValue: 20)
+                        TimeOptionButton(title: "40초", selectedTime: $gradualTime, timeValue: 40)
+                        TimeOptionButton(title: "1분", selectedTime: $gradualTime, timeValue: 60)
                     }
                     .padding(.bottom, 30)
                 }

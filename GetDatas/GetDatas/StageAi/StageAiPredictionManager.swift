@@ -13,6 +13,8 @@ class StageAiPredictionManager: ObservableObject {
     private var wakeUpBufferMinutes: Int = 30  // 기상 시간 여분
     private var timer: Timer?  // 알람 시각을 체크할 타이머
     private var isPredictionPaused_StageAi = false // 예측 중지 플래그
+    private var bleManager: BLEManager
+    @Published var doesAiAlarmTurnedOn = false
     
     // DateFormatter는 매번 생성하지 않고 한번 생성해서 사용
     private let dateFormatter: DateFormatter = {
@@ -22,7 +24,9 @@ class StageAiPredictionManager: ObservableObject {
         return formatter
     }()
     
-    init() {
+    init(bleManager: BLEManager) {
+        self.model = try! StageAi_MyTabularClassifier(configuration: MLModelConfiguration())
+        self.bleManager = bleManager
         self.model = try! StageAi_MyTabularClassifier(configuration: MLModelConfiguration())
         
         // 초기화 시 UserDefaults에서 알람 시간 불러오기
@@ -54,7 +58,7 @@ class StageAiPredictionManager: ObservableObject {
     private func startTimerForPredictionCheck() {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
+            guard self != nil else { return }
             // 로직 추가할 수 있음
         }
     }
@@ -112,6 +116,10 @@ class StageAiPredictionManager: ObservableObject {
         }
         performPrediction(data)
     }
+    
+    func resetPredictionState() {
+        isPredictionPaused_StageAi = false
+    }
 
     private func performPrediction(_ data: [MeasurementData]) {
         let window90 = Array(data.suffix(windowSize90))
@@ -139,6 +147,16 @@ class StageAiPredictionManager: ObservableObject {
                         self.detectedRem()  // 렘수면 시 알림 관련 함수
                         self.isPredictionPaused_StageAi = true // 렘수면 시 플래그로써 예측이 수행되지 않게 함.
                         print("렘을 찾았으니, 앞으로 예측을 중지합니다")
+                        
+                        let red: Double = UserDefaults.standard.double(forKey: "red")
+                        let green: Double = UserDefaults.standard.double(forKey: "green")
+                        let blue: Double = UserDefaults.standard.double(forKey: "blue")
+                        let brightness: Double = UserDefaults.standard.double(forKey: "brightness")
+                        let duration: Int = UserDefaults.standard.integer(forKey: "TurnOnDuration")
+                        print("\(red), \(green), \(blue), \(brightness)")
+                        self.bleManager.turnOnAlarm("\(duration),\(red * brightness),\(green * brightness),\(blue * brightness),alarm,80")
+                    
+                        self.doesAiAlarmTurnedOn = true
                     }
                 }
 

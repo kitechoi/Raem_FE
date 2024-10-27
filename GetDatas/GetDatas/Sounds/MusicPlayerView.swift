@@ -10,71 +10,68 @@ struct MusicPlayerView: View {
     @State private var duration: TimeInterval = 60
 
     var body: some View {
-        VStack {
-            Spacer().frame(height: 20)
+        ScrollView {
+            VStack {
+                CustomTopBar(title: "수면 음악")
 
-            Text("수면을 위한 음악")
-                .font(.title)
-                .bold()
+                Image(album.imageName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 250, height: 250)
+                    .cornerRadius(10)
+                    .padding(.top, 20)
+
+                Text(album.title)
+                    .font(.title2)
+                    .bold()
+                    .padding(.top, 10)
+
+                Slider(value: $currentTime, in: 0...duration, onEditingChanged: { _ in
+                    seekToTime()
+                })
                 .padding(.top, 20)
 
-            Image(album.imageName)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 250, height: 250)
-                .cornerRadius(10)
+                HStack {
+                    Text(formatTime(currentTime))
+                    Spacer()
+                    Text(formatTime(duration))
+                }
+                .padding(.horizontal, 40)
+
+                HStack(spacing: 50) {
+                    Button(action: {
+                        stopMusic()
+                    }) {
+                        Image(systemName: "backward.fill")
+                            .font(.system(size: 30))
+                            .foregroundColor(.gray)
+                    }
+
+                    Button(action: {
+                        playMusic()
+                    }) {
+                        Image(systemName: "play.fill")
+                            .font(.system(size: 50))
+                            .foregroundColor(.gray)
+                    }
+
+                    Button(action: {
+                        // 다음 트랙 기능 구현 (필요시 추가)
+                    }) {
+                        Image(systemName: "forward.fill")
+                            .font(.system(size: 30))
+                            .foregroundColor(.gray)
+                    }
+                }
                 .padding(.top, 20)
 
-            Text(album.title)
-                .font(.title2)
-                .padding(.top, 10)
-
-            Text("\(album.songs) songs    \(album.duration)min")
-                .foregroundColor(.gray)
-                .padding(.top, 5)
-
-            Slider(value: $currentTime, in: 0...duration, onEditingChanged: { _ in
-                seekToTime()
-            })
-            .padding(.top, 20)
-
-            HStack {
-                Text(formatTime(currentTime))
                 Spacer()
-                Text(formatTime(duration))
             }
-            .padding(.horizontal, 40)
-
-            HStack(spacing: 50) {
-                Button(action: {
-                    stopMusic()
-                }) {
-                    Image(systemName: "backward.fill")
-                        .font(.system(size: 30))
-                        .foregroundColor(.gray)
-                }
-
-                Button(action: {
-                    playMusic()
-                }) {
-                    Image(systemName: "play.fill")
-                        .font(.system(size: 50))
-                        .foregroundColor(.gray)
-                }
-
-                Button(action: {
-                    // 다음 트랙 기능 구현 (필요시 추가)
-                }) {
-                    Image(systemName: "forward.fill")
-                        .font(.system(size: 30))
-                        .foregroundColor(.gray)
-                }
-            }
-            .padding(.top, 20)
-
-            Spacer()
+            .padding()
         }
-        .padding()
+        .edgesIgnoringSafeArea(.all)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
         .onAppear {
             setupPlayer()
         }

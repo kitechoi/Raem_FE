@@ -1,4 +1,5 @@
 import SwiftUI
+import UserNotifications
 
 struct HomeView: View {
     @State private var optimalSleepTime: String = "7시간"  // 기본값
@@ -46,6 +47,63 @@ struct HomeView: View {
         return formatter
     }()
     
+    // 알림 권한 요청 함수
+    private func requestNotificationAuthorization() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
+            if let error = error {
+                print("알림 권한 요청 오류: \(error.localizedDescription)")
+            }
+            if granted {
+                print("알림 권한이 승인되었습니다.")
+            } else {
+                print("알림 권한이 거부되었습니다.")
+            }
+        }
+    }
+    
+    // 알림 예약 함수
+    private func scheduleBedtimeNotification() {
+        guard startBedtime else {
+            cancelBedtimeNotification()
+            return
+        }
+
+        let content = UNMutableNotificationContent()
+        content.title = "수면 시간 알림"
+        content.body = "지정하신 수면 시간입니다."
+        content.sound = .default
+
+        // 타임존 설정 (예: 사용자의 지역 타임존 사용)
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone.current // 또는 특정 타임존 설정 가능
+
+        // 매일 반복되는 알림을 위해 날짜를 제외하고 시간과 분만 사용
+        let triggerDate = calendar.dateComponents([.hour, .minute], from: selectedBedtime)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
+
+        let request = UNNotificationRequest(identifier: "bedtimeNotification", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("알림 예약 오류: \(error.localizedDescription)")
+            } else {
+                print("매일 알림 예약 완료: \(triggerDate)")
+            }
+        }
+    }
+    
+    // 알림 취소 함수
+    private func cancelBedtimeNotification() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["bedtimeNotification"])
+    }
+    
+    // 상태가 변경될 때 알림 업데이트
+    private func updateBedtimeNotification() {
+        if startBedtime == true {
+            scheduleBedtimeNotification()
+        } else {
+            cancelBedtimeNotification()
+        }
+    }
 
     var body: some View {
         ZStack {
@@ -64,17 +122,11 @@ struct HomeView: View {
                                            .font(Font.system(size: 14))
                                            .foregroundColor(.gray)
                             Spacer()
-//                            Button(action: {
-//                                // 더보기 액션 추가
-//                            }) {
-//                                Text("더보기")
-//                                    .font(Font.system(size: 14))
-//                                    .foregroundColor(Color.home_mint)
-//                            }
                         }
                     }
                     .padding(.horizontal, 23) // 좌우 여백 추가
                     .padding(.vertical, 20)
+                    
 
                     // 최근 수면 정보 카드
                     VStack(alignment: .leading) {
@@ -93,16 +145,17 @@ struct HomeView: View {
                                     .foregroundColor(Color.deepNavy)
                             }
                         }
-                        .padding(.horizontal, 20) // 카드 내부의 좌우 여백
+                        .padding(.horizontal, 20)
                         .padding(.top, 18)
-
-                        HStack(spacing: 45) {
-                            VStack(alignment: .leading, spacing: 4) {
+                        
+                        HStack {
+                            VStack(alignment: .leading, spacing: 25) {
                                 HStack(spacing: 16) {
                                     Image("moon")
                                         .resizable()
                                         .frame(width: 24, height: 24)
-                                    VStack(alignment: .leading, spacing: 4){
+                                    
+                                    VStack(alignment: .leading, spacing: 4) {
                                         Text("\(sleepTime)")
                                             .font(Font.system(size: 18, weight: .bold))
                                             .foregroundColor(.black)
@@ -111,34 +164,12 @@ struct HomeView: View {
                                             .foregroundColor(.gray)
                                     }
                                 }
-                            }
-
-                            VStack(spacing: 4) {
-                                HStack(spacing: 16) {
-                                    Image("zzz")
-                                        .resizable()
-                                        .frame(width: 24, height: 24)
-                                    VStack(alignment: .leading, spacing: 4){
-                                        Text("\(fellAsleepTime)")
-                                            .font(Font.system(size: 18, weight: .bold))
-                                            .foregroundColor(.black)
-                                        Text("Fell asleep")
-                                            .font(Font.system(size: 12))
-                                            .foregroundColor(.gray)
-                                    }
-                                }
-                            }
-                        }
-                        .padding(.horizontal, 20) // 카드 내부의 좌우 여백
-                        .padding(.top, 20)
-                        
-                        HStack(spacing: 45) {
-                            VStack(alignment: .leading, spacing: 4) {
+                                
                                 HStack(spacing: 16) {
                                     Image("watch")
                                         .resizable()
                                         .frame(width: 24, height: 24)
-                                    VStack(alignment: .leading, spacing:4) {
+                                    VStack(alignment: .leading, spacing: 4) {
                                         Text("\(timeOnBed)")
                                             .font(Font.system(size: 18, weight: .bold))
                                             .foregroundColor(.black)
@@ -148,8 +179,24 @@ struct HomeView: View {
                                     }
                                 }
                             }
-
-                            VStack(alignment: .leading, spacing: 4) {
+                            
+                            Spacer()
+                            
+                            VStack(alignment: .leading, spacing: 25){
+                                HStack(spacing: 16) {
+                                    Image("zzz")
+                                        .resizable()
+                                        .frame(width: 24, height: 24)
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("\(fellAsleepTime)")
+                                            .font(Font.system(size: 18, weight: .bold))
+                                            .foregroundColor(.black)
+                                        Text("Fell asleep")
+                                            .font(Font.system(size: 12))
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                                
                                 HStack(spacing: 16) {
                                     Image("sun")
                                         .resizable()
@@ -165,9 +212,9 @@ struct HomeView: View {
                                 }
                             }
                         }
-                        .padding(.horizontal, 20) // 카드 내부의 좌우 여백
-                        .padding(.top, 25)
-                        .padding(.bottom, 18)
+                        .padding(.horizontal, 22)
+                        .padding(.vertical, 18)
+                        
                     }
                     .background(
                         RoundedRectangle(cornerRadius: 10)
@@ -258,7 +305,7 @@ struct HomeView: View {
                             .cornerRadius(10)
                     }
                     .padding(.horizontal, 16)
-                    .padding(.top, 20)
+                    .padding(.vertical, 20)
                     
                 }
             }
@@ -266,8 +313,13 @@ struct HomeView: View {
             .edgesIgnoringSafeArea(.all)
             .navigationBarHidden(true)
             .onAppear {
+                requestNotificationAuthorization()
+                updateBedtimeNotification()
                 fetchOptimalSleepTime()
                 fetchDailySleepAnalysis()
+            }
+            .onChange(of: startBedtime) {
+                updateBedtimeNotification()
             }
         }
     }
@@ -317,8 +369,6 @@ struct HomeView: View {
             }
         }.resume()
     }
-
-
     
     func fetchOptimalSleepTime() {
         guard let accessToken = sessionManager.accessToken else {

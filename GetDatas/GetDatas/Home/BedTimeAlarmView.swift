@@ -2,7 +2,8 @@ import SwiftUI
 
 struct BedTimeAlarmView: View {
     @Binding var selectedTab: Tab
-    @StateObject var stageAiPredictionManager = StageAiPredictionManager() // StageAiPredictionManager 인스턴스 생성
+    @EnvironmentObject var bleManager: BLEManager
+    @EnvironmentObject var stageAiPredictionManager: StageAiPredictionManager
 
     enum Tab {
         case bedtime
@@ -77,14 +78,14 @@ struct BedtimeView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            DatePicker("Please enter a date", selection: $selectedTime, displayedComponents: .hourAndMinute)
-                .datePickerStyle(WheelDatePickerStyle())
-                .labelsHidden()
-                .padding(.horizontal, 16)
-                .environment(\.colorScheme, .light)
-                .onChange(of: selectedTime) { newValue in
-                    UserDefaults.standard.set(newValue, forKey: "selectedBedTime")
-                }
+            DatePicker("Please select time", selection: $selectedTime, displayedComponents: [.hourAndMinute])
+                .datePickerStyle(.wheel)
+            .labelsHidden()
+            .padding(.horizontal, 16)
+            .environment(\.colorScheme, .light)
+            .onChange(of: selectedTime) {
+                UserDefaults.standard.set(selectedTime, forKey: "selectedBedTime")
+            }
 
             Text("수면 시간 목표는 \(optimalSleepTime) 입니다.\n취침시간 및 알람시간에 근거함")
                 .font(.system(size: 14))
@@ -192,19 +193,45 @@ struct AlarmView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            DatePicker("Please enter a date", selection: $selectedTime, displayedComponents: .hourAndMinute)
-                .datePickerStyle(WheelDatePickerStyle())
-                .labelsHidden()
-                .padding(.horizontal, 16)
-                .environment(\.colorScheme, .light)
-                .onChange(of: selectedTime) { newValue in
-                    UserDefaults.standard.set(newValue, forKey: "selectedAlarmTime")
-                }
-//            
+            DatePicker("Please enter a date", selection: $selectedTime, displayedComponents: [.hourAndMinute])
+                .datePickerStyle(.wheel)
+            .labelsHidden()
+            .padding(.horizontal, 16)
+            .environment(\.colorScheme, .light)
+            .onChange(of: selectedTime) {
+                UserDefaults.standard.set(selectedTime, forKey: "selectedAlarmTime")
+            }
+            
+
             Text("수면 시간 목표는 \(optimalSleepTime) 입니다.\n취침시간 및 알람시간에 근거함")
                 .font(.system(size: 14))
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
+            
+            // "설정하기" 버튼 추가
+            Button(action: {
+                selectedTime = updateToToday(time: selectedTime)
+                // 설정 버튼 클릭 시, 알람 시간과 여분 시간을 저장
+                UserDefaults.standard.set(selectedTime, forKey: "selectedAlarmTime")
+                UserDefaults.standard.set(selectedWakeup, forKey: "selectedWakeUp")
+                
+                // StageAiPredictionManager에 알람 시간과 여분 시간 전달
+                stageAiPredictionManager.setAlarmTime(alarmTime: selectedTime, wakeUpBufferMinutes: selectedWakeup)
+            }) {
+                HStack {
+                    Spacer()
+                    Text("설정하기")
+                        .font(.system(size: 16))
+                        .foregroundColor(.white)
+                    Spacer()
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.mint)
+                )
+            }
+            .padding(.horizontal, 16)
 
             VStack(alignment: .center, spacing: 20) {
                 HStack {
@@ -214,8 +241,8 @@ struct AlarmView: View {
                     Spacer()
                     Toggle("", isOn: $receiveAlarm)
                         .toggleStyle(SwitchToggleStyle(tint: Color.mint))
-                        .onChange(of: receiveAlarm) { newValue in
-                            UserDefaults.standard.set(newValue, forKey: "receiveAlarm")
+                        .onChange(of: receiveAlarm) {
+                            UserDefaults.standard.set(receiveAlarm, forKey: "receiveAlarm")
                         }
                 }
                 .padding()
@@ -306,33 +333,9 @@ struct AlarmView: View {
                         .stroke(Color.gray.opacity(0.5))
                 )
                 .padding(.horizontal, 16)
+                .padding(.bottom, 10)
             }
 
-            // "설정하기" 버튼 추가
-            Button(action: {
-                selectedTime = updateToToday(time: selectedTime)
-                // 설정 버튼 클릭 시, 알람 시간과 여분 시간을 저장
-                UserDefaults.standard.set(selectedTime, forKey: "selectedAlarmTime")
-                UserDefaults.standard.set(selectedWakeup, forKey: "selectedWakeUp")
-                
-                // StageAiPredictionManager에 알람 시간과 여분 시간 전달
-                stageAiPredictionManager.setAlarmTime(alarmTime: selectedTime, wakeUpBufferMinutes: selectedWakeup)
-            }) {
-                HStack {
-                    Spacer()
-                    Text("설정하기")
-                        .font(.system(size: 16))
-                        .foregroundColor(.white)
-                    Spacer()
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.mint)
-                )
-            }
-            .padding(.horizontal, 16)
-            .padding(.top, 10) // 완료 버튼을 위로 올려서 화면에 잘 보이도록 조정
         }
         .padding(.top, 20) // 상단 여백 추가
         .onAppear {
@@ -401,8 +404,8 @@ private func updateToToday(time: Date) -> Date {
     return calendar.date(from: components) ?? time
 }
 
-struct BedTimeAlarmView_Previews: PreviewProvider {
-    static var previews: some View {
-        BedTimeAlarmView(selectedTab: .constant(.bedtime))
-    }
-}
+//struct BedTimeAlarmView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        BedTimeAlarmView(selectedTab: .constant(.bedtime))
+//    }
+//}
