@@ -10,7 +10,6 @@ struct DailyView: View {
     @State private var rating: Int = UserDefaults.standard.integer(forKey: "sleepRating")
     @State private var isLoading = false
     @State private var showAlert = false
-    @State private var sleepDataId: String = "66cb4fd60bb1d036250d4e89" // 서버에서 받은 sleepDataId
     
     // 당일 날짜 및 시간으로 초기화
     @State private var sleptAt: String = formatDate(Date()) // 오늘 날짜
@@ -20,10 +19,12 @@ struct DailyView: View {
     @State private var sleepData: [HKSleepAnalysis] = []
     @State private var loadingData: Bool = false
     
+    @State private var sleepDataId: String = ""
     @State private var sleepTime: String = ""
     @State private var fellAsleepTime: String = ""
     @State private var awakeTime: String = ""
     @State private var timeOnBed: String = ""
+    @State private var badSleepReason: String = ""
 
     private let healthStore = HKHealthStore()
 
@@ -60,12 +61,19 @@ struct DailyView: View {
                         .foregroundColor(.gray)
                     
                     if rating <= 3 {
-                        Button(action: {
-                            popUpVisible = true
-                        }) {
-                            Text("더보기")
-                                .font(.system(size: 17))
+                        if badSleepReason == "" {
+                            Button(action: {
+                                popUpVisible = true
+                            }) {
+                                Text("더보기")
+                                    .font(.system(size: 17))
+                                    .foregroundColor(.deepNavy)
+                            }
+                        } else {
+                            Text("수면 방해 요인: \(badSleepReason)")
+                                .font(.system(size: 15))
                                 .foregroundColor(.deepNavy)
+                                .padding(.top, -18)
                         }
                     }
                 }
@@ -86,16 +94,17 @@ struct DailyView: View {
                                     .resizable()
                                     .frame(width: 30, height: 30)
                                 
-                                Text("\(sleepHour)")
+                                var sleptAtSplit = sleptAt.split(separator: "-")
+                                Text("\(sleptAtSplit[1])")
                                     .font(.system(size: 24, weight: .bold))
                                     .foregroundColor(.black) +
-                                Text("시")
+                                Text("월")
                                     .font(.system(size: 20, weight: .bold))
                                     .foregroundColor(.black) +
-                                Text(" \(sleepMinute)")
+                                Text(" \(sleptAtSplit[2])")
                                     .font(.system(size: 24, weight: .bold))
                                     .foregroundColor(.black) +
-                                Text("분")
+                                Text("일")
                                     .font(.system(size: 20, weight: .bold))
                                     .foregroundColor(.black)
                             }
@@ -140,84 +149,70 @@ struct DailyView: View {
                         }
                         .onAppear(perform: loadSleepData)
                         
+                        
                         HStack {
-                            Spacer()
-                            VStack(alignment: .leading) {
-                                HStack(spacing: 45) {
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        HStack(spacing: 16) {
-                                            Image("moon")
-                                                .resizable()
-                                                .frame(width: 24, height: 24)
-                                            
-                                            VStack(alignment: .leading, spacing: 4) {
-                                                Text("\(sleepTime)")
-                                                    .font(Font.system(size: 18, weight: .bold))
-                                                    .foregroundColor(.black)
-                                                Text("Time in sleep")
-                                                    .font(Font.system(size: 12))
-                                                    .foregroundColor(.gray)
-                                            }
-                                        }
-                                    }
-                                    .padding(.trailing, 10)
+                            VStack(alignment: .leading, spacing: 20) {
+                                HStack(spacing: 16) {
+                                    Image("moon")
+                                        .resizable()
+                                        .frame(width: 24, height: 24)
                                     
-                                    VStack(spacing: 4) {
-                                        HStack(spacing: 16) {
-                                            Image("zzz")
-                                                .resizable()
-                                                .frame(width: 24, height: 24)
-                                            VStack(alignment: .leading, spacing: 4) {
-                                                Text("\(fellAsleepTime)")
-                                                    .font(Font.system(size: 18, weight: .bold))
-                                                    .foregroundColor(.black)
-                                                Text("Fell asleep")
-                                                    .font(Font.system(size: 12))
-                                                    .foregroundColor(.gray)
-                                            }
-                                        }
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("\(sleepTime)")
+                                            .font(Font.system(size: 18, weight: .bold))
+                                            .foregroundColor(.black)
+                                        Text("Time in sleep")
+                                            .font(Font.system(size: 12))
+                                            .foregroundColor(.gray)
                                     }
                                 }
-                                .padding(.top, 20)
                                 
-                                HStack(spacing: 45) {
+                                HStack(spacing: 16) {
+                                    Image("watch")
+                                        .resizable()
+                                        .frame(width: 24, height: 24)
                                     VStack(alignment: .leading, spacing: 4) {
-                                        HStack(spacing: 16) {
-                                            Image("watch")
-                                                .resizable()
-                                                .frame(width: 24, height: 24)
-                                            VStack(alignment: .leading, spacing: 4) {
-                                                Text("\(timeOnBed)")
-                                                    .font(Font.system(size: 18, weight: .bold))
-                                                    .foregroundColor(.black)
-                                                Text("Went to bed")
-                                                    .font(Font.system(size: 12))
-                                                    .foregroundColor(.gray)
-                                            }
-                                        }
-                                    }
-                                    .padding(.trailing, 10)
-                                    
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        HStack(spacing: 16) {
-                                            Image("sun")
-                                                .resizable()
-                                                .frame(width: 24, height: 24)
-                                            VStack(alignment: .leading, spacing: 4) {
-                                                Text("\(awakeTime)")
-                                                    .font(Font.system(size: 18, weight: .bold))
-                                                    .foregroundColor(.black)
-                                                Text("Wake up time")
-                                                    .font(Font.system(size: 12))
-                                                    .foregroundColor(.gray)
-                                            }
-                                        }
+                                        Text("\(timeOnBed)")
+                                            .font(Font.system(size: 18, weight: .bold))
+                                            .foregroundColor(.black)
+                                        Text("Went to bed")
+                                            .font(Font.system(size: 12))
+                                            .foregroundColor(.gray)
                                     }
                                 }
-                                .padding(.top, 25)
-                                .padding(.bottom, 18)
                             }
+                            
                             Spacer()
+                            
+                            VStack(alignment: .leading, spacing: 20){
+                                HStack(spacing: 16) {
+                                    Image("zzz")
+                                        .resizable()
+                                        .frame(width: 24, height: 24)
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("\(fellAsleepTime)")
+                                            .font(Font.system(size: 18, weight: .bold))
+                                            .foregroundColor(.black)
+                                        Text("Fell asleep")
+                                            .font(Font.system(size: 12))
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                                
+                                HStack(spacing: 16) {
+                                    Image("sun")
+                                        .resizable()
+                                        .frame(width: 24, height: 24)
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("\(awakeTime)")
+                                            .font(Font.system(size: 18, weight: .bold))
+                                            .foregroundColor(.black)
+                                        Text("Wake up time")
+                                            .font(Font.system(size: 12))
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                            }
                         }
                     }
                     .padding(22)
@@ -345,37 +340,35 @@ struct DailyView: View {
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
                 isLoading = false
-                showAlert = true
-            }
-            
-            if let error = error {
-                print("Error submitting reason: \(error.localizedDescription)")
-                return
-            }
-            
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
-                print("Non-200 HTTP response: \(httpResponse.statusCode)")
-                return
-            }
-            
-            guard let data = data else {
-                print("No data received")
-                return
-            }
-            
-            do {
-                let responseData = try JSONDecoder().decode(SubmitReasonResponse.self, from: data)
-                if responseData.isSuccess {
-                    print("Reason successfully submitted: \(responseData.data.updatedAt)")
-                    // 일정 시간 후 원래 화면으로 돌아가도록 설정
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        popUpVisible = false
-                    }
-                } else {
-                    print("Failed to submit reason: \(responseData.message)")
+                if let error = error {
+                    print("Error submitting reason: \(error.localizedDescription)")
+                    return
                 }
-            } catch {
-                print("Error decoding response: \(error.localizedDescription)")
+                
+                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
+                    print("Non-200 HTTP response: \(httpResponse.statusCode)")
+                    return
+                }
+                
+                guard let data = data else {
+                    print("No data received")
+                    return
+                }
+                
+                do {
+                    let responseData = try JSONDecoder().decode(SubmitReasonResponse.self, from: data)
+                    print(responseData)
+                    if responseData.isSuccess {
+                        print("Reason successfully submitted: \(responseData.data.updatedAt)")
+                        // submitReason 완료 후 fetchDailySleepAnalysis 호출
+                        self.fetchDailySleepAnalysis()  // 데이터를 새로 불러옴
+                        popUpVisible = false // 팝업을 닫음
+                    } else {
+                        print("Failed to submit reason: \(responseData.message)")
+                    }
+                } catch {
+                    print("Error decoding response: \(error.localizedDescription)")
+                }
             }
         }.resume()
     }
@@ -473,10 +466,12 @@ struct DailyView: View {
                 let responseData = try JSONDecoder().decode(DailySleepResponse.self, from: data)
                 DispatchQueue.main.async {
                     if responseData.isSuccess {
+                        self.sleepDataId = responseData.data.dataId
                         self.sleepTime = responseData.data.sleepTime
                         self.fellAsleepTime = responseData.data.fellAsleepTime
                         self.awakeTime = responseData.data.awakeTime
                         self.timeOnBed = responseData.data.timeOnBed
+                        self.badSleepReason = String(responseData.data.badAwakeReason ?? "")
                     } else {
                         print("Failed to fetch daily sleep analysis: \(responseData.message)")
                     }
@@ -495,6 +490,7 @@ struct DailyView: View {
     }
     
     struct SleepData: Codable {
+        let dataId: String
         let sleptAt: String
         let score: Int
         let badAwakeReason: String?

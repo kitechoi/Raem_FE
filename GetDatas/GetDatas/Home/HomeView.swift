@@ -122,17 +122,11 @@ struct HomeView: View {
                                            .font(Font.system(size: 14))
                                            .foregroundColor(.gray)
                             Spacer()
-//                            Button(action: {
-//                                // 더보기 액션 추가
-//                            }) {
-//                                Text("더보기")
-//                                    .font(Font.system(size: 14))
-//                                    .foregroundColor(Color.home_mint)
-//                            }
                         }
                     }
                     .padding(.horizontal, 23) // 좌우 여백 추가
                     .padding(.vertical, 20)
+                    
 
                     // 최근 수면 정보 카드
                     VStack(alignment: .leading) {
@@ -151,16 +145,17 @@ struct HomeView: View {
                                     .foregroundColor(Color.deepNavy)
                             }
                         }
-                        .padding(.horizontal, 20) // 카드 내부의 좌우 여백
+                        .padding(.horizontal, 20)
                         .padding(.top, 18)
-
-                        HStack(spacing: 45) {
-                            VStack(alignment: .leading, spacing: 4) {
+                        
+                        HStack {
+                            VStack(alignment: .leading, spacing: 25) {
                                 HStack(spacing: 16) {
                                     Image("moon")
                                         .resizable()
                                         .frame(width: 24, height: 24)
-                                    VStack(alignment: .leading, spacing: 4){
+                                    
+                                    VStack(alignment: .leading, spacing: 4) {
                                         Text("\(sleepTime)")
                                             .font(Font.system(size: 18, weight: .bold))
                                             .foregroundColor(.black)
@@ -169,34 +164,12 @@ struct HomeView: View {
                                             .foregroundColor(.gray)
                                     }
                                 }
-                            }
-
-                            VStack(spacing: 4) {
-                                HStack(spacing: 16) {
-                                    Image("zzz")
-                                        .resizable()
-                                        .frame(width: 24, height: 24)
-                                    VStack(alignment: .leading, spacing: 4){
-                                        Text("\(fellAsleepTime)")
-                                            .font(Font.system(size: 18, weight: .bold))
-                                            .foregroundColor(.black)
-                                        Text("Fell asleep")
-                                            .font(Font.system(size: 12))
-                                            .foregroundColor(.gray)
-                                    }
-                                }
-                            }
-                        }
-                        .padding(.horizontal, 20) // 카드 내부의 좌우 여백
-                        .padding(.top, 20)
-                        
-                        HStack(spacing: 45) {
-                            VStack(alignment: .leading, spacing: 4) {
+                                
                                 HStack(spacing: 16) {
                                     Image("watch")
                                         .resizable()
                                         .frame(width: 24, height: 24)
-                                    VStack(alignment: .leading, spacing:4) {
+                                    VStack(alignment: .leading, spacing: 4) {
                                         Text("\(timeOnBed)")
                                             .font(Font.system(size: 18, weight: .bold))
                                             .foregroundColor(.black)
@@ -206,8 +179,24 @@ struct HomeView: View {
                                     }
                                 }
                             }
-
-                            VStack(alignment: .leading, spacing: 4) {
+                            
+                            Spacer()
+                            
+                            VStack(alignment: .leading, spacing: 25){
+                                HStack(spacing: 16) {
+                                    Image("zzz")
+                                        .resizable()
+                                        .frame(width: 24, height: 24)
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("\(fellAsleepTime)")
+                                            .font(Font.system(size: 18, weight: .bold))
+                                            .foregroundColor(.black)
+                                        Text("Fell asleep")
+                                            .font(Font.system(size: 12))
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                                
                                 HStack(spacing: 16) {
                                     Image("sun")
                                         .resizable()
@@ -223,9 +212,9 @@ struct HomeView: View {
                                 }
                             }
                         }
-                        .padding(.horizontal, 20) // 카드 내부의 좌우 여백
-                        .padding(.top, 25)
-                        .padding(.bottom, 18)
+                        .padding(.horizontal, 22)
+                        .padding(.vertical, 18)
+                        
                     }
                     .background(
                         RoundedRectangle(cornerRadius: 10)
@@ -316,7 +305,7 @@ struct HomeView: View {
                             .cornerRadius(10)
                     }
                     .padding(.horizontal, 16)
-                    .padding(.top, 20)
+                    .padding(.vertical, 20)
                     
                 }
             }
@@ -326,11 +315,11 @@ struct HomeView: View {
             .onAppear {
                 requestNotificationAuthorization()
                 updateBedtimeNotification()
+                fetchOptimalSleepTime()
+                fetchDailySleepAnalysis()
             }
             .onChange(of: startBedtime) {
                 updateBedtimeNotification()
-                fetchOptimalSleepTime()
-                fetchDailySleepAnalysis()
             }
         }
     }
@@ -380,8 +369,6 @@ struct HomeView: View {
             }
         }.resume()
     }
-
-
     
     func fetchOptimalSleepTime() {
         guard let accessToken = sessionManager.accessToken else {

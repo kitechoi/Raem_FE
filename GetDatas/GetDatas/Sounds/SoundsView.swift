@@ -5,12 +5,12 @@ struct SoundsView: View {
     @State private var selectedAlbum: Album? = nil
 
     var albums: [Album] = [
-        Album(title: "꿈의 여정", imageName: "image1", songs: 7, duration: 60, audioFileName: "1"),
-        Album(title: "고요한 밤", imageName: "image2", songs: 6, duration: 48, audioFileName: "2"),
-        Album(title: "평온의 속삭임", imageName: "image3", songs: 4, duration: 20, audioFileName: "3"),
-        Album(title: "별빛의 꿈", imageName: "image4", songs: 7, duration: 60, audioFileName: "4"),
-        Album(title: "잠의 멜로디", imageName: "image5", songs: 9, duration: 80, audioFileName: "5"),
-        Album(title: "하늘의 자장가", imageName: "image6", songs: 3, duration: 17, audioFileName: "6")
+        Album(title: "꿈의 여정", imageName: "image1", audioFileName: "1"),
+        Album(title: "고요한 밤", imageName: "image2", audioFileName: "2"),
+        Album(title: "평온의 속삭임", imageName: "image3", audioFileName: "3"),
+        Album(title: "별빛의 꿈", imageName: "image4", audioFileName: "4"),
+        Album(title: "잠의 멜로디", imageName: "image5", audioFileName: "5"),
+        Album(title: "하늘의 자장가", imageName: "image6", audioFileName: "6")
     ]
 
 

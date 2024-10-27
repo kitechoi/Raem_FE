@@ -20,7 +20,6 @@ struct CustomTopBar: View {
             BackButton()
                 .opacity(0)
         }
-        .padding(.horizontal, 16)
         .padding(.top, 60)
         .background(Color.white)
 //        .navigationBarBackButtonHidden(true)

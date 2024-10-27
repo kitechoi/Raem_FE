@@ -16,7 +16,6 @@ class DreamAiPredictionManager: ObservableObject {
     private var intervals = 0
     private let maxIntervals = 5
     private var isAdjustingVolume = false
-    
     init(bleManager: BLEManager) {
         self.bleManager = bleManager
     }
@@ -81,7 +80,7 @@ class DreamAiPredictionManager: ObservableObject {
         
         // 연속된 상태가 모두 수면 상태인지 확인
         if previousSleepStates.count == consecutiveCount {
-            let allSleeping = previousSleepStates.allSatisfy { $0.isSleeping }
+            let allSleeping = previousSleepStates.allSatisfy {!$0.isSleeping }
             
             if allSleeping {
                 if let firstSleepingTimestamp = previousSleepStates.first?.timestamp {

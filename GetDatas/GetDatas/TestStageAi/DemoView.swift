@@ -1,28 +1,41 @@
 import SwiftUI
 
 struct DemoView: View {
-    @StateObject private var predictionManager = StageAiPredictionManager()
+    @EnvironmentObject var predictionManager: StageAiPredictionManager
     @State private var predictions: [StageAiPredictionResult] = []
     @State private var measurementData: [MeasurementData] = []
     @State private var timer: Timer? = nil
     @State private var currentDataStartIndex = 0
+    @State private var isPredictionOver = false
+    @State private var selectedFileName = "test_cropped_realtime_data(0757)"
+    private var fileNameArray: [String] = ["test_cropped_realtime_data(0757)"]
 
     var body: some View {
+        CustomTopBar(title: "데모페이지")
         VStack {
-            Text("데모 페이지")
-                .font(.largeTitle)
-                .padding(.top, 100)
-            
             Text("이 페이지는 기능을 시연하기 위한 데모 페이지입니다.")
                 .font(.subheadline)
-                .padding(.bottom, 20)
+                .padding(.top, 15)
+            
+            Picker("예측 데이터 선택", selection: $selectedFileName) {
+                ForEach(fileNameArray, id: \.self) { fileName in
+                    Text(fileName).tag(fileName)
+                }
+            }
+            .pickerStyle(MenuPickerStyle())
+            .background(Color.deepNavy.opacity(0.1)) // 배경 색상 변경
+            .cornerRadius(8) // 모서리 둥글게
+            .foregroundColor(.gray) // 텍스트 색상 변경
+            .padding(.vertical, 10)
+            
+            Spacer()
             
             if predictions.isEmpty {
                 Text("예측 결과가 없습니다.")
                     .foregroundColor(.gray)
                     .padding()
             } else {
-                List(predictions) { prediction in
+                List(predictions.reversed()) { prediction in
                     VStack(alignment: .leading) {
                         Text("Timestamp: \(prediction.timestamp)")
                             .font(.headline)
@@ -37,32 +50,77 @@ struct DemoView: View {
             }
             
             Spacer()
+            
+            if isPredictionOver {
+                Button(action: {
+                    resetPrediction()
+                    isPredictionOver = false
+                }) {
+                    Text("리셋")
+                        .font(.headline)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color(red: 240/255, green: 240/255, blue: 245/255))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.deepNavy)
+                        )
+                        .foregroundColor(.deepNavy)
+                        .cornerRadius(8)
+                }
+                .padding(20)
+            } else {
+                Button(action: {
+                    startPredictionCycle()
+                    isPredictionOver = true
+                }) {
+                    Text("예측 시작")
+                        .font(.headline)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.deepNavy)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                .padding(20)
+            }
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
-        .onAppear {
-            startPredictionCycle() // 페이지 로드 시 즉시 예측 시작
-        }
         .onDisappear {
-            timer?.invalidate() // 페이지를 벗어날 때 타이머 중지
+            resetPrediction()
         }
     }
     
     private func startPredictionCycle() {
-        if let data = loadCSVData(fileName: "test_cropped_realtime_data(0757)") {
+        if let data = loadCSVData(fileName: selectedFileName) {
             measurementData = data
             predictions = []
             currentDataStartIndex = 0
 
             performPrediction() // 첫 예측 수행
 
-            // 1분 간격으로 예측을 반복 수행
-            timer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { _ in
+            // 10초 간격으로 예측을 반복 수행
+            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                 performPrediction()
             }
+            
+            isPredictionOver = false
         } else {
             print("CSV 파일을 불러올 수 없습니다.")
         }
+    }
+    
+    private func resetPrediction() {
+        timer?.invalidate()
+        predictions = []
+        currentDataStartIndex = 0
+        measurementData = []
+        isPredictionOver = true
+        predictionManager.resetPredictionState()
+        print("예측 데이터가 리셋됐습니다.")
     }
     
     private func performPrediction() {

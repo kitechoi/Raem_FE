@@ -5,11 +5,13 @@ struct GetDatasApp: App {
     @StateObject private var sessionManager = SessionManager()
     @StateObject private var bleManager = BLEManager()
     @StateObject private var connectivityManager: iPhoneConnectivityManager
+    @StateObject var stageAiPredictionManager: StageAiPredictionManager
         
     init() {
         let bleManager = BLEManager()
         _bleManager = StateObject(wrappedValue: bleManager)
         _connectivityManager = StateObject(wrappedValue: iPhoneConnectivityManager(bleManager: bleManager))
+        _stageAiPredictionManager = StateObject(wrappedValue: StageAiPredictionManager(bleManager: bleManager))
     }
     
     var body: some Scene {
@@ -18,6 +20,7 @@ struct GetDatasApp: App {
                 .environmentObject(sessionManager)
                 .environmentObject(bleManager)
                 .environmentObject(connectivityManager)
+                .environmentObject(stageAiPredictionManager)
         }
     }
 }

@@ -23,6 +23,14 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     private var ChangeVolumeCharacteristicUUID: CBUUID = CBUUID(string: "123e4567-e89b-12d3-a456-426614175002")
     private var AudioOffCharacteristicUUID: CBUUID = CBUUID(string: "123e4567-e89b-12d3-a456-426614175003")
     
+    // Alarm 제어
+    private var AlarmService: CBService?
+    private var AlarmOnCharacteristic: CBCharacteristic?
+    private var AlarmOffCharacteristic: CBCharacteristic?
+    private var AlarmServiceUUID: CBUUID = CBUUID(string: "123e4567-e89b-12d3-a456-426614176000")
+    private var AlarmOnCharacteristicUUID: CBUUID = CBUUID(string: "123e4567-e89b-12d3-a456-426614176001")
+    private var AlarmOffCharacteristicUUID: CBUUID = CBUUID(string: "123e4567-e89b-12d3-a456-426614176002")
+    
     override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
@@ -89,6 +97,9 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
                 } else if service.uuid == AudioServiceUUID {
                     AudioService = service
                     peripheral.discoverCharacteristics(nil, for: service)
+                } else if service.uuid == AlarmServiceUUID {
+                    AlarmService = service
+                    peripheral.discoverCharacteristics(nil, for: service)
                 }
             }
         }
@@ -102,6 +113,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
         
         if let characteristics = service.characteristics {
             for characteristic in characteristics {
+                print(characteristic)
                 if characteristic.uuid == LEDCharacteristicUUID {
                     LEDCharacteristic = characteristic
                 } else if characteristic.uuid == AudioOnCharacteristicUUID {
@@ -110,6 +122,10 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
                     ChangeVolumeCharacteristic = characteristic
                 } else if characteristic.uuid == AudioOffCharacteristicUUID {
                     AudioOffCharacteristic = characteristic
+                } else if characteristic.uuid == AlarmOnCharacteristicUUID {
+                    AlarmOnCharacteristic = characteristic
+                } else if characteristic.uuid == AlarmOffCharacteristicUUID {
+                    AlarmOffCharacteristic = characteristic
                 }
             }
         }
@@ -153,6 +169,22 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
             peripheral.writeValue(data.data(using: .utf8)!, for: characteristic, type: .withResponse)
         } else {
             print("No connected peripheral or audio off characteristic found")
+        }
+    }
+    
+    func turnOnAlarm(_ data: String) {
+        if let peripheral = discoveredPeripheral, let characteristic = AlarmOnCharacteristic {
+            peripheral.writeValue(data.data(using: .utf8)!, for: characteristic, type: .withResponse)
+        } else {
+            print("No connected peripheral or alarm on characteristic found")
+        }
+    }
+    
+    func turnOffAlarm(_ data: String) {
+        if let peripheral = discoveredPeripheral, let characteristic = AlarmOffCharacteristic {
+            peripheral.writeValue(data.data(using: .utf8)!, for: characteristic, type: .withResponse)
+        } else {
+            print("No connected peripheral or alarm off characteristic found")
         }
     }
 }

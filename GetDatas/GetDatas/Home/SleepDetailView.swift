@@ -6,7 +6,14 @@ struct SleepDetailView: View {
     @State private var showBedTimeAlarmView = false
     @State private var now = Date()
     @State private var showAlert = false
+    @State private var isAlarmOn = false
+    @EnvironmentObject var bleManager: BLEManager
+    @EnvironmentObject var stageAiManager: StageAiPredictionManager
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State private var red: Double = 255
+    @State private var green: Double = 200
+    @State private var blue: Double = 124
+    @State private var gradualTime: Int = 20
     
     @State private var selectedAlarmTime = {
         if let savedTime = UserDefaults.standard.object(forKey: "selectedAlarmTime") as? Date {
@@ -23,6 +30,30 @@ struct SleepDetailView: View {
             return 30
         }
     }()
+    
+    init() {
+        let savedRed = UserDefaults.standard.double(forKey: "red")
+        let savedGreen = UserDefaults.standard.double(forKey: "green")
+        let savedBlue = UserDefaults.standard.double(forKey: "blue")
+        let brightness = UserDefaults.standard.double(forKey: "brightness")
+        let turnOnDuration = UserDefaults.standard.integer(forKey: "TurnOnDuration")
+        
+        if brightness != 0 && savedRed != 0 {
+            _red = State(initialValue: savedRed * brightness)
+        }
+        
+        if brightness != 0 && savedGreen != 0 {
+            _green = State(initialValue: savedGreen * brightness)
+        }
+        
+        if brightness != 0 && savedBlue != 0 {
+            _blue = State(initialValue: savedBlue * brightness)
+        }
+        
+        if turnOnDuration != 0 {
+            _gradualTime = State(initialValue: turnOnDuration)
+        }
+    }
     
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -55,6 +86,7 @@ struct SleepDetailView: View {
                 
                 Text("\(formattedTime)").onReceive(timer) { time in
                     self.now = time
+                    checkAlarmTime(bleManager: bleManager)
                 }
                 .font(.system(size: 48, weight: .bold))
                 .foregroundColor(.black)
@@ -130,6 +162,7 @@ struct SleepDetailView: View {
                 // 기상 버튼
                 Button(action: {
                     showSleepRatingView = true
+                    bleManager.turnOffAlarm("Off")
                 }) {
                     Text("기상")
                         .font(.system(size: 18, weight: .bold))
@@ -161,6 +194,7 @@ struct SleepDetailView: View {
                             
                             Text("오늘의 수면은 어땠나요?")
                                 .font(.system(size: 24, weight: .bold))
+                                .foregroundColor(.black)
                             
                             Text("이번 수면 시간은 총 6시간 30분 입니다.")
                                 .font(.system(size: 16))
@@ -211,6 +245,21 @@ struct SleepDetailView: View {
                 NotificationCenter.default.post(name: Notification.Name("changeHomeView"),
                                                 object: BedTimeAlarmView.Tab.none)
             }))
+        }
+    }
+    
+    private func checkAlarmTime(bleManager: BLEManager) {
+        // 현재 시간이 알람 시간과 같은지 확인 (분 단위로)
+        let nowComponents = Calendar.current.dateComponents([.hour, .minute], from: now)
+        let alarmComponents = Calendar.current.dateComponents([.hour, .minute], from: selectedAlarmTime)
+
+        // 현재 시간이 알람 시간과 일치하는지 확인
+        if nowComponents == alarmComponents && !isAlarmOn && !stageAiManager.doesAiAlarmTurnedOn{
+            print("NonAI Alarm on")
+            isAlarmOn = true
+            
+            print("\(gradualTime),\(red),\(green),\(blue),alarm,80")
+            bleManager.turnOnAlarm("\(gradualTime),\(red),\(green),\(blue),alarm,80")
         }
     }
     
@@ -290,9 +339,9 @@ struct CornerShape: Shape {
     }
 }
 
-struct SleepDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        SleepDetailView()
-    }
-}
+//struct SleepDetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SleepDetailView()
+//    }
+//}
 

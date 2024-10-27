@@ -26,12 +26,9 @@ struct AlbumView: View {
                 )
             
             Text(album.title)
-                .font(.headline)
+                .font(.system(size: 15, weight: .bold))
+                .foregroundColor(.deepNavy)
                 .padding(.top, 5)
-            
-            Text("\(album.songs) Songs  \(album.duration)min")
-                .font(.subheadline)
-                .foregroundColor(.gray)
         }
     }
 }

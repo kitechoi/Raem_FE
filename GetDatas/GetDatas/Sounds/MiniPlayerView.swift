@@ -22,9 +22,6 @@ struct MiniPlayerView: View {
                 VStack(alignment: .leading) {
                     Text(album.title)
                         .font(.headline)
-                    Text("\(album.songs) songs  •  \(album.duration)min")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
                 }
                 
                 Spacer()
@@ -33,13 +30,14 @@ struct MiniPlayerView: View {
                     if bleManager.connectSuccess == false {
                         playMusic()
                     } else {
-                        bleManager.turnOnAudio("\(album.audioFileName),70")
+                        bleManager.turnOnAudio("\(album.audioFileName),80,music")
                     }
                 }) {
                     Image(systemName: "play.fill")
                         .font(.system(size: 24))
                         .foregroundColor(.blue)
                 }
+                .padding(.trailing, 10)
                 
                 Button(action: {
                     isPopupVisible = false
