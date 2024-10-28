@@ -7,7 +7,7 @@ struct DemoView: View {
     @State private var timer: Timer? = nil
     @State private var currentDataStartIndex = 0
     @State private var isPredictionOver = false
-    @State private var selectedFileName = "test_cropped_realtime_data(0757)"
+    @State private var selectedFileName = "test_cropped_realtime_data(1)"
     private var fileNameArray: [String] = [
 //        "test_cropped_realtime_data(0757)",
         "test_cropped_realtime_data(1)",
