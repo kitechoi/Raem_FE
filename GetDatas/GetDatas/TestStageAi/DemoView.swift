@@ -8,7 +8,13 @@ struct DemoView: View {
     @State private var currentDataStartIndex = 0
     @State private var isPredictionOver = false
     @State private var selectedFileName = "test_cropped_realtime_data(0757)"
-    private var fileNameArray: [String] = ["test_cropped_realtime_data(0757)"]
+    private var fileNameArray: [String] = [
+        "test_cropped_realtime_data(0757)",
+        "test_cropped_realtime_data(2)",
+        "test_cropped_realtime_data(3)",
+        "test_cropped_realtime_data(4)",
+    ]
+
 
     var body: some View {
         CustomTopBar(title: "데모페이지")
@@ -189,6 +195,8 @@ struct DemoView: View {
     }
     
     private func formatProbabilities(_ probabilities: [Int64: Double]) -> String {
-        return probabilities.map { "\($0.key): \($0.value * 100)%" }.joined(separator: ", ")
+        return probabilities.sorted(by: { $0.value > $1.value })
+            .map { "\($0.key): \($0.value * 100)%" }
+            .joined(separator: ", ")
     }
 }
