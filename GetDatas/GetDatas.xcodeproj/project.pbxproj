@@ -8,11 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0C0A8C732CBBB56D00D2C329 /* DemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0A8C722CBBB56D00D2C329 /* DemoView.swift */; };
-		0C0A8C792CBBE77100D2C329 /* test_cropped_realtime_data(0757).csv in Resources */ = {isa = PBXBuildFile; fileRef = 0C0A8C782CBBE77100D2C329 /* test_cropped_realtime_data(0757).csv */; };
-		0C1D71882CCF33E8003CD700 /* test_cropped_realtime_data(2).csv in Resources */ = {isa = PBXBuildFile; fileRef = 0C1D71872CCF33E8003CD700 /* test_cropped_realtime_data(2).csv */; };
-		0C1D718A2CCF33F7003CD700 /* test_cropped_realtime_data(3).csv in Resources */ = {isa = PBXBuildFile; fileRef = 0C1D71892CCF33F7003CD700 /* test_cropped_realtime_data(3).csv */; };
-		0C1D71902CCF3E41003CD700 /* test_cropped_realtime_data(4).csv in Resources */ = {isa = PBXBuildFile; fileRef = 0C1D718F2CCF3E40003CD700 /* test_cropped_realtime_data(4).csv */; };
-		0C1D71922CCF41C2003CD700 /* test_cropped_realtime_data(1).csv in Resources */ = {isa = PBXBuildFile; fileRef = 0C1D71912CCF41C2003CD700 /* test_cropped_realtime_data(1).csv */; };
 		0C20A0D62C845261006790A8 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C20A0D52C845261006790A8 /* DocumentPicker.swift */; };
 		0C24AD6B2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD6A2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel */; };
 		0C24AD6D2C7CBE15004CF022 /* DreamAiProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C24AD6C2C7CBE15004CF022 /* DreamAiProcesser.swift */; };
@@ -23,6 +18,10 @@
 		0C8583EE2C883117002E7BD2 /* StageAiPredictionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583ED2C883117002E7BD2 /* StageAiPredictionManager.swift */; };
 		0C8583F02C883280002E7BD2 /* StageAiPredictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583EF2C883280002E7BD2 /* StageAiPredictionView.swift */; };
 		0C8583F22C88938E002E7BD2 /* CSVExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8583F12C88938E002E7BD2 /* CSVExporter.swift */; };
+		0CA26D612CCF945F00723685 /* data2.csv in Resources */ = {isa = PBXBuildFile; fileRef = 0CA26D5D2CCF945E00723685 /* data2.csv */; };
+		0CA26D632CCF945F00723685 /* data1.csv in Resources */ = {isa = PBXBuildFile; fileRef = 0CA26D5F2CCF945F00723685 /* data1.csv */; };
+		0CA26D642CCF945F00723685 /* data4.csv in Resources */ = {isa = PBXBuildFile; fileRef = 0CA26D602CCF945F00723685 /* data4.csv */; };
+		0CA26D682CCF95B100723685 /* data3.csv in Resources */ = {isa = PBXBuildFile; fileRef = 0CA26D672CCF95B100723685 /* data3.csv */; };
 		0CFAD48A2C83940300791BF5 /* TrainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFAD4892C83940300791BF5 /* TrainingView.swift */; };
 		0CFAD48C2C839CD200791BF5 /* TrainProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFAD48B2C839CD200791BF5 /* TrainProcesser.swift */; };
 		3B05422A2C75CB3700A4CB0D /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0542292C75CB3700A4CB0D /* BackButton.swift */; };
@@ -98,11 +97,6 @@
 
 /* Begin PBXFileReference section */
 		0C0A8C722CBBB56D00D2C329 /* DemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoView.swift; sourceTree = "<group>"; };
-		0C0A8C782CBBE77100D2C329 /* test_cropped_realtime_data(0757).csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "test_cropped_realtime_data(0757).csv"; sourceTree = "<group>"; };
-		0C1D71872CCF33E8003CD700 /* test_cropped_realtime_data(2).csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "test_cropped_realtime_data(2).csv"; sourceTree = "<group>"; };
-		0C1D71892CCF33F7003CD700 /* test_cropped_realtime_data(3).csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "test_cropped_realtime_data(3).csv"; sourceTree = "<group>"; };
-		0C1D718F2CCF3E40003CD700 /* test_cropped_realtime_data(4).csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "test_cropped_realtime_data(4).csv"; sourceTree = "<group>"; };
-		0C1D71912CCF41C2003CD700 /* test_cropped_realtime_data(1).csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "test_cropped_realtime_data(1).csv"; sourceTree = "<group>"; };
 		0C20A0D52C845261006790A8 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		0C24AD6A2C7CB740004CF022 /* DreamDetector_TabularClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = DreamDetector_TabularClassifier.mlmodel; sourceTree = "<group>"; };
 		0C24AD6C2C7CBE15004CF022 /* DreamAiProcesser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamAiProcesser.swift; sourceTree = "<group>"; };
@@ -113,6 +107,10 @@
 		0C8583ED2C883117002E7BD2 /* StageAiPredictionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageAiPredictionManager.swift; sourceTree = "<group>"; };
 		0C8583EF2C883280002E7BD2 /* StageAiPredictionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageAiPredictionView.swift; sourceTree = "<group>"; };
 		0C8583F12C88938E002E7BD2 /* CSVExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVExporter.swift; sourceTree = "<group>"; };
+		0CA26D5D2CCF945E00723685 /* data2.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data2.csv; sourceTree = "<group>"; };
+		0CA26D5F2CCF945F00723685 /* data1.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data1.csv; sourceTree = "<group>"; };
+		0CA26D602CCF945F00723685 /* data4.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data4.csv; sourceTree = "<group>"; };
+		0CA26D672CCF95B100723685 /* data3.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data3.csv; sourceTree = "<group>"; };
 		0CFAD4892C83940300791BF5 /* TrainingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingView.swift; sourceTree = "<group>"; };
 		0CFAD48B2C839CD200791BF5 /* TrainProcesser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainProcesser.swift; sourceTree = "<group>"; };
 		3B0542292C75CB3700A4CB0D /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
@@ -199,11 +197,10 @@
 		0C502EFE2CBBB0CE00A5BA57 /* TestStageAi */ = {
 			isa = PBXGroup;
 			children = (
-				0C0A8C782CBBE77100D2C329 /* test_cropped_realtime_data(0757).csv */,
-				0C1D718F2CCF3E40003CD700 /* test_cropped_realtime_data(4).csv */,
-				0C1D71912CCF41C2003CD700 /* test_cropped_realtime_data(1).csv */,
-				0C1D71872CCF33E8003CD700 /* test_cropped_realtime_data(2).csv */,
-				0C1D71892CCF33F7003CD700 /* test_cropped_realtime_data(3).csv */,
+				0CA26D5F2CCF945F00723685 /* data1.csv */,
+				0CA26D5D2CCF945E00723685 /* data2.csv */,
+				0CA26D672CCF95B100723685 /* data3.csv */,
+				0CA26D602CCF945F00723685 /* data4.csv */,
 				0C0A8C722CBBB56D00D2C329 /* DemoView.swift */,
 			);
 			path = TestStageAi;
@@ -521,12 +518,11 @@
 			files = (
 				73E1F5BA2C8342DC000118C7 /* 1.mp3 in Resources */,
 				3B445A0B2BF0F0EA00AFA631 /* Preview Assets.xcassets in Resources */,
-				0C1D718A2CCF33F7003CD700 /* test_cropped_realtime_data(3).csv in Resources */,
-				0C1D71902CCF3E41003CD700 /* test_cropped_realtime_data(4).csv in Resources */,
-				0C1D71922CCF41C2003CD700 /* test_cropped_realtime_data(1).csv in Resources */,
 				3B445A082BF0F0EA00AFA631 /* Assets.xcassets in Resources */,
-				0C0A8C792CBBE77100D2C329 /* test_cropped_realtime_data(0757).csv in Resources */,
-				0C1D71882CCF33E8003CD700 /* test_cropped_realtime_data(2).csv in Resources */,
+				0CA26D642CCF945F00723685 /* data4.csv in Resources */,
+				0CA26D612CCF945F00723685 /* data2.csv in Resources */,
+				0CA26D632CCF945F00723685 /* data1.csv in Resources */,
+				0CA26D682CCF95B100723685 /* data3.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
