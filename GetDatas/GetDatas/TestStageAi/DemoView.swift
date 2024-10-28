@@ -9,7 +9,8 @@ struct DemoView: View {
     @State private var isPredictionOver = false
     @State private var selectedFileName = "test_cropped_realtime_data(0757)"
     private var fileNameArray: [String] = [
-        "test_cropped_realtime_data(0757)",
+//        "test_cropped_realtime_data(0757)",
+        "test_cropped_realtime_data(1)",
         "test_cropped_realtime_data(2)",
         "test_cropped_realtime_data(3)",
         "test_cropped_realtime_data(4)",
