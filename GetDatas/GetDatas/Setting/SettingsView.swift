@@ -4,7 +4,7 @@ struct SettingView: View {
     @EnvironmentObject var bleManager: BLEManager
     @State private var brightness: Double = 10
     @State private var colorTemperature: Double = 0.5
-    @State private var gradualTime: Int? = 20
+    @State private var gradualTime: Int? = 10
     @State private var offTimer: Int? = 5
     @State private var selectedTab: BottomNav.Tab = .settings
     @State private var lightColor: Color = .lightAmber
@@ -122,7 +122,7 @@ struct SettingView: View {
                         .padding(.bottom, 10)
                         .foregroundColor(.black)
                     HStack {
-                        TimeOptionButton(title: "20초", selectedTime: $gradualTime, timeValue: 20)
+                        TimeOptionButton(title: "10초", selectedTime: $gradualTime, timeValue: 10)
                         TimeOptionButton(title: "40초", selectedTime: $gradualTime, timeValue: 40)
                         TimeOptionButton(title: "1분", selectedTime: $gradualTime, timeValue: 60)
                     }
