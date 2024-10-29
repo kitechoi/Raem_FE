@@ -258,8 +258,8 @@ struct SleepDetailView: View {
             print("NonAI Alarm on")
             isAlarmOn = true
             
-            print("\(gradualTime),\(red),\(green),\(blue),alarm,80")
-            bleManager.turnOnAlarm("\(gradualTime),\(red),\(green),\(blue),alarm,80")
+            print("\(gradualTime),\(red),\(green),\(blue),alarm,60")
+            bleManager.turnOnAlarm("\(gradualTime),\(red),\(green),\(blue),alarm,40")
         }
     }
     

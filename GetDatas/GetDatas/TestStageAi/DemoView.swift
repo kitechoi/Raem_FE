@@ -6,8 +6,9 @@ struct DemoView: View {
     @State private var measurementData: [MeasurementData] = []
     @State private var timer: Timer? = nil
     @State private var currentDataStartIndex = 0
-    @State private var isPredictionOver = false
+    @State private var demoState = 0
     @State private var selectedFileName = "data2"
+    @EnvironmentObject var bleManager: BLEManager
     private var fileNameArray: [String] = [
         "data1",
         "data2",
@@ -57,10 +58,38 @@ struct DemoView: View {
             
             Spacer()
             
-            if isPredictionOver {
+            if demoState == 0 {
+                Button(action: {
+                    startPredictionCycle()
+                    demoState = 1
+                }) {
+                    Text("예측 시작")
+                        .font(.headline)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.deepNavy)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                .padding(20)
+            } else if demoState == 1 {
+                Button(action: {
+                    bleManager.turnOffAlarm("Off")
+                    demoState = 2
+                }) {
+                    Text("기상")
+                        .font(.headline)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.deepNavy)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                .padding(20)
+            } else {
                 Button(action: {
                     resetPrediction()
-                    isPredictionOver = false
+                    demoState = 0
                 }) {
                     Text("리셋")
                         .font(.headline)
@@ -72,20 +101,6 @@ struct DemoView: View {
                                 .stroke(Color.deepNavy)
                         )
                         .foregroundColor(.deepNavy)
-                        .cornerRadius(8)
-                }
-                .padding(20)
-            } else {
-                Button(action: {
-                    startPredictionCycle()
-                    isPredictionOver = true
-                }) {
-                    Text("예측 시작")
-                        .font(.headline)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.deepNavy)
-                        .foregroundColor(.white)
                         .cornerRadius(8)
                 }
                 .padding(20)
@@ -113,18 +128,19 @@ struct DemoView: View {
                 performPrediction()
             }
             
-            isPredictionOver = false
+            demoState = 1
         } else {
             print("CSV 파일을 불러올 수 없습니다.")
         }
     }
     
     private func resetPrediction() {
+        bleManager.turnOffAlarm("Off")
         timer?.invalidate()
         predictions = []
         currentDataStartIndex = 0
         measurementData = []
-        isPredictionOver = true
+        demoState = 0
         predictionManager.resetPredictionState()
         print("예측 데이터가 리셋됐습니다.")
     }

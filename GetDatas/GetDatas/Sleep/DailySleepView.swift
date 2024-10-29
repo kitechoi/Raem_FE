@@ -115,12 +115,6 @@ struct DailyView: View {
                                 .foregroundColor(.gray)
                         }
                         
-                        Text("어제보다 46분 더 주무셨네요.")
-                            .font(.system(size: 17))
-                            .foregroundColor(.gray)
-                            .padding(.top, 2)
-                            .padding(.bottom, 12)
-                        
                         VStack(alignment: .leading, spacing: 20) {
                             if loadingData {
                                 ProgressView("Loading data...")
@@ -389,10 +383,10 @@ struct DailyView: View {
             return
         }
         
-        let startDateComponents = DateComponents(year: 2024, month: 8, day: 22, hour: 12, minute: 0)
+        let startDateComponents = DateComponents(year: 2024, month: 9, day: 12, hour: 0, minute: 0)
         let startDate = Calendar.current.date(from: startDateComponents)!
         
-        let endDateComponents = DateComponents(year: 2024, month: 8, day: 23, hour: 12, minute: 0)
+        let endDateComponents = DateComponents(year: 2024, month: 9, day: 12, hour: 12, minute: 0)
         let endDate = Calendar.current.date(from: endDateComponents)!
         
         let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!

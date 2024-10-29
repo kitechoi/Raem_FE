@@ -154,7 +154,7 @@ class StageAiPredictionManager: ObservableObject {
                         let brightness: Double = UserDefaults.standard.double(forKey: "brightness")
                         let duration: Int = UserDefaults.standard.integer(forKey: "TurnOnDuration")
                         print("\(red), \(green), \(blue), \(brightness)")
-                        self.bleManager.turnOnAlarm("\(duration),\(red * brightness),\(green * brightness),\(blue * brightness),alarm,80")
+                        self.bleManager.turnOnAlarm("\(duration),\(red * brightness),\(green * brightness),\(blue * brightness),alarm,40")
                     
                         self.doesAiAlarmTurnedOn = true
                     }

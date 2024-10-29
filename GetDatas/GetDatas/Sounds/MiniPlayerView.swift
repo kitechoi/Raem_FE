@@ -30,7 +30,7 @@ struct MiniPlayerView: View {
                     if bleManager.connectSuccess == false {
                         playMusic()
                     } else {
-                        bleManager.turnOnAudio("\(album.audioFileName),80,music")
+                        bleManager.turnOnAudio("\(album.audioFileName),40,music")
                     }
                 }) {
                     Image(systemName: "play.fill")
