@@ -6,7 +6,7 @@ struct SleepEntry: Identifiable {
     let id = UUID()
     let sleptAt: String
     let score: Int
-    let sleepTime: String // 총 수면 시간 (HH:mm:ss 형식)
+    let sleepTime: String // 총 수면 시간 (HH:mm:ss 형식 또는 X시간 Y분 형식)
 }
 
 struct WeeklyView: View {
@@ -15,7 +15,6 @@ struct WeeklyView: View {
     @State private var loadingData: Bool = false
     @State private var errorMessage: String? = nil
     
-    // 서버 데이터와 연결하기 위해 SessionManager 등 필요한 객체가 있으면 사용
     @EnvironmentObject var sessionManager: SessionManager
     
     var body: some View {
@@ -171,7 +170,7 @@ struct WeeklyView: View {
                             SleepEntry(
                                 sleptAt: $0.sleptAt,
                                 score: $0.score,
-                                sleepTime: $0.sleepTime // 수면 시간을 포함한 SleepEntry
+                                sleepTime: $0.sleepTime
                             )
                         }
                         // 평균 수면 시간을 계산
@@ -204,14 +203,22 @@ struct WeeklyView: View {
         }
     }
 
-    // "HH:mm:ss" 형식의 시간을 분으로 변환하는 함수
+    // "HH:mm:ss" 또는 "X시간 Y분" 형식의 시간을 분으로 변환하는 함수
     func convertTimeToMinutes(_ timeString: String) -> Int {
-        let components = timeString.split(separator: ":").compactMap { Int($0) }
-        guard components.count == 3 else {
-            print("Invalid time format: \(timeString)")  // 형식 오류 디버깅
-            return 0
+        if timeString.contains("시간") && timeString.contains("분") {
+            // "X시간 Y분" 형식 처리
+            let hourPart = timeString.components(separatedBy: "시간").first.flatMap { Int($0.trimmingCharacters(in: .whitespaces)) } ?? 0
+            let minutePart = timeString.components(separatedBy: "시간").last?.components(separatedBy: "분").first.flatMap { Int($0.trimmingCharacters(in: .whitespaces)) } ?? 0
+            return hourPart * 60 + minutePart
+        } else {
+            // "HH:mm:ss" 형식 처리
+            let components = timeString.split(separator: ":").compactMap { Int($0) }
+            guard components.count == 3 else {
+                print("Invalid time format: \(timeString)")  // 형식 오류 디버깅
+                return 0
+            }
+            return components[0] * 60 + components[1]
         }
-        return components[0] * 60 + components[1] // 시*60 + 분
     }
 
     // 분을 "HH:mm:ss" 형식의 문자열로 변환하는 함수
@@ -245,19 +252,12 @@ struct WeeklySleepResponse: Decodable {
 }
 
 struct WeeklySleepData: Decodable {
-    let type: String
     let list: [SleepEntryResponse]
 }
 
 struct SleepEntryResponse: Decodable {
     let sleptAt: String
     let score: Int
-    let sleepTime: String // "HH:mm:ss" 형식의 수면 시간
-}
-
-struct WeeklyView_Previews: PreviewProvider {
-    static var previews: some View {
-        WeeklyView()
-    }
+    let sleepTime: String
 }
 
