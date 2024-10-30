@@ -1,4 +1,56 @@
 import SwiftUI
+import WatchConnectivity
+
+class iPhoneConnectManager: NSObject, ObservableObject, WCSessionDelegate {
+    @Published var receivedData: [MeasurementData] = []
+    @Published var predictionManager: DreamAiPredictionManager
+    @Published var stageAiPredictionManager: StageAiPredictionManager
+    private var bleManager: BLEManager
+
+    init(bleManager: BLEManager) {
+        self.bleManager = bleManager
+        self.predictionManager = DreamAiPredictionManager(bleManager: bleManager)
+        self.stageAiPredictionManager = StageAiPredictionManager(bleManager: bleManager)
+        super.init()
+        if WCSession.isSupported() {
+            WCSession.default.delegate = self
+            WCSession.default.activate()
+        }
+    }
+    
+    func sessionDidBecomeInactive(_ session: WCSession) {}
+    
+    func sessionDidDeactivate(_ session: WCSession) {}
+    
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {}
+    
+    func session(_ session: WCSession, didReceiveMessageData messageData: Data) {
+        do {
+            let receivedData = try JSONDecoder().decode([MeasurementData].self, from: messageData)
+            DispatchQueue.main.async {
+                self.receivedData.append(contentsOf: receivedData)
+                print("----------------------------------------")
+                print("Received Data Count: \(self.receivedData.count)")  // 데이터 수신 갯수 확인
+                self.predictionManager.processReceivedData(self.receivedData)  // DreamAi 수신 후 예측 시작
+                self.stageAiPredictionManager.predictionTimeCheck(self.receivedData) //
+            }
+        } catch {
+            print("Failed to decode received data: \(error.localizedDescription)")
+        }
+    }
+    // StageAi 예측 시작 시간 체크
+    func performStageAiPredictionCheck() {
+        if !self.receivedData.isEmpty {
+            self.stageAiPredictionManager.predictionTimeCheck(self.receivedData)
+        } else {
+            print("No data available for Stage AI Prediction.")
+        }
+    }
+
+    func clearReceivedData() {
+        receivedData.removeAll()
+    }
+}
 
 struct SleepDetailView: View {
     @State private var rating: Int = 0
@@ -14,6 +66,8 @@ struct SleepDetailView: View {
     @State private var green: Double = 200
     @State private var blue: Double = 124
     @State private var gradualTime: Int = 20
+    @StateObject private var connectManager: iPhoneConnectManager
+    @EnvironmentObject var sessionManager: SessionManager
     
     @State private var selectedAlarmTime = {
         if let savedTime = UserDefaults.standard.object(forKey: "selectedAlarmTime") as? Date {
@@ -31,7 +85,7 @@ struct SleepDetailView: View {
         }
     }()
     
-    init() {
+    init(bleManager: BLEManager) {
         let savedRed = UserDefaults.standard.double(forKey: "red")
         let savedGreen = UserDefaults.standard.double(forKey: "green")
         let savedBlue = UserDefaults.standard.double(forKey: "blue")
@@ -53,6 +107,8 @@ struct SleepDetailView: View {
         if turnOnDuration != 0 {
             _gradualTime = State(initialValue: turnOnDuration)
         }
+        
+        _connectManager = StateObject(wrappedValue: iPhoneConnectManager(bleManager: bleManager))
     }
     
     private let dateFormatter: DateFormatter = {

@@ -30,7 +30,7 @@ struct MiniPlayerView: View {
                     if bleManager.connectSuccess == false {
                         playMusic()
                     } else {
-                        bleManager.turnOnAudio("\(album.audioFileName),40,music")
+                        bleManager.turnOnAudio("\(album.audioFileName),60,music")
                     }
                 }) {
                     Image(systemName: "play.fill")
@@ -75,7 +75,7 @@ struct MiniPlayerView: View {
             return
         }
 
-        guard let path = Bundle.main.path(forResource: album.audioFileName, ofType: "mp3") else {
+        guard let path = Bundle.main.path(forResource: album.audioFileName, ofType: "wav") else {
             print("Audio file not found")
             return
         }

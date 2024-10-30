@@ -7,7 +7,7 @@ struct DemoView: View {
     @State private var timer: Timer? = nil
     @State private var currentDataStartIndex = 0
     @State private var demoState = 0
-    @State private var selectedFileName = "data2"
+    @State private var selectedFileName = "data1"
     @EnvironmentObject var bleManager: BLEManager
     private var fileNameArray: [String] = [
         "data1",
@@ -61,7 +61,6 @@ struct DemoView: View {
             if demoState == 0 {
                 Button(action: {
                     startPredictionCycle()
-                    demoState = 1
                 }) {
                     Text("예측 시작")
                         .font(.headline)
@@ -122,6 +121,12 @@ struct DemoView: View {
             currentDataStartIndex = 0
 
             performPrediction() // 첫 예측 수행
+            
+//            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+//                DispatchQueue.global(qos: .background).async {
+//                    performPrediction()
+//                }
+//            }
 
             // 10초 간격으로 예측을 반복 수행
             timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
@@ -129,6 +134,7 @@ struct DemoView: View {
             }
             
             demoState = 1
+            
         } else {
             print("CSV 파일을 불러올 수 없습니다.")
         }
@@ -153,25 +159,48 @@ struct DemoView: View {
             return
         }
 
-        // 현재 시작 인덱스부터 90개의 데이터를 선택
         let dataSlice = Array(measurementData[currentDataStartIndex...endIndex])
         
-        // 예측 수행
         predictionManager.processReceivedData(dataSlice)
         
-        // 예측 결과가 즉시 UI에 반영되도록 비동기적으로 처리
         DispatchQueue.main.async {
             if let latestPrediction = predictionManager.predictions.last {
                 var updatedPrediction = latestPrediction
-                // dataSlice의 마지막 타임스탬프를 예측 결과에 반영
                 updatedPrediction.timestamp = dataSlice.last?.timestamp ?? "N/A"
                 predictions.append(updatedPrediction)
             }
         }
 
-        // 다음 예측을 위해 시작 인덱스를 30씩 이동
         currentDataStartIndex += 30
     }
+    
+//    private func performPrediction() {
+//        let endIndex = currentDataStartIndex + 89
+//        guard endIndex < measurementData.count else {
+//            print("데이터가 부족하여 예측을 종료합니다.")
+//            timer?.invalidate()
+//            return
+//        }
+//
+//        // 현재 시작 인덱스부터 90개의 데이터를 선택
+//        let dataSlice = Array(measurementData[currentDataStartIndex...endIndex])
+//        
+//        // 예측 수행
+//        predictionManager.processReceivedData(dataSlice)
+//        
+//        // 예측 결과가 즉시 UI에 반영되도록 비동기적으로 처리
+//        DispatchQueue.main.async {
+//            if let latestPrediction = predictionManager.predictions.last {
+//                var updatedPrediction = latestPrediction
+//                // dataSlice의 마지막 타임스탬프를 예측 결과에 반영
+//                updatedPrediction.timestamp = dataSlice.last?.timestamp ?? "N/A"
+//                predictions.append(updatedPrediction)
+//            }
+//        }
+//
+//        // 다음 예측을 위해 시작 인덱스를 30씩 이동
+//        currentDataStartIndex += 30
+//    }
 
     
     private func loadCSVData(fileName: String) -> [MeasurementData]? {
