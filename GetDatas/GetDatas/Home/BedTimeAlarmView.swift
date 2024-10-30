@@ -288,52 +288,53 @@ struct AlarmView: View {
                         .stroke(Color.gray.opacity(0.5))
                 )
                 .padding(.horizontal, 16)
-
-                HStack {
-                    Text("다시 알림")
-                        .font(.system(size: 16))
-                        .foregroundColor(.black)
-                    Spacer()
-                    Text(selectedRealarm)
-                        .font(.system(size: 16))
-                        .foregroundColor(.gray)
-                    Button(action: {
-                        showingRealarmSheet = true
-                    }) {
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.gray)
-                    }
-                    .confirmationDialog("다시 알림", isPresented: $showingRealarmSheet) {
-                        Button("사용 안 함") {
-                            selectedRealarm = "사용 안 함"
-                            UserDefaults.standard.set("사용 안 함", forKey: "selectedRealarm")
-                        }
-                        Button("5분 뒤") {
-                            selectedRealarm = "5분 뒤"
-                            UserDefaults.standard.set("5분 뒤", forKey: "selectedRealarm")
-                        }
-                        Button("10분 뒤") {
-                            selectedRealarm = "10분 뒤"
-                            UserDefaults.standard.set("10분 뒤", forKey: "selectedRealarm")
-                        }
-                        Button("15분 뒤") {
-                            selectedRealarm = "15분 뒤"
-                            UserDefaults.standard.set("15분 뒤", forKey: "selectedRealarm")
-                        }
-                        Button("30분 뒤") {
-                            selectedRealarm = "30분 뒤"
-                            UserDefaults.standard.set("30분 뒤", forKey: "selectedRealarm")
-                        }
-                        Button("취소", role: .cancel) {}
-                    }
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray.opacity(0.5))
-                )
-                .padding(.horizontal, 16)
                 .padding(.bottom, 10)
+
+//                HStack {
+//                    Text("다시 알림")
+//                        .font(.system(size: 16))
+//                        .foregroundColor(.black)
+//                    Spacer()
+//                    Text(selectedRealarm)
+//                        .font(.system(size: 16))
+//                        .foregroundColor(.gray)
+//                    Button(action: {
+//                        showingRealarmSheet = true
+//                    }) {
+//                        Image(systemName: "chevron.right")
+//                            .foregroundColor(.gray)
+//                    }
+//                    .confirmationDialog("다시 알림", isPresented: $showingRealarmSheet) {
+//                        Button("사용 안 함") {
+//                            selectedRealarm = "사용 안 함"
+//                            UserDefaults.standard.set("사용 안 함", forKey: "selectedRealarm")
+//                        }
+//                        Button("5분 뒤") {
+//                            selectedRealarm = "5분 뒤"
+//                            UserDefaults.standard.set("5분 뒤", forKey: "selectedRealarm")
+//                        }
+//                        Button("10분 뒤") {
+//                            selectedRealarm = "10분 뒤"
+//                            UserDefaults.standard.set("10분 뒤", forKey: "selectedRealarm")
+//                        }
+//                        Button("15분 뒤") {
+//                            selectedRealarm = "15분 뒤"
+//                            UserDefaults.standard.set("15분 뒤", forKey: "selectedRealarm")
+//                        }
+//                        Button("30분 뒤") {
+//                            selectedRealarm = "30분 뒤"
+//                            UserDefaults.standard.set("30분 뒤", forKey: "selectedRealarm")
+//                        }
+//                        Button("취소", role: .cancel) {}
+//                    }
+//                }
+//                .padding()
+//                .background(
+//                    RoundedRectangle(cornerRadius: 10)
+//                        .stroke(Color.gray.opacity(0.5))
+//                )
+//                .padding(.horizontal, 16)
+//                .padding(.bottom, 10)
             }
 
         }

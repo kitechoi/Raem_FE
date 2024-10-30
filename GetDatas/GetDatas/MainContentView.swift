@@ -4,6 +4,7 @@ struct MainContentView: View {
     @State private var selectedTab: BottomNav.Tab = .home
     @State private var homeView: BedTimeAlarmView.Tab = .none
     @State private var isVisible = true
+    @EnvironmentObject var bleManager: BLEManager
 
     var body: some View {
         NavigationView {
@@ -28,7 +29,7 @@ struct MainContentView: View {
                                 }
                             }
                     } else if homeView == .sleepDetail {
-                        SleepDetailView()
+                        SleepDetailView(bleManager: bleManager)
                     } else {
                         BedTimeAlarmView(selectedTab: $homeView)
                     }

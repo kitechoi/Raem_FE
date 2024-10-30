@@ -8,6 +8,7 @@ struct MusicPlayerView: View {
     @State private var player: AVAudioPlayer?
     @State private var currentTime: TimeInterval = 0
     @State private var duration: TimeInterval = 60
+    @EnvironmentObject var bleManager: BLEManager
 
     var body: some View {
         ScrollView {
@@ -19,7 +20,7 @@ struct MusicPlayerView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 250, height: 250)
                     .cornerRadius(10)
-                    .padding(.top, 20)
+                    .padding(.top, 10)
 
                 Text(album.title)
                     .font(.title2)
@@ -29,7 +30,6 @@ struct MusicPlayerView: View {
                 Slider(value: $currentTime, in: 0...duration, onEditingChanged: { _ in
                     seekToTime()
                 })
-                .padding(.top, 20)
 
                 HStack {
                     Text(formatTime(currentTime))
@@ -37,33 +37,47 @@ struct MusicPlayerView: View {
                     Text(formatTime(duration))
                 }
                 .padding(.horizontal, 40)
-
-                HStack(spacing: 50) {
-                    Button(action: {
-                        stopMusic()
-                    }) {
-                        Image(systemName: "backward.fill")
-                            .font(.system(size: 30))
-                            .foregroundColor(.gray)
+                
+                HStack() {
+                    
+                    if isPlaying {
+                        Button(action: {
+                            if bleManager.connectSuccess == false {
+                                player?.stop()
+                            } else {
+                                bleManager.turnOffAudio("Off")
+                            }
+                            isPlaying = false
+                        }) {
+                            Image(systemName: "stop.fill")
+                                .font(.system(size: 25))
+                                .foregroundColor(.gray)
+                                .padding()
+                        }
+                        .overlay(
+                            Circle()
+                                .stroke(Color.gray, lineWidth: 2)  // 원형 라인의 색상과 두께 설정
+                        )
+                    } else {
+                        Button(action: {
+                            if bleManager.connectSuccess == false {
+                                playMusic()
+                            } else {
+                                bleManager.turnOnAudio("\(album.audioFileName),60,music")
+                            }
+                            isPlaying = true
+                        }) {
+                            Image(systemName: "play.fill")
+                                .font(.system(size: 25))
+                                .foregroundColor(.gray)
+                                .padding()
+                        }.overlay(
+                            Circle()
+                                .stroke(Color.gray, lineWidth: 2)  // 원형 라인의 색상과 두께 설정
+                        )
                     }
-
-                    Button(action: {
-                        playMusic()
-                    }) {
-                        Image(systemName: "play.fill")
-                            .font(.system(size: 50))
-                            .foregroundColor(.gray)
-                    }
-
-                    Button(action: {
-                        // 다음 트랙 기능 구현 (필요시 추가)
-                    }) {
-                        Image(systemName: "forward.fill")
-                            .font(.system(size: 30))
-                            .foregroundColor(.gray)
-                    }
+                    
                 }
-                .padding(.top, 20)
 
                 Spacer()
             }
@@ -96,7 +110,7 @@ struct MusicPlayerView: View {
             return
         }
 
-        guard let path = Bundle.main.path(forResource: album.audioFileName, ofType: "mp3") else {
+        guard let path = Bundle.main.path(forResource: album.audioFileName, ofType: "wav") else {
             print("Audio file not found")
             return
         }

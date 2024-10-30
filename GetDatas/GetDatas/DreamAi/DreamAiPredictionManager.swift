@@ -11,10 +11,10 @@ class DreamAiPredictionManager: ObservableObject {
     private var isPredictionPaused = false  // DreamAi 취침 플래그 (continuedSleepings면 예측중지)
     
     private var timer: Timer?
-    private var currentVolume = 80 //TODO: 현재 폰의 음량에 맞게 변경
-    private let step = 5
+    private var currentVolume = 60 //TODO: 현재 폰의 음량에 맞게 변경
+    private let step = 3
     private var intervals = 0
-    private let maxIntervals = 5
+    private let maxIntervals = 10
     private var isAdjustingVolume = false
     init(bleManager: BLEManager) {
         self.bleManager = bleManager
@@ -68,7 +68,7 @@ class DreamAiPredictionManager: ObservableObject {
     // 현조 블루투스 기기로 신호보낼 때 사용할 함수
     // 첫 연속 수면 체크 함수
     private func continuedSleepings(isSleeping: Bool, timestamp: String) {
-        let consecutiveCount = 3    // 연속 횟수 상수 설정. consecutiveCount가 3일 시 == 3번 연속 호출인지를 확인함.
+        let consecutiveCount = 2    // 연속 횟수 상수 설정. consecutiveCount가 3일 시 == 3번 연속 호출인지를 확인함.
         
         // 최근 상태를 저장
         previousSleepStates.append((timestamp: timestamp, isSleeping: isSleeping))
@@ -110,7 +110,7 @@ class DreamAiPredictionManager: ObservableObject {
             
             intervals += 1
             
-            timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] _ in
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
                 self?.adjustVolume()
             }
         } else {

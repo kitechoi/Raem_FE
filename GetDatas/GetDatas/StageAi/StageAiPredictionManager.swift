@@ -145,7 +145,7 @@ class StageAiPredictionManager: ObservableObject {
                     // 렘(5)일 경우, 알람울리기
                     if predictedLevel == 5 {
                         self.detectedRem()  // 렘수면 시 알림 관련 함수
-//                        self.isPredictionPaused_StageAi = true // 렘수면 시 플래그로써 예측이 수행되지 않게 함. 데모 위하여 주석처리
+                        self.isPredictionPaused_StageAi = true // 렘수면 시 플래그로써 예측이 수행되지 않게 함. 데모 위하여 주석처리
                         print("렘을 찾았으니, 앞으로 예측을 중지합니다")
                         
                         let red: Double = UserDefaults.standard.double(forKey: "red")
