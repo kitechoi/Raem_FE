@@ -1,14 +1,20 @@
-# Ai 모델 동작 
-- DreamAi
-- StageClassifier
-
-## 1. DreamAi
-DreamAi는 사용자가 침대에 누워 잠이 드는 시점을 감지하는 모델입니다. 이 모델은 사용자가 잠에 들었다고 판단되면, 조명이나 음악을 재생 중인 IoT 기기가 자동으로 종료될 수 있도록 신호를 보내어 사용자의 편안한 숙면을 돕습니다. DreamAi는 기본 모델을 기반으로 하되, 사용자의 데이터로 전이 학습이 가능하여 성능 향상을 도모할 수 있습니다. 이 모델은 Core ML로 구현되었습니다.
-
-주요 기능
-- 침대에 누운 시점 감지: 사용자가 침대에 누워 잠에 들기 시작한 시점을 감지합니다.
-- 자동 신호 전송: 사용자가 잠들었다고 판단되면 IoT 기기에 신호를 보내 조명이나 음악 등을 자동으로 종료합니다.
-- 전이 학습 지원: 사용자의 데이터를 통해 전이 학습을 수행하여 모델 성능을 개선할 수 있습니다.
-- Core ML 통합: Apple의 Core ML을 사용하여 iOS 기기에서 효율적으로 작동합니다.
-
-## 2. StageClassifier
+![1](https://github.com/user-attachments/assets/a862242a-cffc-4b9f-85a9-d4c640486df9)
+![2](https://github.com/user-attachments/assets/d05f945c-6111-4479-bfa6-5e300cae1755)
+![3](https://github.com/user-attachments/assets/5eb80b57-8051-439b-8d41-e80629f6eecd)
+![4](https://github.com/user-attachments/assets/dec467de-c4a2-4c3e-bd5c-31cce6f780cd)
+![5](https://github.com/user-attachments/assets/28b57455-f268-4c9c-9d47-62405898f0ea)
+![6](https://github.com/user-attachments/assets/791c0494-fb76-46cc-bfde-9c4c0ad47670)
+![7](https://github.com/user-attachments/assets/091b933e-6652-4cd1-8574-2855834708fd)
+![8](https://github.com/user-attachments/assets/3dcd772b-1f9d-42da-acc8-ae1be866b63c)
+![9](https://github.com/user-attachments/assets/914e6422-20eb-4c85-870a-c607c9b9e2fc)
+![10](https://github.com/user-attachments/assets/636ed5d5-d1b7-4103-9db2-77678408337d)
+![11](https://github.com/user-attachments/assets/539c0cd6-af7f-4a86-86cd-ff244c03d815)
+![12](https://github.com/user-attachments/assets/246fa279-6857-4ec4-a395-615f5282c1a5)
+![13](https://github.com/user-attachments/assets/b41d5d2d-fd9e-4221-a4e4-d5b455a8016c)
+![14](https://github.com/user-attachments/assets/5259d169-ba2d-4154-a80d-9e0df6681b0c)
+![15](https://github.com/user-attachments/assets/3a84604d-5202-4b4e-99e7-771f81dfc8fb)
+![16](https://github.com/user-attachments/assets/dfdd9c2e-5803-44c3-9757-e189ca16777c)
+![17](https://github.com/user-attachments/assets/6b0264e6-0274-4c0d-8508-887be71a47aa)
+![18](https://github.com/user-attachments/assets/06e01a10-4276-443d-8107-5597b8efbe8b)
+![19](https://github.com/user-attachments/assets/f47c7ec9-c072-4117-bb7c-eb708526abd8)
+![20](https://github.com/user-attachments/assets/3b63d8a6-5144-4bc6-b67a-9fd47f57a3bb)
